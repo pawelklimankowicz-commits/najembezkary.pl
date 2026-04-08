@@ -108,12 +108,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="trust-strip">
-        <div className="trust-item">Dokumenty gotowe do edycji i wydruku</div>
-        <div className="trust-item">Wersje zgod i historii dla RODO</div>
-        <div className="trust-item">Integracja procesu od ankiety po pobranie</div>
-      </section>
-
       <section className="client-logos">
         <p>20 największych operatorów najmu w Polsce</p>
         <div className="client-logos-grid">
@@ -139,7 +133,7 @@ export default function HomePage() {
       </section>
 
       <section className="landing-section dark-pricing">
-        <h2>Dlaczego 99 zł</h2>
+        <h2>Dlaczego 99,00 złotych to uczciwa cena</h2>
         <div className="pricing-compare">
           <article className="pricing-card pricing-card--muted">
             <h3>U prawnika</h3>
