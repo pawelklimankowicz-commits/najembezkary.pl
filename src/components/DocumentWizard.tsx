@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { RENTAL_PLATFORM_LABELS } from "@/lib/owner-form-schema";
+import OrderFormConsents from "@/components/OrderFormConsents";
 import type { OrderDocumentFormInput } from "@/lib/order-input-schema";
 
 const PROPERTY_TYPE_LABELS: Record<string, string> = {
@@ -51,6 +52,12 @@ export function DocumentWizard() {
   const [form, setForm] = useState<OrderDocumentFormInput>(emptyForm);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [consents, setConsents] = useState({
+    termsAccepted: false,
+    digitalContentConsent: false,
+    analyticsConsent: false,
+    marketingConsent: false,
+  });
 
   function patch<K extends keyof OrderDocumentFormInput>(
     key: K,
@@ -126,6 +133,14 @@ export function DocumentWizard() {
 
   function next() {
     if (!validateStep(step)) return;
+    if (step === STEPS - 1) {
+      if (!consents.termsAccepted || !consents.digitalContentConsent) {
+        setError(
+          "Zaakceptuj Regulamin, Polityke prywatnosci oraz zgode na natychmiastowe wykonanie umowy."
+        );
+        return;
+      }
+    }
     setStep((x) => Math.min(STEPS, x + 1));
   }
 
@@ -388,6 +403,7 @@ export function DocumentWizard() {
             Po kliknięciu pobierzesz archiwum ZIP z sześcioma dokumentami PDF (wniosek,
             oświadczenie, regulamin, wzór umowy, checklista, instrukcja).
           </p>
+          <OrderFormConsents onChange={setConsents} />
           <button
             type="button"
             className="btn-primary"
