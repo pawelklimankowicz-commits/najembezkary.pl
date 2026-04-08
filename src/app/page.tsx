@@ -249,7 +249,7 @@ export default function HomePage() {
             </p>
           </details>
           <details>
-            <summary>Czy cena 99 zł jest jednorazowa?</summary>
+            <summary>Czy cena 99 złotych jest jednorazowa?</summary>
             <p>
               Tak, to jednorazowa opłata za przygotowanie pakietu dokumentów dla wskazanego przypadku.
             </p>
