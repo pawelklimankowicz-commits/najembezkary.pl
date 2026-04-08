@@ -60,6 +60,7 @@ export function DocumentWizard() {
     analyticsConsent: false,
     marketingConsent: false,
   });
+  const [consentId, setConsentId] = useState<string | null>(null);
 
   function patch<K extends keyof OrderDocumentFormInput>(
     key: K,
@@ -81,6 +82,37 @@ export function DocumentWizard() {
     setError(null);
     setLoading(true);
     try {
+      if (!consents.termsAccepted || !consents.digitalContentConsent) {
+        throw new Error(
+          "Zaakceptuj Regulamin, Polityke prywatnosci oraz zgode na natychmiastowe wykonanie umowy."
+        );
+      }
+
+      if (!consentId) {
+        const sessionId =
+          typeof crypto !== "undefined" && "randomUUID" in crypto
+            ? crypto.randomUUID()
+            : String(Date.now());
+        const consentRes = await fetch("/api/log-consent", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            termsAccepted: consents.termsAccepted,
+            digitalContentConsent: consents.digitalContentConsent,
+            analyticsConsent: consents.analyticsConsent,
+            marketingConsent: consents.marketingConsent,
+            email: form.email,
+            sessionId,
+          }),
+        });
+        if (!consentRes.ok) {
+          const j = (await consentRes.json().catch(() => ({}))) as { error?: string };
+          throw new Error(j.error || "Nie mozna zapisac zgod. Sprobuj ponownie.");
+        }
+        const j = (await consentRes.json()) as { consentId: string };
+        setConsentId(j.consentId);
+      }
+
       const res = await fetch("/api/documents", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
