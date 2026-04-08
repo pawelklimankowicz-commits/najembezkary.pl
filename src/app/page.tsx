@@ -133,16 +133,16 @@ export default function HomePage() {
       </section>
 
       <section className="landing-section dark-pricing">
-        <h2>Dlaczego 99,00 złotych to uczciwa cena</h2>
+        <h2>Dlaczego 99 złotych to uczciwa cena ?</h2>
         <div className="pricing-compare">
           <article className="pricing-card pricing-card--muted">
             <h3>U prawnika</h3>
-            <p>Najczęściej 300-800 zł za samą konsultację i dodatkowy czas oczekiwania.</p>
+            <p>Średnio 499 złotych zł za samą konsultację inie mówiąc o czasie oczekiwania na przygotowanie dokumentów.</p>
           </article>
           <article className="pricing-card pricing-card--highlight">
-            <h3>najembezkary.pl</h3>
+            <h3>U nas</h3>
             <p>
-              Jedna opłata, gotowy pakiet dokumentów i jasna ścieżka dalszych kroków od razu po
+              Jedna niska opłata, gotowy pakiet dokumentów i jasna ścieżka dalszych kroków od razu po
               wypełnieniu formularza.
             </p>
           </article>
@@ -151,7 +151,7 @@ export default function HomePage() {
 
       <section className="stats-grid">
         <article>
-          <p className="stats-value">15 min</p>
+          <p className="stats-value">3 min</p>
           <p className="stats-label">średni czas przygotowania pakietu</p>
         </article>
         <article>
@@ -163,7 +163,7 @@ export default function HomePage() {
           <p className="stats-label">dostęp do generatora online</p>
         </article>
         <article>
-          <p className="stats-value">1 proces</p>
+          <p className="stats-value">1 intuicyjny proces</p>
           <p className="stats-label">od ankiety do pobrania dokumentów</p>
         </article>
       </section>
@@ -176,35 +176,118 @@ export default function HomePage() {
         </p>
         <p>
           <Link href="/quiz" className="btn-primary">
-            Uruchom proces teraz →
+            Uruchom proces teraz
           </Link>
         </p>
       </section>
 
       <section className="landing-section faq-section">
         <h2>FAQ</h2>
-        <div className="faq-list">
-          <article>
-            <h3>Czy to dotyczy mojego mieszkania?</h3>
+        <div className="faq-accordion">
+          <details>
+            <summary>Czy to dotyczy mojego mieszkania?</summary>
             <p>
               Od tego zaczyna się ankieta. Po kilku pytaniach zobaczysz, czy prawdopodobnie podlegasz
               rejestracji i jaki wariant dokumentów wybrać.
             </p>
-          </article>
-          <article>
-            <h3>Czy dokumenty są zgodne z przepisami?</h3>
+          </details>
+          <details>
+            <summary>Czy dokumenty są zgodne z przepisami?</summary>
             <p>
               Szablony są przygotowane pod aktualny model rejestracji, ale przed złożeniem warto
               sprawdzić wymagania Twojej gminy (BIP i komunikaty lokalne).
             </p>
-          </article>
-          <article>
-            <h3>Czy mogę pobrać dokumenty wielokrotnie?</h3>
+          </details>
+          <details>
+            <summary>Czy mogę pobrać dokumenty wielokrotnie?</summary>
             <p>
               Tak, w okresie ważności linku możesz pobierać paczkę ponownie. Zalecamy zapisanie
               plików lokalnie po pierwszym pobraniu.
             </p>
-          </article>
+          </details>
+          <details>
+            <summary>Co dokładnie dostanę po opłaceniu zamówienia?</summary>
+            <p>
+              Otrzymasz gotowy pakiet dokumentów do zgłoszenia najmu krótkoterminowego, dopasowany do
+              odpowiedzi z ankiety i danych lokalu.
+            </p>
+          </details>
+          <details>
+            <summary>Ile czasu zajmuje przygotowanie dokumentów?</summary>
+            <p>
+              W większości przypadków cały proces trwa kilka minut: od wypełnienia ankiety po pobranie
+              kompletnego pakietu.
+            </p>
+          </details>
+          <details>
+            <summary>Czy muszę zakładać konto, aby skorzystać z usługi?</summary>
+            <p>
+              Nie, proces został zaprojektowany tak, abyś mógł szybko przejść od ankiety do pobrania
+              dokumentów bez tworzenia rozbudowanego konta użytkownika.
+            </p>
+          </details>
+          <details>
+            <summary>Czy dokumenty mogę edytować po pobraniu?</summary>
+            <p>
+              Tak, możesz je uzupełniać i modyfikować przed złożeniem, jeśli wymaga tego Twoja sytuacja
+              lub wytyczne urzędu.
+            </p>
+          </details>
+          <details>
+            <summary>Czy cena 99 zł jest jednorazowa?</summary>
+            <p>
+              Tak, to jednorazowa opłata za przygotowanie pakietu dokumentów dla wskazanego przypadku.
+            </p>
+          </details>
+          <details>
+            <summary>W jaki sposób otrzymam dokumenty?</summary>
+            <p>
+              Dokumenty pobierasz bezpośrednio ze strony po zakończeniu procesu. Zalecamy od razu
+              zapisać je lokalnie na komputerze.
+            </p>
+          </details>
+          <details>
+            <summary>Czy mogę użyć pakietu dla kilku lokali?</summary>
+            <p>
+              Pakiet przygotowywany jest na podstawie danych jednego procesu. Dla kolejnego lokalu
+              najlepiej przejść proces ponownie, aby zachować poprawność danych.
+            </p>
+          </details>
+          <details>
+            <summary>Czy system uwzględnia właściwy urząd dla mojego lokalu?</summary>
+            <p>
+              Tak, po wskazaniu lokalizacji otrzymujesz dane właściwego urzędu i podstawowe informacje,
+              które pomagają w prawidłowym złożeniu dokumentów.
+            </p>
+          </details>
+          <details>
+            <summary>Czy mogę skonsultować dokumenty z prawnikiem?</summary>
+            <p>
+              Oczywiście. Wielu użytkowników traktuje pakiet jako bazę, którą następnie weryfikuje
+              dodatkowo z doradcą prawnym.
+            </p>
+          </details>
+          <details>
+            <summary>Co jeśli popełnię błąd w danych?</summary>
+            <p>
+              Najlepiej poprawić dane przed ostatecznym złożeniem w urzędzie. W razie potrzeby możesz
+              wygenerować dokumenty ponownie na podstawie poprawionych informacji.
+            </p>
+          </details>
+          <details>
+            <summary>Czy usługa działa na telefonie?</summary>
+            <p>
+              Tak, serwis jest responsywny i działa na urządzeniach mobilnych, ale dla wygody pracy z
+              dokumentami rekomendujemy komputer.
+            </p>
+          </details>
+          <details>
+            <summary>Skąd mam wiedzieć, że dokumenty są kompletne?</summary>
+            <p>
+              W pakiecie otrzymujesz checklistę oraz instrukcję postępowania, które pomagają upewnić
+              się, że niczego nie brakuje przed wizytą w urzędzie.
+            </p>
+          </details>
         </div>
       </section>
 
