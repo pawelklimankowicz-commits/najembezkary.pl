@@ -3,7 +3,9 @@
 import { useMemo, useState } from "react";
 
 import { RENTAL_PLATFORM_LABELS } from "@/lib/owner-form-schema";
-import OrderFormConsents from "@/components/OrderFormConsents";
+import OrderFormConsents, {
+  type ConsentState,
+} from "@/components/OrderFormConsents";
 import type { OrderDocumentFormInput } from "@/lib/order-input-schema";
 
 const PROPERTY_TYPE_LABELS: Record<string, string> = {
@@ -52,7 +54,7 @@ export function DocumentWizard() {
   const [form, setForm] = useState<OrderDocumentFormInput>(emptyForm);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [consents, setConsents] = useState({
+  const [consents, setConsents] = useState<ConsentState>({
     termsAccepted: false,
     digitalContentConsent: false,
     analyticsConsent: false,

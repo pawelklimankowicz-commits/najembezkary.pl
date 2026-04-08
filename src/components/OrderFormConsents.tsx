@@ -1,6 +1,7 @@
 import Link from "next/link";
+import { useState } from "react";
 
-type ConsentState = {
+export type ConsentState = {
   termsAccepted: boolean;
   digitalContentConsent: boolean;
   analyticsConsent: boolean;
@@ -12,8 +13,17 @@ export default function OrderFormConsents({
 }: {
   onChange: (consents: ConsentState) => void;
 }) {
+  const [consents, setConsents] = useState<ConsentState>({
+    termsAccepted: false,
+    digitalContentConsent: false,
+    analyticsConsent: false,
+    marketingConsent: false,
+  });
+
   function update<K extends keyof ConsentState>(key: K, value: boolean) {
-    onChange((prev) => ({ ...prev, [key]: value } as ConsentState));
+    const next = { ...consents, [key]: value } as ConsentState;
+    setConsents(next);
+    onChange(next);
   }
 
   return (
