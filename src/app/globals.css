@@ -913,7 +913,7 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: #0f2747;
-  margin: 0 0 1.5rem;
+  margin: 0 0 1.8rem;
   text-align: center;
   font-weight: 700;
 }
@@ -922,6 +922,7 @@ body {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.65rem;
+  margin-top: 0.35rem;
 }
 
 .countdown-cell {
@@ -943,7 +944,7 @@ body {
   font-weight: 800;
   letter-spacing: 0.01em;
   line-height: 1;
-  color: #0f2747;
+  color: #c0392b;
 }
 
 .countdown-unit {
@@ -957,7 +958,7 @@ body {
 }
 
 .countdown-footer {
-  margin-top: 1rem;
+  margin-top: 1.8rem;
   font-size: 0.8rem;
   text-align: center;
   color: #0f2747;
