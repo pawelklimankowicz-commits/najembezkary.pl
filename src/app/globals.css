@@ -769,12 +769,14 @@ body {
 .app-nav-cta {
   font-size: 0.86rem;
   padding: 0.58rem 0.95rem;
-  background: linear-gradient(135deg, #c0392b, #a93226);
+  background: linear-gradient(135deg, #c0392b, #a93226) !important;
+  color: #ffffff;
   box-shadow: 0 12px 28px rgba(192, 57, 43, 0.28);
 }
 
 .app-nav-cta:hover {
-  background: linear-gradient(135deg, #b43629, #922b21);
+  background: linear-gradient(135deg, #b43629, #922b21) !important;
+  color: #ffffff;
   box-shadow: 0 16px 32px rgba(192, 57, 43, 0.34);
 }
 
@@ -789,6 +791,7 @@ body {
 }
 
 .hero {
+  margin-top: -1cm;
   background: linear-gradient(135deg, #eff5ff 0%, #ffffff 52%, #eef4ff 100%);
   border: 1px solid #dce8f8;
   box-shadow: 0 24px 48px rgba(12, 39, 72, 0.12);
