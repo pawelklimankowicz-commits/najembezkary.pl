@@ -51,13 +51,13 @@ export default function HomePage() {
                 Przejdź bezpośrednio do kreatora
               </Link>
             </div>
-            <p className="hero-subline">
-              Już ponad 1000 właścicieli skorzystało z generatora, aby wygenerować gotowy pakiet rejestracyjny.
-            </p>
           </div>
           <div className="hero-countdown">
             <CountdownTimer />
           </div>
+          <p className="hero-subline">
+            Już ponad 1000 właścicieli skorzystało z generatora, aby wygenerować gotowy pakiet rejestracyjny.
+          </p>
         </div>
       </section>
 
