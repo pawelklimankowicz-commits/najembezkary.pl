@@ -10,9 +10,13 @@
     "build": "next build",
     "start": "next start -p 3000",
     "preview": "next build && next start -p 3000",
-    "generate:sample-zip": "tsx scripts/generate-sample-documents-zip.ts"
+    "generate:sample-zip": "tsx scripts/generate-sample-documents-zip.ts",
+    "seed:municipalities": "tsx scripts/seed-municipalities.ts data/TERC.csv"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.102.1",
+    "csv-parse": "^6.2.1",
+    "fuse.js": "^7.3.0",
     "jspdf": "^4.2.1",
     "jszip": "^3.10.1",
     "next": "^15.1.0",

@@ -96,6 +96,9 @@ type GlobalOrderFields = {
   platforms: string[];
   rentalSinceYear: string;
   quizAnswers: Record<string, string>;
+  officeName: string;
+  officeAddress: string;
+  officeBipUrl: string;
 };
 
 function extractGlobal(row: OrderDocumentBuildInput): GlobalOrderFields {
@@ -110,6 +113,13 @@ function extractGlobal(row: OrderDocumentBuildInput): GlobalOrderFields {
     platforms: Array.isArray(row.rental_platform) ? row.rental_platform : [],
     rentalSinceYear: safe(row.rental_since),
     quizAnswers,
+    officeName: safe((qa as Record<string, unknown> | undefined)?.office_name as string) || "Urzad Gminy / Urzad Miasta",
+    officeAddress:
+      safe((qa as Record<string, unknown> | undefined)?.office_address as string) ||
+      `${safe(row.property_city)} (adres uzupelnij wg gminy)`,
+    officeBipUrl:
+      safe((qa as Record<string, unknown> | undefined)?.office_bip_url as string) ||
+      "https://bip.gov.pl",
   };
 }
 
@@ -137,6 +147,9 @@ function buildPdfContext(
     platformsLine: platformsLine(g.platforms),
     rentalSinceYear: g.rentalSinceYear || "—",
     guestGroupLabel: q3GuestLabel(g.quizAnswers.q3),
+    officeName: g.officeName,
+    officeAddress: g.officeAddress,
+    officeBipUrl: g.officeBipUrl,
     today: new Date().toLocaleDateString("pl-PL"),
   };
 }
@@ -164,6 +177,9 @@ function flatRowToPdfContext(row: OrderDocumentBuildInput): PdfContext {
     platformsLine: platformsLine(g.platforms),
     rentalSinceYear: g.rentalSinceYear || "—",
     guestGroupLabel: q3GuestLabel(g.quizAnswers.q3),
+    officeName: g.officeName,
+    officeAddress: g.officeAddress,
+    officeBipUrl: g.officeBipUrl,
     today: new Date().toLocaleDateString("pl-PL"),
   };
 }

@@ -26,6 +26,9 @@ export type PdfContext = {
   rentalSinceYear: string;
   /** Grupa gości z quizu (q3). */
   guestGroupLabel: string;
+  officeName: string;
+  officeAddress: string;
+  officeBipUrl: string;
   today: string;
 };
 
@@ -534,11 +537,11 @@ function build6(doc: jsPDF, c: PdfContext): void {
     },
     {
       n: "Krok 2 — Zidentyfikuj właściwy urząd",
-      t: `Urząd właściwy dla adresu obiektu: ${c.propAddr}, ${c.propZip} ${c.propCity}. Znajdź referat, który obsługuje rejestr lub działalność noclegową — często jest to dział turystyki, przedsiębiorczości lub promocji.`,
+      t: `Urzad wlasciwy dla adresu obiektu: ${c.officeName}. Adres: ${c.officeAddress}. Dla lokalu ${c.propAddr}, ${c.propZip} ${c.propCity} potwierdz wlasciwy referat (turystyka / przedsiebiorczosc / promocja).`,
     },
     {
       n: "Krok 3 — Pobierz aktualne druki",
-      t: "Wejdź na stronę BIP urzędu lub infolinię: zapytaj o jednolite wzory wniosków. Jeśli gmina akceptuje własny formularz, użyj załączonego w pakiecie wniosku i uzupełnij pola zgodnie z instrukcją urzędu.",
+      t: `Wejdz na strone BIP urzedu: ${c.officeBipUrl}. Sprawdz jednolite wzory i sposob zlozenia (osobiscie / ePUAP / poczta). Jesli gmina akceptuje wlasny formularz, uzyj zalaczonego w pakiecie wniosku.`,
     },
     {
       n: "Krok 4 — Uzupełnij dane lokalu i właściciela",
