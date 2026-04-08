@@ -357,7 +357,7 @@ a:hover {
 .landing {
   max-width: 72rem;
   margin: 0 auto;
-  padding: 4rem 1.5rem 4.5rem;
+  padding: 0.25rem 1.5rem 4.5rem;
 }
 
 .hero {
@@ -553,7 +553,7 @@ a:hover {
 @media (min-width: 768px) {
   .hero-content {
     grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.2fr);
-    align-items: center;
+    align-items: start;
   }
 }
 
@@ -592,6 +592,7 @@ a:hover {
 
 .hero-countdown {
   background: transparent;
+  align-self: start;
 }
 
 /* Saldeo-style landing overrides */
@@ -820,7 +821,14 @@ body {
   margin-top: 0;
   background: linear-gradient(135deg, #eff5ff 0%, #ffffff 52%, #eef4ff 100%);
   border: 1px solid #dce8f8;
+  padding: 2.25rem 2.25rem;
   box-shadow: 0 24px 48px rgba(12, 39, 72, 0.12);
+}
+
+.hero h1 {
+  margin: 0.75rem 0 1.15rem;
+  font-size: clamp(2.16rem, 3.8vw, 2.65rem);
+  line-height: 1.2;
 }
 
 .badge {
@@ -831,6 +839,7 @@ body {
 
 .hero-warning {
   border-color: #d7e7fb;
+  padding: 1.11rem 1.2rem;
 }
 
 .hero-warning-title {
@@ -847,6 +856,24 @@ body {
   border-radius: 1rem;
   background: #ffffff;
   padding: 0.9rem 1rem;
+}
+
+.hero-content {
+  margin-top: 0.45rem;
+  gap: 1.55rem;
+}
+
+.hero-warning-text {
+  font-size: 1.06rem;
+}
+
+.hero-actions {
+  margin-top: 1.35rem;
+}
+
+.hero-subline {
+  margin-top: 0.85rem;
+  font-size: 1rem;
 }
 
 .client-logos p {
@@ -935,7 +962,7 @@ body {
 .countdown-card {
   background: #ffffff;
   border-radius: 1.5rem;
-  padding: 1.35rem 1.5rem;
+  padding: 0.9rem 1rem;
   color: #0f2747;
   border: 1px solid #fecaca;
   box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1);
@@ -946,11 +973,11 @@ body {
 }
 
 .countdown-label {
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: #0f2747;
-  margin: 0 0 1.8rem;
+  margin: 0 0 0.65rem;
   text-align: center;
   font-weight: 700;
 }
@@ -958,8 +985,8 @@ body {
 .countdown-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.65rem;
-  margin-top: 0.35rem;
+  gap: 0.45rem;
+  margin-top: 0.1rem;
 }
 
 .countdown-cell {
@@ -969,7 +996,7 @@ body {
 .countdown-value-wrap {
   background: #fff7f7;
   border-radius: 0.9rem;
-  padding: 0.95rem 0.45rem;
+  padding: 0.58rem 0.32rem;
   border: 1px solid #fca5a5;
 }
 
@@ -977,7 +1004,7 @@ body {
   display: block;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
-  font-size: 2rem;
+  font-size: 1.3rem;
   font-weight: 800;
   letter-spacing: 0.01em;
   line-height: 1;
@@ -986,8 +1013,8 @@ body {
 
 .countdown-unit {
   display: block;
-  margin-top: 0.45rem;
-  font-size: 0.76rem;
+  margin-top: 0.25rem;
+  font-size: 0.58rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: #0f2747;
@@ -995,8 +1022,8 @@ body {
 }
 
 .countdown-footer {
-  margin-top: 1.8rem;
-  font-size: 0.8rem;
+  margin-top: 0.7rem;
+  font-size: 0.64rem;
   text-align: center;
   color: #0f2747;
   font-weight: 600;
