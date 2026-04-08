@@ -8,7 +8,7 @@
 
 1. Niniejszy regulamin (dalej: „Regulamin") określa zasady świadczenia usług drogą elektroniczną za pośrednictwem serwisu internetowego dostępnego pod adresem **najembezkary.pl** (dalej: „Serwis"), w szczególności zasady zawierania i wykonywania umów o dostarczanie treści cyfrowych, prawa i obowiązki Użytkowników oraz Usługodawcy, a także tryb postępowania reklamacyjnego.
 
-2. Serwis prowadzony jest przez podmiot posługujący się oznaczeniem „Usługodawca" w rozumieniu niniejszego Regulaminu. Pełne dane identyfikacyjne Usługodawcy, w tym firma, adres siedziby oraz numer identyfikacji podatkowej, dostępne są na stronie Serwisu w zakładce „Kontakt" lub „O nas". Dane te stanowią integralną część stosunku prawnego nawiązanego na podstawie niniejszego Regulaminu.
+2. Serwis prowadzony jest przez Pawła Klimankowicza, NIP: 5090047389, adres: ul. Kowlaska 5/203, 20-115 Lublin (dalej: „Usługodawca"). Dane te stanowią integralną część stosunku prawnego nawiązanego na podstawie niniejszego Regulaminu.
 
 3. Usługodawca świadczy usługi drogą elektroniczną na zasadach określonych w niniejszym Regulaminie, zgodnie z przepisami:
    1) ustawy z dnia 18 lipca 2002 r. o świadczeniu usług drogą elektroniczną (t.j. Dz.U. z 2020 r. poz. 344 ze zm.; dalej: „u.ś.u.e.");
@@ -32,7 +32,7 @@ Użyte w niniejszym Regulaminie określenia oznaczają:
 
 1. **Serwis** – serwis internetowy dostępny pod adresem najembezkary.pl, za pośrednictwem którego Usługodawca świadczy usługi polegające na udostępnianiu Pakietu Treści Cyfrowych.
 
-2. **Usługodawca** – podmiot prowadzący Serwis, będący właścicielem domeny najembezkary.pl, stroną Umowy oraz administratorem danych osobowych Użytkowników w zakresie opisanym w § 11 Regulaminu. Pełne dane Usługodawcy są dostępne na stronie Serwisu.
+2. **Usługodawca** – Paweł Klimankowicz, NIP: 5090047389, adres: ul. Kowlaska 5/203, 20-115 Lublin, prowadzący Serwis i będący właścicielem domeny najembezkary.pl, stroną Umowy oraz administratorem danych osobowych Użytkowników w zakresie opisanym w § 11 Regulaminu.
 
 3. **Użytkownik** – każda osoba fizyczna, osoba prawna lub jednostka organizacyjna nieposiadająca osobowości prawnej, której ustawa przyznaje zdolność prawną, korzystająca z Serwisu lub zawierająca Umowę z Usługodawcą.
 
@@ -250,7 +250,7 @@ Użyte w niniejszym Regulaminie określenia oznaczają:
 
 ## **§ 11. Ochrona danych osobowych**
 
-1. Administratorem danych osobowych Użytkowników przetwarzanych w związku z korzystaniem z Serwisu i zawarciem Umowy jest Usługodawca. Pełne dane kontaktowe Administratora dostępne są na stronie Serwisu.
+1. Administratorem danych osobowych Użytkowników przetwarzanych w związku z korzystaniem z Serwisu i zawarciem Umowy jest Usługodawca: Paweł Klimankowicz, NIP: 5090047389, adres: ul. Kowlaska 5/203, 20-115 Lublin.
 
 2. Usługodawca przetwarza dane osobowe Użytkowników zgodnie z przepisami RODO oraz ustawy z dnia 10 maja 2018 r. o ochronie danych osobowych.
 

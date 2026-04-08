@@ -10,11 +10,12 @@ Polityka została sporządzona w związku z obowiązkami wynikającymi z Rozporz
 
 **§ 1. Administrator danych osobowych**
 
-1. Administratorem danych osobowych w rozumieniu art. 4 pkt 7 RODO, tj. podmiotem decydującym o celach i sposobach przetwarzania danych osobowych, jest właściciel serwisu najembezkary.pl (dalej: „Administrator").
+1. Administratorem danych osobowych w rozumieniu art. 4 pkt 7 RODO, tj. podmiotem decydującym o celach i sposobach przetwarzania danych osobowych, jest Paweł Klimankowicz, NIP: 5090047389, adres: ul. Kowlaska 5/203, 20-115 Lublin, właściciel serwisu najembezkary.pl (dalej: „Administrator").
 
 2. Kontakt z Administratorem w sprawach dotyczących ochrony danych osobowych jest możliwy:
    1) za pośrednictwem poczty elektronicznej, pod adresem: kontakt@najembezkary.pl;
-   2) za pośrednictwem formularza kontaktowego dostępnego w Serwisie.
+   2) korespondencyjnie na adres: ul. Kowlaska 5/203, 20-115 Lublin;
+   3) za pośrednictwem formularza kontaktowego dostępnego w Serwisie.
 
 3. Administrator nie wyznaczył Inspektora Ochrony Danych (IOD), gdyż obowiązek taki nie zachodzi w okolicznościach wskazanych w art. 37 ust. 1 RODO. W razie zmiany stanu faktycznego lub prawnego skutkującej powstaniem takiego obowiązku, informacja o powołaniu IOD oraz jego danych kontaktowych zostanie niezwłocznie opublikowana w Serwisie i uwzględniona w Polityce.
 
