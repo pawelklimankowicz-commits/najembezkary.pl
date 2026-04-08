@@ -45,43 +45,48 @@ export default function CountdownTimer() {
 
   if (timeLeft.expired) {
     return (
-      <div className="bg-[#C0392B] rounded-2xl p-5 text-center">
-        <p className="text-white/80 text-xs font-semibold uppercase tracking-widest mb-1">
-          Status obowiazku
+      <div className="countdown-card countdown-card--expired">
+        <p className="countdown-label">Status obowiazku</p>
+        <p className="countdown-expired-title">Obowiazek rejestracji juz aktywny</p>
+        <p className="countdown-expired-subtitle">
+          Termin minąl: 20 maja 2026 — zadbaj o rejestracje jak najszybciej.
         </p>
-        <p className="text-white text-xl font-bold">⚠ Obowiazek rejestracji juz aktywny</p>
-        <p className="text-white/70 text-xs mt-1">Termin: 20 maja 2026 — zarejestruj sie teraz</p>
       </div>
     );
   }
 
   const pad = (n: number) => String(n).padStart(2, "0");
 
-  const units = [
-    { label: "dni", value: timeLeft.days },
-    { label: "godz.", value: timeLeft.hours },
-    { label: "min.", value: timeLeft.minutes },
-    { label: "sek.", value: timeLeft.seconds },
-  ];
-
   return (
-    <div className="bg-[#1A1A1A] rounded-2xl p-5">
-      <p className="text-white/50 text-xs font-semibold uppercase tracking-widest text-center mb-4">
-        Czas do wejscia przepisow
-      </p>
-      <div className="grid grid-cols-4 gap-2">
-        {units.map(({ label, value }) => (
-          <div key={label} className="text-center">
-            <div className="bg-white/10 rounded-xl py-3">
-              <span className="text-[#E8B84B] text-3xl font-mono font-bold tabular-nums">
-                {label === "dni" ? value : pad(value)}
-              </span>
-            </div>
-            <p className="text-white/50 text-xs mt-1.5 uppercase tracking-wider">{label}</p>
+    <div className="countdown-card">
+      <p className="countdown-label">Czas do wejscia przepisow</p>
+      <div className="countdown-grid">
+        <div className="countdown-cell">
+          <div className="countdown-value-wrap">
+            <span className="countdown-value">{timeLeft.days}</span>
           </div>
-        ))}
+          <p className="countdown-unit">Dni</p>
+        </div>
+        <div className="countdown-cell">
+          <div className="countdown-value-wrap">
+            <span className="countdown-value">{pad(timeLeft.hours)}</span>
+          </div>
+          <p className="countdown-unit">Godz.</p>
+        </div>
+        <div className="countdown-cell">
+          <div className="countdown-value-wrap">
+            <span className="countdown-value">{pad(timeLeft.minutes)}</span>
+          </div>
+          <p className="countdown-unit">Min.</p>
+        </div>
+        <div className="countdown-cell">
+          <div className="countdown-value-wrap">
+            <span className="countdown-value">{pad(timeLeft.seconds)}</span>
+          </div>
+          <p className="countdown-unit">Sek.</p>
+        </div>
       </div>
-      <p className="text-white/30 text-xs text-center mt-4">Termin: 20 maja 2026 r.</p>
+      <p className="countdown-footer">Termin: 20 maja 2026 r.</p>
     </div>
   );
 }

@@ -434,45 +434,84 @@ a:hover {
 }
 
 .hero-countdown {
-  background: #1a1a1a;
-  border-radius: 1.75rem;
-  padding: 1.5rem 1.75rem;
-  color: #f9fafb;
+  background: transparent;
 }
 
-.hero-countdown-label {
+.countdown-card {
+  background: #111827;
+  border-radius: 1.5rem;
+  padding: 1.5rem 1.75rem;
+  color: #f9fafb;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.45);
+}
+
+.countdown-card--expired {
+  background: #c0392b;
+}
+
+.countdown-label {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  color: rgba(249, 250, 251, 0.7);
+  color: rgba(249, 250, 251, 0.6);
   margin: 0 0 0.9rem;
-}
-
-.hero-countdown-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.75rem;
-}
-
-.hero-countdown-cell {
   text-align: center;
 }
 
-.hero-countdown-value {
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.countdown-cell {
+  text-align: center;
+}
+
+.countdown-value-wrap {
+  background: rgba(15, 23, 42, 0.8);
+  border-radius: 0.9rem;
+  padding: 0.8rem 0.5rem;
+  border: 1px solid rgba(248, 250, 252, 0.08);
+}
+
+.countdown-value {
   display: block;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
-  font-size: 1.9rem;
+  font-size: 1.8rem;
   font-weight: 800;
+  letter-spacing: 0.02em;
   color: #e8b84b;
 }
 
-.hero-countdown-unit {
+.countdown-unit {
   display: block;
+  margin-top: 0.35rem;
   font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: rgba(249, 250, 251, 0.65);
+  letter-spacing: 0.18em;
+  color: rgba(249, 250, 251, 0.55);
+}
+
+.countdown-footer {
+  margin-top: 1rem;
+  font-size: 0.7rem;
+  text-align: center;
+  color: rgba(249, 250, 251, 0.5);
+}
+
+.countdown-expired-title {
+  margin: 0.25rem 0 0.25rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #f9fafb;
+}
+
+.countdown-expired-subtitle {
+  margin: 0;
+  font-size: 0.8rem;
+  color: rgba(249, 250, 251, 0.78);
 }
 
 .dane-shell {
