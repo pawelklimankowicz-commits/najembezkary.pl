@@ -153,14 +153,23 @@ a:hover {
 }
 
 .legal-back-wrap {
-  margin: 0 0 1rem;
+  position: fixed;
+  top: 4.35rem;
+  left: 0.75rem;
+  margin: 0;
+  z-index: 45;
 }
 
 .legal-back-link {
   display: inline-block;
+  background: #ffffff;
+  border: 1px solid #dbe5f1;
+  border-radius: 0.6rem;
+  padding: 0.38rem 0.62rem;
   color: #0f2747;
   font-weight: 700;
   text-decoration: none;
+  box-shadow: 0 8px 20px rgba(15, 39, 71, 0.08);
 }
 
 .legal-back-link:hover {
@@ -174,7 +183,31 @@ a:hover {
 .legal-regulamin-title {
   white-space: nowrap;
   text-align: center;
-  font-size: clamp(1.1rem, 2.4vw, 1.5rem);
+}
+
+.legal-content {
+  text-align: left;
+}
+
+.legal-line {
+  margin: 0 0 0.45rem;
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+.legal-line-gap {
+  height: 0.55rem;
+}
+
+.legal-paragraph-heading {
+  margin: 0;
+  font-weight: 800;
+  white-space: pre-wrap;
+  text-align: center;
+}
+
+.legal-paragraph-gap {
+  height: 0.75rem;
 }
 
 .btn-primary,

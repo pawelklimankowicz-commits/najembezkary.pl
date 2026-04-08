@@ -14,7 +14,10 @@ export default async function RegulaminPage() {
     .replace(/^# .*\n\n/, "")
     .replace(/^\*\*Ostatnia aktualizacja:.*\*\*\n\n?/m, "")
     .replace(/^---\n?/gm, "")
-    .replace(/^##\s*\*\*(.*?)\*\*\s*$/gm, "$1");
+    .replace(/^##\s*\*\*(.*?)\*\*\s*$/gm, "$1")
+    .replace(/^#+\s*/gm, "")
+    .replace(/\*\*/g, "");
+  const regulaminLines = formattedRegulaminContent.split("\n");
 
   return (
     <main className="page-shell legal legal--regulamin">
@@ -24,8 +27,28 @@ export default async function RegulaminPage() {
         </Link>
       </p>
       <article>
-        <h1 className="page-title legal-regulamin-title">Regulamin serwisu internetowego najembezkary.pl</h1>
-        <pre style={{ whiteSpace: "pre-wrap" }}>{formattedRegulaminContent}</pre>
+        <h1 className="page-title legal-regulamin-title">Regulamin serwisu</h1>
+        <div className="legal-content">
+          {regulaminLines.map((line, idx) => {
+            const key = `reg-${idx}`;
+            const isParagraphHeading = /^§\s*\d+/.test(line.trim());
+
+            if (!line.trim()) {
+              return <div key={key} className="legal-line-gap" aria-hidden="true" />;
+            }
+
+            if (isParagraphHeading) {
+              return (
+                <div key={key}>
+                  <p className="legal-paragraph-heading">{line}</p>
+                  <div className="legal-paragraph-gap" aria-hidden="true" />
+                </div>
+              );
+            }
+
+            return <p className="legal-line">{line}</p>;
+          })}
+        </div>
       </article>
     </main>
   );
