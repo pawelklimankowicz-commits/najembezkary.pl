@@ -167,6 +167,16 @@ a:hover {
   color: #c0392b;
 }
 
+.legal--regulamin pre {
+  text-align: center;
+}
+
+.legal-regulamin-title {
+  white-space: nowrap;
+  text-align: center;
+  font-size: clamp(1.1rem, 2.4vw, 1.5rem);
+}
+
 .btn-primary,
 .btn-secondary {
   display: inline-block;
