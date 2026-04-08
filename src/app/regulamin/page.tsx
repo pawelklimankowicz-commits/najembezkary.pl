@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -12,6 +13,11 @@ export default async function RegulaminPage() {
 
   return (
     <main className="page-shell legal">
+      <p className="legal-back-wrap">
+        <Link href="/" className="legal-back-link">
+          Powrót
+        </Link>
+      </p>
       <article>
         <h1 className="page-title">Regulamin serwisu internetowego najembezkary.pl</h1>
         <pre style={{ whiteSpace: "pre-wrap" }}>{regulaminContent}</pre>
