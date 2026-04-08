@@ -6,8 +6,8 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-4 py-8 pb-12">
         <div className="mt-6 border-t border-slate-100 pt-4" />
       </div>
-      <div className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-between px-3 py-1">
-        <nav className="flex items-center gap-4 text-sm font-medium text-slate-600" aria-label="Nawigacja stopki">
+      <div className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-between gap-4 whitespace-nowrap px-3 py-1">
+        <nav className="flex items-center gap-5 whitespace-nowrap text-sm font-medium text-slate-600" aria-label="Nawigacja stopki">
           <Link
             href="/regulamin"
             className="rounded-md border border-slate-300 bg-white px-2 py-1 transition-colors hover:border-[#C0392B] hover:text-[#C0392B]"
@@ -27,7 +27,7 @@ export default function Footer() {
             Kontakt
           </a>
         </nav>
-        <p className="px-2 py-1 text-[6px] text-slate-500">© {new Date().getFullYear()} najembezkary.pl. All rights reserved.</p>
+        <p className="whitespace-nowrap px-2 py-1 text-[6px] text-slate-500">© {new Date().getFullYear()} najembezkary.pl. All rights reserved.</p>
       </div>
     </footer>
   );
