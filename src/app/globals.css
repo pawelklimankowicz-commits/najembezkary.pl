@@ -780,6 +780,23 @@ body {
   box-shadow: 0 16px 32px rgba(192, 57, 43, 0.34);
 }
 
+/* Match remaining 3 main CTAs to red gradient */
+.hero-cta,
+.dark-band .btn-primary,
+.cta-final .btn-primary {
+  background: linear-gradient(135deg, #c0392b, #a93226) !important;
+  color: #ffffff !important;
+  box-shadow: 0 12px 28px rgba(192, 57, 43, 0.28);
+}
+
+.hero-cta:hover,
+.dark-band .btn-primary:hover,
+.cta-final .btn-primary:hover {
+  background: linear-gradient(135deg, #b43629, #922b21) !important;
+  color: #ffffff !important;
+  box-shadow: 0 16px 32px rgba(192, 57, 43, 0.34);
+}
+
 .btn-primary {
   background: linear-gradient(135deg, #123d73, #0f2747);
   box-shadow: 0 14px 32px rgba(18, 61, 115, 0.25);

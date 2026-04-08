@@ -6,9 +6,8 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="text-center md:text-left">
-            <p className="font-bold text-[#C0392B]">najembezkary.pl</p>
             <p className="text-xs text-gray-400 mt-1">
-              © {new Date().getFullYear()} najembezkary.pl. Wszelkie prawa zastrzeżone.
+              © {new Date().getFullYear()}. Wszelkie prawa zastrzeżone.
             </p>
           </div>
 
@@ -31,10 +30,6 @@ export default function Footer() {
           </div>
         </div>
 
-        <p className="text-xs text-gray-400 text-center mt-6 border-t border-gray-100 pt-4">
-          Serwis ma charakter informacyjny. Nie świadczymy usług prawnych. Dokumenty
-          generowane są automatycznie i wymagają weryfikacji przez użytkownika.
-        </p>
       </div>
     </footer>
   );

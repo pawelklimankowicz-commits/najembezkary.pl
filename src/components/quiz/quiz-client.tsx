@@ -18,6 +18,14 @@ const initial: Omit<QuizState, "requiresRegistration"> = {
   q5: "no_number",
 };
 
+function normalizeText(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
 export function QuizClient() {
   const router = useRouter();
   const [step, setStep] = useState(1);
@@ -39,7 +47,16 @@ export function QuizClient() {
   const suggestions = useMemo(() => {
     const q = form.q2City.trim();
     if (q.length < 2) return [];
-    return fuse.search(q).slice(0, 8).map((r) => r.item);
+    const fuzzy = fuse.search(q).slice(0, 8).map((r) => r.item);
+    if (fuzzy.length > 0) return fuzzy;
+
+    const nq = normalizeText(q);
+    return municipalities
+      .filter((m) => {
+        const hay = `${m.name} ${m.full_name} ${m.voivodeship}`;
+        return normalizeText(hay).includes(nq);
+      })
+      .slice(0, 8);
   }, [form.q2City, fuse]);
 
   function next() {
@@ -65,10 +82,31 @@ export function QuizClient() {
     setSearching(true);
     setSearchError(null);
     try {
-      const res = await fetch(`/api/municipalities/search?q=${encodeURIComponent(q.trim())}`);
+      const rawQuery = q.trim();
+      const res = await fetch(`/api/municipalities/search?q=${encodeURIComponent(rawQuery)}`);
       const json = (await res.json()) as { results?: MunicipalityLite[]; error?: string };
       if (!res.ok) throw new Error(json.error || "Błąd wyszukiwania gmin");
-      setMunicipalities(json.results ?? []);
+
+      let results = json.results ?? [];
+
+      // If API returns nothing for accented input, retry without diacritics.
+      if (results.length === 0) {
+        const fallbackQuery = normalizeText(rawQuery);
+        if (fallbackQuery && fallbackQuery !== rawQuery.toLowerCase()) {
+          const resFallback = await fetch(
+            `/api/municipalities/search?q=${encodeURIComponent(fallbackQuery)}`
+          );
+          const jsonFallback = (await resFallback.json()) as {
+            results?: MunicipalityLite[];
+            error?: string;
+          };
+          if (resFallback.ok) {
+            results = jsonFallback.results ?? [];
+          }
+        }
+      }
+
+      setMunicipalities(results);
     } catch (e) {
       setSearchError(e instanceof Error ? e.message : "Błąd wyszukiwania gmin");
       setMunicipalities([]);
