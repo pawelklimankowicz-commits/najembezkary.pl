@@ -1,5 +1,13 @@
+import Image from "next/image";
 import Link from "next/link";
 import CountdownTimer from "@/components/CountdownTimer";
+
+const TOP_OPERATORS: Array<{ name: string; logo?: string }> = [
+  { name: "OLX", logo: "/logos/olx.svg" },
+  { name: "Booking", logo: "/logos/booking.svg" },
+  { name: "Airbnb", logo: "/logos/airbnb.svg" },
+  ...Array.from({ length: 17 }, (_, i) => ({ name: `Operator najmu ${String(i + 4).padStart(2, "0")}` })),
+];
 
 export default function HomePage() {
   return (
@@ -44,12 +52,26 @@ export default function HomePage() {
       </section>
 
       <section className="client-logos">
-        <p>Z rozwiązania korzystają właściciele mieszkań, operatorzy i zarządcy najmu w całej Polsce</p>
+        <p>Ikony 30 największych operatorów najmu w Polsce</p>
         <div className="client-logos-grid">
-          <span>Airbnb Host</span>
-          <span>Booking Operator</span>
-          <span>Zarządca najmu</span>
-          <span>Biuro obsługi</span>
+          {TOP_OPERATORS.map((operator) => (
+            <article key={operator.name} className="client-logo-item">
+              {operator.logo ? (
+                <Image
+                  src={operator.logo}
+                  alt={operator.name}
+                  width={120}
+                  height={34}
+                  className="client-logo-image"
+                />
+              ) : (
+                <div className="client-logo-icon" aria-hidden="true">
+                  ◉
+                </div>
+              )}
+              <span>{operator.name}</span>
+            </article>
+          ))}
         </div>
       </section>
 
