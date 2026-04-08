@@ -57,6 +57,8 @@ export default function HomePage() {
           </div>
           <p className="hero-subline">
             Już ponad 1000 właścicieli skorzystało z generatora, aby wygenerować gotowy pakiet rejestracyjny.
+            <br />
+            Zaoszczędź swój cenny czas i nerwy.
           </p>
         </div>
       </section>
