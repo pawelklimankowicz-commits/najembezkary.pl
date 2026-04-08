@@ -1,21 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 280" role="img" aria-labelledby="title desc">
   <title id="title">najembezkary.pl logo</title>
-  <desc id="desc">Okrogly znak z granatowym tla i zlota obwodka.</desc>
+  <desc id="desc">Profesjonalny okrągły znak z granatowym tłem i złotą obwódką.</desc>
   <defs>
-    <radialGradient id="bg" cx="30%" cy="25%" r="80%">
-      <stop offset="0%" stop-color="#153f75" />
-      <stop offset="100%" stop-color="#0f2747" />
+    <radialGradient id="bg" cx="34%" cy="24%" r="82%">
+      <stop offset="0%" stop-color="#1a4a85" />
+      <stop offset="100%" stop-color="#102a4d" />
     </radialGradient>
   </defs>
-  <circle cx="140" cy="140" r="132" fill="url(#bg)" stroke="#e8b84b" stroke-width="10" />
-  <circle cx="140" cy="140" r="106" fill="none" stroke="#f3d27c" stroke-width="2.5" opacity="0.9" />
-  <path id="topArc" d="M 48 145 A 92 92 0 0 1 232 145" fill="none" />
-  <text fill="#ffffff" font-size="20" font-family="Arial, sans-serif" font-weight="700" letter-spacing="1.5">
+  <circle cx="140" cy="140" r="132" fill="url(#bg)" stroke="#e8b84b" stroke-width="9" />
+  <circle cx="140" cy="140" r="108" fill="none" stroke="#f6da93" stroke-width="2" opacity="0.92" />
+  <path id="topArc" d="M 46 145 A 94 94 0 0 1 234 145" fill="none" />
+  <text fill="#ffffff" font-size="18" font-family="Arial, sans-serif" font-weight="700" letter-spacing="1.2">
     <textPath href="#topArc" startOffset="50%" text-anchor="middle">NAJEMBEZKARY.PL</textPath>
   </text>
-  <rect x="88" y="92" width="104" height="124" rx="12" fill="#ffffff" stroke="#d1d5db" stroke-width="2.5" />
-  <line x1="104" y1="126" x2="178" y2="126" stroke="#dbe3ef" stroke-width="4" />
-  <line x1="104" y1="142" x2="178" y2="142" stroke="#dbe3ef" stroke-width="4" />
-  <line x1="104" y1="158" x2="166" y2="158" stroke="#dbe3ef" stroke-width="4" />
-  <text x="140" y="154" text-anchor="middle" dominant-baseline="middle" fill="#c0392b" font-size="97" font-weight="700" font-family="Georgia, serif">&#167;</text>
+  <rect x="88" y="92" width="104" height="124" rx="12" fill="#ffffff" stroke="#d3d9e3" stroke-width="2.5" />
+  <line x1="104" y1="126" x2="178" y2="126" stroke="#e0e6ef" stroke-width="4" />
+  <line x1="104" y1="142" x2="178" y2="142" stroke="#e0e6ef" stroke-width="4" />
+  <line x1="104" y1="158" x2="166" y2="158" stroke="#e0e6ef" stroke-width="4" />
+  <text x="140" y="154" text-anchor="middle" dominant-baseline="middle" fill="#c0392b" font-size="78" font-weight="700" font-family="Georgia, serif">&#167;</text>
 </svg>
