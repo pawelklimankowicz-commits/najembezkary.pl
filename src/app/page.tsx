@@ -5,7 +5,7 @@ export default function HomePage() {
   return (
     <main className="landing">
       <section className="hero">
-        <p className="badge">Platforma dokumentow dla najmu krotkoterminowego</p>
+        <p className="badge">Generator dokumentów dla zgłoszenia najmu krotkoterminowego</p>
         <h1>Nowoczesne narzedzie do przygotowania dokumentow rejestracyjnych</h1>
         <div className="hero-content">
           <div className="hero-main-copy">

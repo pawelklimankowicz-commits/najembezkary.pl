@@ -12,7 +12,7 @@ export default function Navbar() {
           <a href="/polityka-prywatnosci">Polityka prywatnosci</a>
         </div>
         <a href="/quiz" className="btn-primary app-nav-cta">
-          Sprawdz obowiazek →
+          Sprawdz obowiazek
         </a>
       </div>
     </nav>
