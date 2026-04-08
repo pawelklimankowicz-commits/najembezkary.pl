@@ -18,12 +18,16 @@ export default function SukcesPage() {
 
   return (
     <main className="page-shell">
+      <div className="success-icon">
+        <span>✓</span>
+      </div>
       <h1 className="page-title">Dziekujemy! Twoje dokumenty sa gotowe.</h1>
       <p className="page-intro">
-        To jest wersja MVP - podlaczymy Stripe, generowanie ZIP i wysylke email w kolejnym kroku.
+        Twoja paczka dokumentow zostala przygotowana. Pobierz plik ZIP i zloz dokumenty we wlasciwym
+        urzedzie gminy.
       </p>
       <p>
-        <Link href="/przygotuj" className="btn-primary">
+        <Link href="/przygotuj" className="btn-success">
           Pobierz pakiet dokumentow (ZIP)
         </Link>
       </p>

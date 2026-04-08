@@ -388,6 +388,145 @@ a:hover {
   margin: 0.5rem auto 0;
 }
 
+.hero-content {
+  margin-top: 1rem;
+  display: grid;
+  gap: 1.75rem;
+}
+
+@media (min-width: 768px) {
+  .hero-content {
+    grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.2fr);
+    align-items: center;
+  }
+}
+
+.hero-warning {
+  display: flex;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  border-radius: 1rem;
+  background: #ffffff;
+  border: 1px solid #fee2e2;
+}
+
+.hero-warning-bar {
+  width: 0.25rem;
+  border-radius: 999px;
+  background: #c0392b;
+}
+
+.hero-warning-title {
+  font-weight: 700;
+  color: #c0392b;
+  margin: 0 0 0.15rem;
+}
+
+.hero-warning-text {
+  margin: 0;
+  color: #555555;
+  font-size: 0.92rem;
+}
+
+.hero-cta {
+  margin-top: 1.25rem;
+  font-size: 1.05rem;
+}
+
+.hero-countdown {
+  background: #1a1a1a;
+  border-radius: 1.75rem;
+  padding: 1.5rem 1.75rem;
+  color: #f9fafb;
+}
+
+.hero-countdown-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(249, 250, 251, 0.7);
+  margin: 0 0 0.9rem;
+}
+
+.hero-countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.hero-countdown-cell {
+  text-align: center;
+}
+
+.hero-countdown-value {
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #e8b84b;
+}
+
+.hero-countdown-unit {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(249, 250, 251, 0.65);
+}
+
+.dane-shell {
+  background: #fdf8f0;
+}
+
+.success-icon {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #16a34a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin: 0 auto 1.25rem;
+  transform: scale(1);
+}
+
+.btn-success {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  background: #27ae60;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding: 0.9rem 1.5rem;
+  border-radius: 0.9rem;
+  border: none;
+  text-decoration: none;
+  box-shadow: 0 10px 25px rgba(39, 174, 96, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-success:hover {
+  background: #219150;
+  transform: translateY(-1px);
+}
+
+.cancel-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 999px;
+  background: #fee2e2;
+  color: #b91c1c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+  margin: 0 auto 1rem;
+}
+
 .municipality-list {
   list-style: none;
   margin: 0.75rem 0 0;

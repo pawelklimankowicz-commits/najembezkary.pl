@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { SiteNav } from "@/components/SiteNav";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 import { SITE_URL } from "@/lib/site";
 
 import "./globals.css";
@@ -20,8 +21,9 @@ export default function RootLayout({
   return (
     <html lang="pl">
       <body>
-        <SiteNav />
-        {children}
+        <Navbar />
+        <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );

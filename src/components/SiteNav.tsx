@@ -12,6 +12,9 @@ export function SiteNav() {
           <Link href="/dane">Dane</Link>
           <Link href="/platnosc">Platnosc</Link>
           <Link href="/regulamin">Regulamin</Link>
+          <Link href="/przygotuj" className="btn-primary">
+            Pobierz dokumenty
+          </Link>
         </div>
       </nav>
     </header>
