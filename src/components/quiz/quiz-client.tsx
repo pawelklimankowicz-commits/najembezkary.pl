@@ -2,7 +2,7 @@
 
 import Fuse from "fuse.js";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   QUIZ_STORAGE_KEY,
@@ -11,6 +11,8 @@ import {
 } from "@/lib/checkout-flow";
 
 const initial: Omit<QuizState, "requiresRegistration"> = {
+  propertyCount: 1,
+  managementAuthorizationFileName: "",
   q1: "platform",
   q2City: "",
   q3: "up_to_4",
@@ -26,14 +28,43 @@ function normalizeText(value: string): string {
     .trim();
 }
 
+const VOIVODESHIP_CITIES = new Set(
+  [
+    "Białystok",
+    "Bydgoszcz",
+    "Gdańsk",
+    "Gorzów Wielkopolski",
+    "Katowice",
+    "Kielce",
+    "Kraków",
+    "Lublin",
+    "Łódź",
+    "Olsztyn",
+    "Opole",
+    "Poznań",
+    "Rzeszów",
+    "Szczecin",
+    "Toruń",
+    "Warszawa",
+    "Wrocław",
+    "Zielona Góra",
+  ].map(normalizeText)
+);
+
 export function QuizClient() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [form, setForm] = useState(initial);
+  const [propertyCountOption, setPropertyCountOption] = useState<"1" | "2" | "3" | "custom">("1");
+  const [propertyCountCustom, setPropertyCountCustom] = useState("");
   const [result, setResult] = useState<QuizState | null>(null);
   const [municipalities, setMunicipalities] = useState<MunicipalityLite[]>([]);
   const [searchError, setSearchError] = useState<string | null>(null);
   const [searching, setSearching] = useState(false);
+  const [authorizationUploadStatus, setAuthorizationUploadStatus] = useState<
+    "idle" | "uploading" | "uploaded" | "error"
+  >("idle");
+  const [authorizationUploadError, setAuthorizationUploadError] = useState<string | null>(null);
 
   const fuse = useMemo(
     () =>
@@ -47,7 +78,7 @@ export function QuizClient() {
   const suggestions = useMemo(() => {
     const q = form.q2City.trim();
     if (q.length < 2) return [];
-    const fuzzy = fuse.search(q).slice(0, 8).map((r) => r.item);
+    const fuzzy = fuse.search(q).slice(0, 20).map((r) => r.item);
     if (fuzzy.length > 0) return fuzzy;
 
     const nq = normalizeText(q);
@@ -56,19 +87,60 @@ export function QuizClient() {
         const hay = `${m.name} ${m.full_name} ${m.voivodeship}`;
         return normalizeText(hay).includes(nq);
       })
-      .slice(0, 8);
+      .slice(0, 20);
   }, [form.q2City, fuse]);
 
+  const isVoivodeshipCity = useMemo(
+    () => VOIVODESHIP_CITIES.has(normalizeText(form.q2City)),
+    [form.q2City]
+  );
+  const requiresAuthorizationUpload = step === 5 && form.q4 === "manager";
+  const canProceedFromCurrentStep =
+    !requiresAuthorizationUpload || authorizationUploadStatus === "uploaded";
+
   function next() {
-    setStep((s) => Math.min(5, s + 1));
+    setStep((s) => Math.min(6, s + 1));
   }
+
+  useEffect(() => {
+    if (step !== 3) return;
+    if (municipalities.length > 0) return;
+    let cancelled = false;
+
+    (async () => {
+      setSearching(true);
+      setSearchError(null);
+      try {
+        const res = await fetch("/api/municipalities/all");
+        const json = (await res.json()) as { results?: MunicipalityLite[]; error?: string };
+        if (!res.ok) throw new Error(json.error || "Błąd pobierania listy gmin");
+        if (!cancelled) {
+          setMunicipalities(json.results ?? []);
+        }
+      } catch (e) {
+        if (!cancelled) {
+          setSearchError(e instanceof Error ? e.message : "Błąd pobierania listy gmin");
+        }
+      } finally {
+        if (!cancelled) setSearching(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [step, municipalities.length]);
   function back() {
     setStep((s) => Math.max(1, s - 1));
   }
 
   function finish() {
     const requiresRegistration = form.q1 !== "long_term" && form.q5 !== "has_number";
+    const customCount = Number(propertyCountCustom);
+    const selectedCount =
+      propertyCountOption === "custom" ? (Number.isFinite(customCount) && customCount > 0 ? customCount : 1) : Number(propertyCountOption);
     const payload: QuizState = { ...form, requiresRegistration };
+    payload.propertyCount = selectedCount;
     setResult(payload);
     sessionStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(payload));
   }
@@ -76,7 +148,9 @@ export function QuizClient() {
   async function searchMunicipalities(q: string) {
     setForm((p) => ({ ...p, q2City: q, q2TerytCode: undefined, municipality: undefined }));
     if (q.trim().length < 2) {
-      setMunicipalities([]);
+      return;
+    }
+    if (municipalities.length > 0) {
       return;
     }
     setSearching(true);
@@ -124,6 +198,36 @@ export function QuizClient() {
     }));
   }
 
+  async function uploadAuthorizationFile(file: File) {
+    setAuthorizationUploadStatus("uploading");
+    setAuthorizationUploadError(null);
+
+    try {
+      const data = new FormData();
+      data.append("file", file);
+      data.append("city", form.q2City || "");
+      data.append("propertyCount", String(form.propertyCount ?? ""));
+
+      const res = await fetch("/api/authorizations/upload", {
+        method: "POST",
+        body: data,
+      });
+      const json = (await res.json().catch(() => ({}))) as { error?: string };
+
+      if (!res.ok) {
+        throw new Error(json.error || "Nie udało się wysłać pliku pełnomocnictwa.");
+      }
+
+      setAuthorizationUploadStatus("uploaded");
+      setForm((p) => ({ ...p, managementAuthorizationFileName: file.name }));
+    } catch (e) {
+      setAuthorizationUploadStatus("error");
+      setAuthorizationUploadError(
+        e instanceof Error ? e.message : "Nie udało się wysłać pliku pełnomocnictwa."
+      );
+    }
+  }
+
   if (result) {
     return (
       <main className="page-shell">
@@ -146,31 +250,131 @@ export function QuizClient() {
 
   return (
     <main className="page-shell">
-      <h1 className="page-title">Krok 1 z 3 - Sprawdź obowiązek</h1>
+      <h1 className="page-title">KROK {step}</h1>
 
       {step === 1 && (
-        <label className="field">
-          <span>Czy wynajmujesz krótkoterminowo poniżej 30 dni?</span>
-          <select
-            value={form.q1}
-            onChange={(e) => setForm((p) => ({ ...p, q1: e.target.value as QuizState["q1"] }))}
-          >
-            <option value="platform">Tak, przez platformy</option>
-            <option value="direct">Tak, bezpośrednio</option>
-            <option value="long_term">Nie, długoterminowo</option>
-          </select>
-        </label>
+        <div className="field">
+          <span>Ile posiadasz lokali?</span>
+          <div className="option-list">
+            <label className="option-item">
+              <input
+                type="radio"
+                name="property-count"
+                checked={propertyCountOption === "1"}
+                onChange={() => {
+                  setPropertyCountOption("1");
+                  setForm((p) => ({ ...p, propertyCount: 1 }));
+                }}
+              />
+              <span>1 lokal</span>
+            </label>
+            <label className="option-item">
+              <input
+                type="radio"
+                name="property-count"
+                checked={propertyCountOption === "2"}
+                onChange={() => {
+                  setPropertyCountOption("2");
+                  setForm((p) => ({ ...p, propertyCount: 2 }));
+                }}
+              />
+              <span>2 lokale</span>
+            </label>
+            <label className="option-item">
+              <input
+                type="radio"
+                name="property-count"
+                checked={propertyCountOption === "3"}
+                onChange={() => {
+                  setPropertyCountOption("3");
+                  setForm((p) => ({ ...p, propertyCount: 3 }));
+                }}
+              />
+              <span>3 lokale</span>
+            </label>
+            <label className="option-item">
+              <input
+                type="radio"
+                name="property-count"
+                checked={propertyCountOption === "custom"}
+                onChange={() => setPropertyCountOption("custom")}
+              />
+              <span>Podaj liczbę</span>
+            </label>
+          </div>
+          {propertyCountOption === "custom" ? (
+            <input
+              type="number"
+              min={1}
+              step={1}
+              value={propertyCountCustom}
+              onChange={(e) => {
+                const raw = e.target.value;
+                setPropertyCountCustom(raw);
+                const n = Number(raw);
+                if (Number.isFinite(n) && n > 0) {
+                  setForm((p) => ({ ...p, propertyCount: n }));
+                }
+              }}
+              placeholder="Podaj liczbę lokali"
+            />
+          ) : null}
+        </div>
       )}
       {step === 2 && (
+        <div className="field">
+          <span>Czy wynajmujesz krótkoterminowo poniżej 30 dni?</span>
+          <div className="option-list">
+            <label className="option-item">
+              <input
+                type="radio"
+                name="rent-type"
+                checked={form.q1 === "platform"}
+                onChange={() => setForm((p) => ({ ...p, q1: "platform" }))}
+              />
+              <span>Tak, przez platformy</span>
+            </label>
+            <label className="option-item">
+              <input
+                type="radio"
+                name="rent-type"
+                checked={form.q1 === "direct"}
+                onChange={() => setForm((p) => ({ ...p, q1: "direct" }))}
+              />
+              <span>Tak, bezpośrednio</span>
+            </label>
+            <label className="option-item">
+              <input
+                type="radio"
+                name="rent-type"
+                checked={form.q1 === "long_term"}
+                onChange={() => setForm((p) => ({ ...p, q1: "long_term" }))}
+              />
+              <span>Nie, długoterminowo</span>
+            </label>
+          </div>
+        </div>
+      )}
+      {step === 3 && (
         <div>
           <label className="field">
           <span>W jakim mieście jest Twój lokal?</span>
             <input
               value={form.q2City}
               onChange={(e) => void searchMunicipalities(e.target.value)}
-              placeholder="Wpisz nazwę gminy, np. Kraków"
+              placeholder="Wpisz nazwę gminy lub dzielnicy, np. Warszawa Ursynów"
             />
           </label>
+          <p className="wizard-hint">
+            Podpowiedzi obejmują gminy w całej Polsce, w tym gminy/dzielnice miast wojewódzkich
+            (np. Warszawa Włochy, Warszawa Ursynów, Kraków, Poznań, Wrocław).
+          </p>
+          {municipalities.length > 0 && municipalities.length < 2400 ? (
+            <p className="wizard-error">
+              Baza gmin jest niepełna ({municipalities.length}). Aby mieć pełną listę 2479 gmin,
+              uruchom seeding danych TERYT do tabeli municipalities.
+            </p>
+          ) : null}
           {searching ? <p className="wizard-hint">Szukam gmin...</p> : null}
           {searchError ? <p className="wizard-error">{searchError}</p> : null}
           {suggestions.length > 0 ? (
@@ -191,46 +395,140 @@ export function QuizClient() {
           {form.q2TerytCode ? (
             <p className="wizard-hint">Wybrano gminę TERYT: {form.q2TerytCode}</p>
           ) : null}
+          {form.q2TerytCode && isVoivodeshipCity ? (
+            <p className="wizard-hint">
+              Reguła dla miast wojewódzkich: właściwe są urzędy gminy (dzielnic). Upewnij się, że
+              wybierasz właściwy urząd dla dzielnicy lokalu.
+            </p>
+          ) : null}
         </div>
       )}
-      {step === 3 && (
-        <label className="field">
-          <span>Ile osób może przebywać jednocześnie?</span>
-          <select
-            value={form.q3}
-            onChange={(e) => setForm((p) => ({ ...p, q3: e.target.value as QuizState["q3"] }))}
-          >
-            <option value="up_to_4">Do 4 osób</option>
-            <option value="5_to_10">5-10 osób</option>
-            <option value="above_10">Powyżej 10 osób</option>
-          </select>
-        </label>
-      )}
       {step === 4 && (
-        <label className="field">
-          <span>Czy jesteś właścicielem lokalu?</span>
-          <select
-            value={form.q4}
-            onChange={(e) => setForm((p) => ({ ...p, q4: e.target.value as QuizState["q4"] }))}
-          >
-            <option value="owner">Tak, jestem właścicielem</option>
-            <option value="subtenant">Podnajemca / zarządca</option>
-            <option value="manager">Zarządzam lokalami innych</option>
-          </select>
-        </label>
+        <div className="field">
+          <span>Ile osób może przebywać jednocześnie?</span>
+          <div className="option-list">
+            <label className="option-item">
+              <input
+                type="radio"
+                name="capacity"
+                checked={form.q3 === "up_to_4"}
+                onChange={() => setForm((p) => ({ ...p, q3: "up_to_4" }))}
+              />
+              <span>Do 4 osób</span>
+            </label>
+            <label className="option-item">
+              <input
+                type="radio"
+                name="capacity"
+                checked={form.q3 === "5_to_10"}
+                onChange={() => setForm((p) => ({ ...p, q3: "5_to_10" }))}
+              />
+              <span>5-10 osób</span>
+            </label>
+            <label className="option-item">
+              <input
+                type="radio"
+                name="capacity"
+                checked={form.q3 === "above_10"}
+                onChange={() => setForm((p) => ({ ...p, q3: "above_10" }))}
+              />
+              <span>Powyżej 10 osób</span>
+            </label>
+          </div>
+        </div>
       )}
       {step === 5 && (
-        <label className="field">
+        <div className="field">
+          <span>Czy jesteś właścicielem lokalu?</span>
+          <div className="option-list">
+            <label className="option-item">
+              <input
+                type="radio"
+                name="owner-type"
+                checked={form.q4 === "owner"}
+                onChange={() => setForm((p) => ({ ...p, q4: "owner" }))}
+              />
+              <span>Tak, jestem właścicielem</span>
+            </label>
+            <label className="option-item">
+              <input
+                type="radio"
+                name="owner-type"
+                checked={form.q4 === "subtenant"}
+                onChange={() => setForm((p) => ({ ...p, q4: "subtenant" }))}
+              />
+              <span>Podnajemca / zarządca</span>
+            </label>
+            <label className="option-item">
+              <input
+                type="radio"
+                name="owner-type"
+                checked={form.q4 === "manager"}
+                onChange={() => setForm((p) => ({ ...p, q4: "manager" }))}
+              />
+              <span>Zarządzam lokalami innych</span>
+            </label>
+          </div>
+          {form.q4 === "manager" ? (
+            <label className="field">
+              <span>Dodaj plik pełnomocnictwa/pełnomocnictw (PDF/JPG/PNG)</span>
+              <input
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  void uploadAuthorizationFile(file);
+                }}
+              />
+              {authorizationUploadStatus === "uploading" ? (
+                <p className="wizard-hint">Wysyłam plik na adres kontakt@najembezkary.pl...</p>
+              ) : null}
+              {authorizationUploadStatus === "uploaded" ? (
+                <p className="wizard-hint">
+                  Plik został automatycznie przesłany: {form.managementAuthorizationFileName}
+                </p>
+              ) : null}
+              {authorizationUploadStatus === "error" && authorizationUploadError ? (
+                <p className="wizard-error">{authorizationUploadError}</p>
+              ) : null}
+            </label>
+          ) : null}
+        </div>
+      )}
+      {step === 6 && (
+        <div className="field">
           <span>Czy lokal ma już numer rejestracyjny?</span>
-          <select
-            value={form.q5}
-            onChange={(e) => setForm((p) => ({ ...p, q5: e.target.value as QuizState["q5"] }))}
-          >
-            <option value="no_number">Nie</option>
-            <option value="unknown">Nie wiem</option>
-            <option value="has_number">Tak, już mam</option>
-          </select>
-        </label>
+          <div className="option-list">
+            <label className="option-item">
+              <input
+                type="radio"
+                name="has-number"
+                checked={form.q5 === "no_number"}
+                onChange={() => setForm((p) => ({ ...p, q5: "no_number" }))}
+              />
+              <span>Nie</span>
+            </label>
+            <label className="option-item">
+              <input
+                type="radio"
+                name="has-number"
+                checked={form.q5 === "unknown"}
+                onChange={() => setForm((p) => ({ ...p, q5: "unknown" }))}
+              />
+              <span>Nie wiem</span>
+            </label>
+            <label className="option-item">
+              <input
+                type="radio"
+                name="has-number"
+                checked={form.q5 === "has_number"}
+                onChange={() => setForm((p) => ({ ...p, q5: "has_number" }))}
+              />
+              <span>Tak, już mam</span>
+            </label>
+          </div>
+        </div>
       )}
 
       <div className="wizard-nav">
@@ -241,8 +539,8 @@ export function QuizClient() {
         ) : (
           <span />
         )}
-        {step < 5 ? (
-          <button className="btn-primary" onClick={next}>
+        {step < 6 ? (
+          <button className="btn-primary" onClick={next} disabled={!canProceedFromCurrentStep}>
             Dalej
           </button>
         ) : (
@@ -251,6 +549,11 @@ export function QuizClient() {
           </button>
         )}
       </div>
+      {requiresAuthorizationUpload && !canProceedFromCurrentStep ? (
+        <p className="wizard-error">
+          Aby przejść dalej, dodaj i prześlij pełnomocnictwo (PDF/JPG/PNG).
+        </p>
+      ) : null}
     </main>
   );
 }

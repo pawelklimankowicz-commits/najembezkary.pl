@@ -244,13 +244,13 @@ a:hover {
 }
 
 .btn-secondary {
-  background: #fdf8f0;
+  background: #ffffff;
   color: #0f2747;
   border: 1px solid #e5e7eb;
 }
 
 .btn-secondary:hover {
-  background: #f3e8da;
+  background: #f8fafc;
   text-decoration: none;
 }
 
@@ -341,11 +341,44 @@ a:hover {
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+.field textarea {
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 6rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
 .field input:focus,
-.field select:focus {
+.field select:focus,
+.field textarea:focus {
   outline: none;
   border-color: #c0392b;
   box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.25);
+}
+
+.option-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.option-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.7rem;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.option-item input {
+  margin: 0;
 }
 
 .check-grid {

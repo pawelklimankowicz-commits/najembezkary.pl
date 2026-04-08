@@ -17,6 +17,8 @@ export type MunicipalityLite = {
 };
 
 export type QuizState = {
+  propertyCount?: number;
+  managementAuthorizationFileName?: string;
   q1: "platform" | "direct" | "long_term";
   q2City: string;
   q2TerytCode?: string;
