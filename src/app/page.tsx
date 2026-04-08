@@ -117,7 +117,7 @@ export default function HomePage() {
       </section>
 
       <section className="landing-section dark-pricing">
-        <h2>Dlaczego 399 zł</h2>
+        <h2>Dlaczego 99 zł</h2>
         <div className="pricing-compare">
           <article className="pricing-card pricing-card--muted">
             <h3>U prawnika</h3>

@@ -19,7 +19,7 @@ export function PaymentSummary() {
 
   return (
     <div className="wizard">
-      <p className="page-intro">Pakiet dokumentów najembezkary.pl - 399,00 zł brutto</p>
+      <p className="page-intro">Pakiet dokumentów najembezkary.pl - 99,00 zł brutto</p>
       <ul>
         <li>Właściciel: {owner?.fullName ?? "-"}</li>
         <li>Lokal: {owner?.propertyAddress ?? "-"}</li>
@@ -31,7 +31,7 @@ export function PaymentSummary() {
           Wróć do danych
         </button>
         <button className="btn-primary" onClick={() => router.push("/sukces")}>
-          Zapłać 399 zł i pobierz dokumenty
+          Zapłać 99 zł i pobierz dokumenty
         </button>
       </div>
     </div>
