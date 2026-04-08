@@ -185,24 +185,31 @@ export function DocumentWizard() {
           typeof crypto !== "undefined" && "randomUUID" in crypto
             ? crypto.randomUUID()
             : String(Date.now());
-        const consentRes = await fetch("/api/log-consent", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            termsAccepted: consents.termsAccepted,
-            digitalContentConsent: consents.digitalContentConsent,
-            analyticsConsent: consents.analyticsConsent,
-            marketingConsent: consents.marketingConsent,
-            email: form.email,
-            sessionId,
-          }),
-        });
-        if (!consentRes.ok) {
-          const j = (await consentRes.json().catch(() => ({}))) as { error?: string };
-          throw new Error(j.error || "Nie mozna zapisac zgod. Sprobuj ponownie.");
+        try {
+          const consentRes = await fetch("/api/log-consent", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              termsAccepted: consents.termsAccepted,
+              digitalContentConsent: consents.digitalContentConsent,
+              analyticsConsent: consents.analyticsConsent,
+              marketingConsent: consents.marketingConsent,
+              email: form.email,
+              sessionId,
+            }),
+          });
+          if (!consentRes.ok) {
+            const j = (await consentRes.json().catch(() => ({}))) as { error?: string };
+            console.warn("[log-consent] pominięto zapis zgody:", j.error || consentRes.status);
+            setConsentId(`local-${Date.now()}`);
+          } else {
+            const j = (await consentRes.json()) as { consentId: string };
+            setConsentId(j.consentId);
+          }
+        } catch (consentError) {
+          console.warn("[log-consent] błąd połączenia, kontynuuję bez zapisu:", consentError);
+          setConsentId(`local-${Date.now()}`);
         }
-        const j = (await consentRes.json()) as { consentId: string };
-        setConsentId(j.consentId);
       }
 
       const res = await fetch("/api/documents", {
@@ -279,6 +286,14 @@ export function DocumentWizard() {
 
   function next() {
     if (!validateStep(step)) return;
+    if (step === STEPS - 1) {
+      if (!consents.termsAccepted || !consents.digitalContentConsent) {
+        setError(
+          "Zaakceptuj Regulamin, Polityke prywatnosci oraz zgode na natychmiastowe wykonanie umowy."
+        );
+        return;
+      }
+    }
     setStep((x) => Math.min(STEPS, x + 1));
   }
 
@@ -623,14 +638,16 @@ export function DocumentWizard() {
       ) : null}
 
       <div className="wizard-nav">
-        {step > 1 ? (
+        {step > 1 && step < STEPS ? (
           <button type="button" className="btn-secondary" onClick={back}>
             Wstecz
           </button>
-        ) : (
+        ) : step === 1 ? (
           <button type="button" className="btn-secondary" onClick={() => router.push("/")}>
             Powrót
           </button>
+        ) : (
+          <span />
         )}
         {step < STEPS ? (
           <button type="button" className="btn-primary" onClick={next}>

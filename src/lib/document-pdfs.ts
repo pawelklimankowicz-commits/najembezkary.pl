@@ -158,8 +158,8 @@ function build2(doc: jsPDF, c: PdfContext): void {
     3
   );
 
-  const b2 = [8.5, 1.18, "left" as const, 1.6] as const;
-  const h2 = { gapBefore: 0.8, gapAfter: 1 } as const;
+  const b2 = [10, 1.35, "left" as const, 3.2] as const;
+  const h2 = { gapBefore: 2, gapAfter: 2.2 } as const;
 
   y = L.writeParagraphFlow(
     doc,
@@ -197,13 +197,13 @@ function build3(doc: jsPDF, c: PdfContext): void {
   L.setMeta(doc, { title: "Regulamin korzystania z lokalu — najem krótkoterminowy" });
   let y = L.PDF.marginY;
   const bodyFs = 10;
-  const headFs = 11;
+  const headFs = 12;
   y = L.writeDocTitle(
     doc,
     ["REGULAMIN KORZYSTANIA Z LOKALU", `Adres obiektu: ${c.propAddr}, ${c.propZip} ${c.propCity}`],
     y,
     headFs,
-    8,
+    10,
     true
   );
 
@@ -214,9 +214,9 @@ function build3(doc: jsPDF, c: PdfContext): void {
     y,
     w(),
     bodyFs,
-    1.5,
-    "center",
-    6.5,
+    1.45,
+    "left",
+    5.5,
     "normal"
   );
 
@@ -292,9 +292,9 @@ function build3(doc: jsPDF, c: PdfContext): void {
       y,
       w(),
       headFs,
-      1.5,
-      "center",
-      6.5,
+      1.35,
+      "left",
+      3.2,
       "bold"
     );
     y = L.writeParagraphFlow(
@@ -304,9 +304,9 @@ function build3(doc: jsPDF, c: PdfContext): void {
       y,
       w(),
       bodyFs,
-      1.5,
-      "center",
-      6.5,
+      1.45,
+      "left",
+      5.5,
       "normal"
     );
   }
@@ -318,9 +318,9 @@ function build3(doc: jsPDF, c: PdfContext): void {
     y,
     w(),
     bodyFs,
-    1.5,
-    "center",
-    6.5,
+    1.45,
+    "left",
+    5.5,
     "normal"
   );
 }
@@ -331,13 +331,13 @@ function build4(doc: jsPDF, c: PdfContext): void {
   L.writeDatePlaceTopRight(doc, c.ownerCity, c.today);
 
   const bodyFs = 10;
-  const headFs = 11;
-  const ce = "center" as const;
-  const wBody = [bodyFs, 1.32, ce, 3.2, "normal" as const] as const;
-  const wHead = [headFs, 1.32, ce, 2.8, "bold" as const] as const;
+  const headFs = 12;
+  const left = "left" as const;
+  const wBody = [bodyFs, 1.4, left, 4.2, "normal" as const] as const;
+  const wHead = [headFs, 1.35, left, 3.2, "bold" as const] as const;
 
   let y = L.PDF.marginY + 11;
-  y = L.writeDocTitle(doc, ["UMOWA NAJMU KRÓTKOTERMINOWEGO"], y, headFs, 5, true);
+  y = L.writeDocTitle(doc, ["UMOWA NAJMU KRÓTKOTERMINOWEGO"], y, headFs, 8, true);
 
   y = L.writeParagraphFlow(
     doc,
@@ -509,9 +509,9 @@ function build5(doc: jsPDF, c: PdfContext): void {
 function build6(doc: jsPDF, c: PdfContext): void {
   L.setMeta(doc, { title: "Instrukcja rejestracji najmu krótkoterminowego" });
   let y = L.PDF.marginY;
-  const instIntro = [10, 1.12, "left" as const, 2.2, "normal" as const] as const;
-  const instStep = [10, 1.12, "left" as const, 2, "normal" as const] as const;
-  const instHead = { gapBefore: 0.45, gapAfter: 0.65 } as const;
+  const instIntro = [10, 1.35, "left" as const, 4.5, "normal" as const] as const;
+  const instStep = [10, 1.35, "left" as const, 4.2, "normal" as const] as const;
+  const instHead = { gapBefore: 2.6, gapAfter: 2.3 } as const;
 
   y = L.writeDocTitle(
     doc,
@@ -575,7 +575,7 @@ function build6(doc: jsPDF, c: PdfContext): void {
 
   for (const s of steps) {
     y = L.ensureSpace(doc, y, 26);
-    y = L.writeSectionHeading(doc, s.n, x(), y, 11, instHead);
+    y = L.writeSectionHeading(doc, s.n, x(), y, 11.5, instHead);
     y = L.writeParagraphFlow(doc, s.t, x(), y, w(), ...instStep);
   }
 
