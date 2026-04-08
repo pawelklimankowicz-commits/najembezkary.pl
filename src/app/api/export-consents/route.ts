@@ -3,12 +3,16 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 const EXPORT_SECRET = process.env.EXPORT_API_SECRET;
+
+function getSupabaseAdmin() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) {
+    throw new Error("Brak NEXT_PUBLIC_SUPABASE_URL lub SUPABASE_SERVICE_ROLE_KEY");
+  }
+  return createClient(url, key, { auth: { persistSession: false } });
+}
 
 function escapeCsv(value: unknown): string {
   if (value === null || value === undefined) return "";
@@ -45,6 +49,7 @@ export async function GET(req: NextRequest): Promise<Response> {
   const dateTo = searchParams.get("date_to");
   const format = searchParams.get("format") ?? "csv";
 
+  const supabase = getSupabaseAdmin();
   let query = supabase
     .from("consents_log")
     .select(
