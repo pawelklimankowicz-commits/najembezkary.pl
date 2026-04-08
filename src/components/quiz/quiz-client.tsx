@@ -88,7 +88,7 @@ export function QuizClient() {
         return normalizeText(hay).includes(nq);
       })
       .slice(0, 20);
-  }, [form.q2City, fuse]);
+  }, [form.q2City, fuse, municipalities]);
 
   const isVoivodeshipCity = useMemo(
     () => VOIVODESHIP_CITIES.has(normalizeText(form.q2City)),
@@ -150,7 +150,8 @@ export function QuizClient() {
     if (q.trim().length < 2) {
       return;
     }
-    if (municipalities.length > 0) {
+    const hasFullMunicipalities = municipalities.length >= 2400;
+    if (hasFullMunicipalities) {
       return;
     }
     setSearching(true);
@@ -212,7 +213,11 @@ export function QuizClient() {
         method: "POST",
         body: data,
       });
-      const json = (await res.json().catch(() => ({}))) as { error?: string };
+      const json = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        warning?: string;
+        sent?: boolean;
+      };
 
       if (!res.ok) {
         throw new Error(json.error || "Nie udało się wysłać pliku pełnomocnictwa.");
@@ -220,6 +225,9 @@ export function QuizClient() {
 
       setAuthorizationUploadStatus("uploaded");
       setForm((p) => ({ ...p, managementAuthorizationFileName: file.name }));
+      if (json.warning) {
+        setAuthorizationUploadError(json.warning);
+      }
     } catch (e) {
       setAuthorizationUploadStatus("error");
       setAuthorizationUploadError(
@@ -365,19 +373,9 @@ export function QuizClient() {
               placeholder="Wpisz nazwę gminy lub dzielnicy, np. Warszawa Ursynów"
             />
           </label>
-          <p className="wizard-hint">
-            Podpowiedzi obejmują gminy w całej Polsce, w tym gminy/dzielnice miast wojewódzkich
-            (np. Warszawa Włochy, Warszawa Ursynów, Kraków, Poznań, Wrocław).
-          </p>
-          {municipalities.length > 0 && municipalities.length < 2400 ? (
-            <p className="wizard-error">
-              Baza gmin jest niepełna ({municipalities.length}). Aby mieć pełną listę 2479 gmin,
-              uruchom seeding danych TERYT do tabeli municipalities.
-            </p>
-          ) : null}
           {searching ? <p className="wizard-hint">Szukam gmin...</p> : null}
           {searchError ? <p className="wizard-error">{searchError}</p> : null}
-          {suggestions.length > 0 ? (
+          {suggestions.length > 0 && !form.q2TerytCode ? (
             <ul className="municipality-list">
               {suggestions.map((m) => (
                 <li key={m.teryt_code}>
@@ -391,9 +389,6 @@ export function QuizClient() {
                 </li>
               ))}
             </ul>
-          ) : null}
-          {form.q2TerytCode ? (
-            <p className="wizard-hint">Wybrano gminę TERYT: {form.q2TerytCode}</p>
           ) : null}
           {form.q2TerytCode && isVoivodeshipCity ? (
             <p className="wizard-hint">
@@ -488,6 +483,9 @@ export function QuizClient() {
                 <p className="wizard-hint">
                   Plik został automatycznie przesłany: {form.managementAuthorizationFileName}
                 </p>
+              ) : null}
+              {authorizationUploadStatus === "uploaded" && authorizationUploadError ? (
+                <p className="wizard-hint">{authorizationUploadError}</p>
               ) : null}
               {authorizationUploadStatus === "error" && authorizationUploadError ? (
                 <p className="wizard-error">{authorizationUploadError}</p>

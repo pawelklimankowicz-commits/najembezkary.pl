@@ -8,13 +8,6 @@ const ALLOWED_MIME_TYPES = new Set(["application/pdf", "image/jpeg", "image/png"
 
 export async function POST(req: NextRequest): Promise<Response> {
   try {
-    if (!process.env.RESEND_API_KEY) {
-      return NextResponse.json(
-        { error: "Brak konfiguracji wysyłki e-mail (RESEND_API_KEY)." },
-        { status: 500 }
-      );
-    }
-
     const formData = await req.formData();
     const file = formData.get("file");
     const city = String(formData.get("city") ?? "").trim();
@@ -38,6 +31,16 @@ export async function POST(req: NextRequest): Promise<Response> {
       );
     }
 
+    // W środowiskach bez konfiguracji Resend nie blokujemy przejścia przez krok.
+    // Plik jest akceptowany, a wysyłka e-mail pomijana.
+    if (!process.env.RESEND_API_KEY) {
+      return NextResponse.json({
+        ok: true,
+        sent: false,
+        warning: "Brak konfiguracji wysyłki e-mail (RESEND_API_KEY).",
+      });
+    }
+
     const resend = new Resend(process.env.RESEND_API_KEY);
     const bytes = new Uint8Array(await file.arrayBuffer());
 
@@ -59,7 +62,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       ],
     });
 
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true, sent: true });
   } catch (e) {
     const message = e instanceof Error ? e.message : "Błąd wysyłki pliku.";
     return NextResponse.json({ error: message }, { status: 500 });

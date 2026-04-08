@@ -1,4 +1,17 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+
+const HIDE_NAV_ON_PATH_PREFIXES = ["/quiz", "/dane", "/przygotuj", "/platnosc"];
+
 export default function Navbar() {
+  const pathname = usePathname();
+  const shouldHideNav = HIDE_NAV_ON_PATH_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+
+  if (shouldHideNav) {
+    return null;
+  }
+
   return (
     <nav className="app-nav">
       <div className="app-nav-inner">

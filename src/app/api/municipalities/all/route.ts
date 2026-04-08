@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { MUNICIPALITIES_FALLBACK } from "@/lib/municipalities-fallback";
+import { getPolandMunicipalitiesFallback } from "@/lib/poland-municipalities";
 import { getSupabaseServerClient } from "@/lib/supabase-server";
 
 export const runtime = "nodejs";
@@ -8,7 +9,10 @@ export const runtime = "nodejs";
 export async function GET(): Promise<Response> {
   try {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      return NextResponse.json({ results: MUNICIPALITIES_FALLBACK });
+      const fullFallback = getPolandMunicipalitiesFallback();
+      return NextResponse.json({
+        results: fullFallback.length > 0 ? fullFallback : MUNICIPALITIES_FALLBACK,
+      });
     }
 
     const supabase = getSupabaseServerClient();
@@ -24,7 +28,14 @@ export async function GET(): Promise<Response> {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json({ results: data ?? [] });
+    const results = (data ?? []) as unknown[];
+    if (results.length === 0) {
+      const fullFallback = getPolandMunicipalitiesFallback();
+      return NextResponse.json({
+        results: fullFallback.length > 0 ? fullFallback : MUNICIPALITIES_FALLBACK,
+      });
+    }
+    return NextResponse.json({ results: results });
   } catch (e) {
     const message = e instanceof Error ? e.message : "Błąd pobierania listy gmin";
     return NextResponse.json({ error: message }, { status: 500 });

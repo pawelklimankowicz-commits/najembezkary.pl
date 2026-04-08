@@ -1,0 +1,885 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pl">
+<head><title>
+	Główny Urząd Statystyczny
+</title><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="ideo - www.ideo.pl" /><meta name="generator" content="edito - www.edito.pl" /><meta name="Description" content="Główny Urząd Statystyczny - Portal Statystyki Publicznej" /><meta name="Robots" content="index, follow" />
+	
+	<script type="text/javascript">var base_href = "szablony/portalinformacyjny/";</script>
+	
+	
+	
+	
+
+	<link href="/eTeryt/gfx/portalinformacyjny/_thumbs/portalinformacyjny__1458044158_llw.css" rel="stylesheet" type="text/css" /><link href="/eTeryt/styles/forAll.css" rel="stylesheet" type="text/css" />
+	
+	
+	<script src="/eTeryt/szablony/portalinformacyjny/scripts/charts/raphael.js" type="text/javascript"></script>
+
+	
+
+	<link rel="shortcut icon" href="/eTeryt/szablony/portalinformacyjny/images/favicons/gus/indeks.ico" type="image/x-icon" /><link id="linkcss" rel="stylesheet" type="text/css" href="/eTeryt/styles/default.css" />
+	
+	<script type="text/javascript" src="/eTeryt/Scripts/jquery-3.1.1.min.js"></script>
+	<link rel="stylesheet" href="/eTeryt/szablony/portalinformacyjny/fonts/font-awesome-4.7.0/css/font-awesome.min.css" />
+	
+	<style type="text/css">
+	   
+	</style>
+	<script type="text/javascript">
+		$(document).ready(function () {
+
+			//Check to see if the window is top if not then display button
+			$(window).scroll(function () {
+				if ($(this).scrollTop() > 100) {
+					$('.scrollToTop').fadeIn();
+				} else {
+					$('.scrollToTop').fadeOut();
+				}
+			});
+
+			//Click event to scroll to top
+			$('.scrollToTop').click(function () {
+				$('html, body').animate({ scrollTop: 0 }, 800);
+				return false;
+			});
+
+		});
+
+	</script>
+
+	
+    
+   
+    <script src="/eTeryt/Scripts/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="/eTeryt/Scripts/SizeFont.js"></script>
+
+<link href="/eTeryt/WebResource.axd?d=vkg0QbTTkIE-rUwVsIBx6b3AIlpAO3HjKHZ5IYVk4NdcjeWMih34l-TUNS1XWMatpXp7z--ElJuRgQp-1cGYkgu0kHKYAXDXzj1VagW8yRJFBLm8qnxDQTA3SuaAiFTvhnd3RsppvVCPWnA22iQnoKh1pE84oSLonyY0UDqoPT41&amp;t=635797253360000000" type="text/css" rel="stylesheet" /><link href="/eTeryt/WebResource.axd?d=ndRGvzyLOBQMB2_KOlGnKJ2-qPQLAVnbCGMYi_ri4nPD3WXHWUIjFNyHYlSHvfvWPZq-XsxFYcwGW5P-XzCS7X_7XD3QKe6ir2k4BIiR47hlDYa_MEurBBob35d2pdhrFlOunCIV8BT9PmQDoo1ky3eS8-AynCjNVbrdKOidde01&amp;t=635797253360000000" type="text/css" rel="stylesheet" /></head>
+<body class="welcome template-1 lang-pl pi">
+	<form method="post" action="./pliki_pelne.aspx" id="form1">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUJNjAxODM3NzIzD2QWAmYPZBYCAgMPZBYCAiEPZBYCAgEPZBYCZg9kFgICCQ8WAh4EaHJlZgV0L2VUZXJ5dC9yZWplc3RyX3Rlcnl0L3Vkb3N0ZXBuaWFuaWVfZGFueWNoL2JhemFfdGVyeXQvdXp5dGtvd25pY3lfaW5keXdpZHVhbG5pL3BvYmllcmFuaWUvcGxpa2lfcGVsbmVfc3RydWt0dXJ5LmFzcHhkZO58Dc5OeriP8/vOyG+NrCS2TERt8c8JA4k290r96wso" />
+
+
+<script type="text/javascript">
+//<![CDATA[
+var __cultureInfo = {"name":"pl-PL","numberFormat":{"CurrencyDecimalDigits":2,"CurrencyDecimalSeparator":",","IsReadOnly":true,"CurrencyGroupSizes":[3],"NumberGroupSizes":[3],"PercentGroupSizes":[3],"CurrencyGroupSeparator":" ","CurrencySymbol":"zł","NaNSymbol":"NaN","CurrencyNegativePattern":8,"NumberNegativePattern":1,"PercentPositivePattern":1,"PercentNegativePattern":1,"NegativeInfinitySymbol":"-∞","NegativeSign":"-","NumberDecimalDigits":2,"NumberDecimalSeparator":",","NumberGroupSeparator":" ","CurrencyPositivePattern":3,"PositiveInfinitySymbol":"∞","PositiveSign":"+","PercentDecimalDigits":2,"PercentDecimalSeparator":",","PercentGroupSeparator":" ","PercentSymbol":"%","PerMilleSymbol":"‰","NativeDigits":["0","1","2","3","4","5","6","7","8","9"],"DigitSubstitution":1},"dateTimeFormat":{"AMDesignator":"AM","Calendar":{"MinSupportedDateTime":"\/Date(-62135596800000)\/","MaxSupportedDateTime":"\/Date(253402297199999)\/","AlgorithmType":1,"CalendarType":1,"Eras":[1],"TwoDigitYearMax":2029,"IsReadOnly":true},"DateSeparator":".","FirstDayOfWeek":1,"CalendarWeekRule":2,"FullDateTimePattern":"dddd, d MMMM yyyy HH:mm:ss","LongDatePattern":"dddd, d MMMM yyyy","LongTimePattern":"HH:mm:ss","MonthDayPattern":"d MMMM","PMDesignator":"PM","RFC1123Pattern":"ddd, dd MMM yyyy HH\u0027:\u0027mm\u0027:\u0027ss \u0027GMT\u0027","ShortDatePattern":"dd.MM.yyyy","ShortTimePattern":"HH:mm","SortableDateTimePattern":"yyyy\u0027-\u0027MM\u0027-\u0027dd\u0027T\u0027HH\u0027:\u0027mm\u0027:\u0027ss","TimeSeparator":":","UniversalSortableDateTimePattern":"yyyy\u0027-\u0027MM\u0027-\u0027dd HH\u0027:\u0027mm\u0027:\u0027ss\u0027Z\u0027","YearMonthPattern":"MMMM yyyy","AbbreviatedDayNames":["niedz.","pon.","wt.","śr.","czw.","pt.","sob."],"ShortestDayNames":["nie","pon","wto","śro","czw","pią","sob"],"DayNames":["niedziela","poniedziałek","wtorek","środa","czwartek","piątek","sobota"],"AbbreviatedMonthNames":["sty","lut","mar","kwi","maj","cze","lip","sie","wrz","paź","lis","gru",""],"MonthNames":["styczeń","luty","marzec","kwiecień","maj","czerwiec","lipiec","sierpień","wrzesień","październik","listopad","grudzień",""],"IsReadOnly":true,"NativeCalendarName":"kalendarz gregoriański","AbbreviatedMonthGenitiveNames":["sty","lut","mar","kwi","maj","cze","lip","sie","wrz","paź","lis","gru",""],"MonthGenitiveNames":["stycznia","lutego","marca","kwietnia","maja","czerwca","lipca","sierpnia","września","października","listopada","grudnia",""]},"eras":[1,"n.e.",null,0]};//]]>
+</script>
+
+<script src="/eTeryt/ScriptResource.axd?d=TpE2GiUCn1evDLKWYDJd9toFd7lbemJfud5K0L1T-_lD1h3wWNWH1bbQgU6gLpOSOZQe_jbCXBc2lVOFTPc0qah4O8q594JW5M_YcaJs2bH-R8mkTxot0vx9BXRmkvkkIdpbiCkPMC_X-ClDvalLvroTZEnMXckqVrUXo95bQH81&amp;t=32e5dfca" type="text/javascript"></script>
+<script src="/eTeryt/ScriptResource.axd?d=VhCAM8mX2PYY780-Pi2F2dp4QF7PXZ7FXD3BiaqVAh419V6jm8jVV3a58OGTIFBiUy7JZLqHVm187nRQ8nXuMcmP1l-elMXShPfJ4-WjSNUFFMVp2DOWp8QGX0e1d1xPc5ov76x6dIqFhMWivONktA2&amp;t=ffffffff8fe80928" type="text/javascript"></script>
+<script src="/eTeryt/ScriptResource.axd?d=B4Ad2EhOoX-9ea_OQ8Wi9RZCSjpkvGTkloCghGRH6Vtdn_mTklskj4IyKVvwwRSjAtNKmuTtFuXuR1NaokaRaciEZmxeP0tGyv5JynXfRZ3VxVXeARNlbQdvlBfAkZZacuYqDryFn_I0R-4tStojpA2&amp;t=ffffffff8fe80928" type="text/javascript"></script>
+<script src="/eTeryt/ScriptResource.axd?d=55QXsOByldOaAX9G3WUN8yjpQ4QiOFJ96VMPJ0xCdFaAaoTs1q3VqABFvD1ks9e9mKaF32eD_9H00VzLNLSTDdaqBQ4wEXlJLtM704QJXib2U8ZUT-8HhbFzKA5FinaE0&amp;t=ffffffff8fe80928" type="text/javascript"></script>
+<script src="/eTeryt/ScriptResource.axd?d=dlT_xNTHid5v_WroE0wpZm4cJ0jSyhF8pkQTJDIrsK9XA1zEncpCoJTUZvltWcE-5MHoZkEKNggfzj1qVpQoHxNbp6XemDLoGr4bRohXEcyWawFopHCs35kew0UkCE920&amp;t=ffffffff8fe80928" type="text/javascript"></script>
+<script src="/eTeryt/ScriptResource.axd?d=Yhl9E4RoiVZFgmjI4X_SDRvWKeaKEydvZRP3K6-CyFX4DWdUc4Auio5dmBwuWPSQpDBp2mlYXBWlWeB9SJYGk1FykgijaeaoH7-o1IFQDw-hiIw643vmAhRr6BSW1rKc0&amp;t=ffffffff8fe80928" type="text/javascript"></script>
+<script src="/eTeryt/ScriptResource.axd?d=ZKmDW8MD_cdQwU9Ni_AY85mtaizCY9qTbO7zGi8A7xB_LV5gfAroRBPo4mYBBDMv44iauG3zcu_FhzqbOXJhUtOQyIabYJwPRTAqsqocyp7ZWQFX7uIKyAufhdhBFqay0&amp;t=ffffffff8fe80928" type="text/javascript"></script>
+<script src="/eTeryt/ScriptResource.axd?d=dst1tvR4oR97uI9_V7ZMVGbeLHEc71hcbeYRf9nuuenkzbtfOsr-0JqCnRlEssaZeOWroiqPikJ4RD3UpaxoYllDFmp3WYoWO5ZRXKZW3NsPX3-8mrNvYLif4FKUjxE8eZtu30bUqczy0-or9Ro7Vw2&amp;t=ffffffff8fe80928" type="text/javascript"></script>
+<script src="/eTeryt/ScriptResource.axd?d=ibI03LKbYgEbw3u7Ft8fFtitvaT9p6uRcT9jhPSkMXwGMwoeOjnaQSlaHEJ4O96UZSA3EvERC42Q8LOwtaROrrP5hsNRd5BB-M7YFD8hG8p-YbfKpW--AqnaZJY4NiZZ0&amp;t=ffffffff8fe80928" type="text/javascript"></script>
+<script src="/eTeryt/ScriptResource.axd?d=JSl20KObqiazPf_cIK06v88AFJajhJV1ssN3YkVSkLer4hytYunOAOKoo7dX1PAXgLC3-Y5PusYhAs-dskhM9UX-2ujSwcL-Fj6mIsjNBm8Mly98e8YAvuNybyEN--hk0&amp;t=ffffffff8fe80928" type="text/javascript"></script>
+<script src="/eTeryt/ScriptResource.axd?d=-LfPYfx8ELACl3UA4AZ5iBWPXZUyx7sILSPt1iIryFdfJDKFp8fC8ICJj94ZdwIufR4BAt5cbQLGjGouIs-BPUnuHwAEu4zFCfkg4dlpIb24e7aDmIHHspauMAXQRsPX0&amp;t=ffffffff8fe80928" type="text/javascript"></script>
+<script src="/eTeryt/ScriptResource.axd?d=C2UzEBAS4yvuNqhf6lO5uuZHCo05Z8FqxtsCwad8M6Y9OruXc5akIHsx1FFBRJ9wItjsWuUccM_n56bEB0UZPKwgWkpaUZ36RTupc2Di3HFV_81JUg7aw7e3sYkhcgdGLNeNni-WFz3ufPrRpmj3Ug2&amp;t=ffffffff8fe80928" type="text/javascript"></script>
+<script src="/eTeryt/ScriptResource.axd?d=ug3C7lY7V8VxfOvLJREwHJX3TdIcGy-ZHTq_iUFiiNJcfheyLverYgkHkZdqs2gN9UpONY_pSAMeBMyydEak07IwHCthFxcUooyy2SbRjfpuGPBp97wr_lvVpPccZD-Q0&amp;t=ffffffff8fe80928" type="text/javascript"></script>
+<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="8C427999" />
+		<div class="row color-line">
+			<div class="color-13"></div>
+			<div class="color-10"></div>
+			<div class="color-11"></div>
+			<div class="color-12"></div>
+			<div class="color-14"></div>
+			<div class="color-13"></div>
+			<div class="color-10"></div>
+			<div class="color-11"></div>
+			<div class="color-12"></div>
+			<div class="color-14"></div>
+			<div class="color-13"></div>
+			<div class="color-10"></div>
+		</div>
+		<header class="row">
+			<div class="row collapse gray-box">
+				<div class="six columns horizontal-menu">
+					<div>
+						<ul class="menu-top-left left">
+							<li>
+								<a href="http://stat.gov.pl" class="alogo">
+									<img id="imgLogo" width="304" height="100" alt="Logo Główny Urząd Statystyczny" />
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div style="float: right;">
+						<ul class="menu-top-left left">
+							<li>
+								<a href="../../../../../?contrast=default" id="a_menu_contrast_default" class="has-tip active contrast-default" title="Kontrast domyślny">Kontrast domyślny	</a>
+							</li>
+							<li>
+								<a href="../../../../../?contrast=black-white" id="a_menu_contrast_black_white" class="has-tip contrast-black-white" title="Kontrast czarno-biały">Kontrast czarno-biały	</a>
+							</li>
+							<li>
+								<a href="../../../../../?contrast=black-yellow" id="a_menu_contrast_black_yellow" class="has-tip contrast-black-yellow" title="Kontrast czarno-żółty">Kontrast czarno-żółty	</a>
+							</li>
+							<li>
+								<a href="../../../../../?contrast=yellow-black" id="a_menu_contrast_yellow_black" class="has-tip contrast-yellow-black" title="Kontrast żółto-czarny">Kontrast żółto-czarny	</a>
+							</li>
+						</ul>
+
+						<ul class="menu-top-left left disable-650 menu-top-bip ">
+
+							<li>
+								<a href="http://bip.stat.gov.pl" title="BIP" class="pos-1" style="">
+									<span class="icon " style=""></span>
+									<span class="disabled-790 menu-label ml-5">BIP</span>
+								</a></li>
+							
+							<li>
+								<a href="/eTeryt/Kontakt.aspx" id="a_kontakt" title="Kontakt" class="pos-3" style="">
+									<i class="fa fa-envelope-o icon-color-grey" aria-hidden="true"></i>
+
+									
+									<span class="disabled-790 menu-label ml-5">Kontakt</span>
+								</a>
+							</li>
+							<li class="hide-label mapa-serwisu ">
+								<a id="a_mapa" class="pos-4" title="Mapa serwisu" style="padding-top: 14px;">
+									
+									<i class="fa fa-sitemap icon-color-grey" aria-hidden="true" style="font-size: 20px;"></i>
+
+
+								</a>
+							</li>
+							<li>
+								<a id="a_english" class="en" title="Basic information about TERYT">English</a>
+								<a id="a_polski" class="en" title="Informacje podstawowe">Polski</a>
+							</li>
+						</ul>
+					</div>
+					
+					
+				</div>
+
+			</div>
+			<div class="row collapse ">
+
+
+				
+
+				<div class="ten horizontal-menu" id="menu-squares">
+					<div class="block js-tab active-menu">
+						
+						<table style="width: 100%; padding-bottom: 20px;">
+							<tr style="width: 100%;">
+								
+								<td style="width: 100%;">
+									
+									
+									<ul class="menu">
+										<li class="menu-poz-1  przegladanie first">
+											<a href="../przegladanie/przegladanie.aspx" id="a_fastAccessView" title="Przeglądanie" style="background: #42a18d;">
+												<span class="icon">
+													<span class="icon-bg">
+														<span class="teryt_V darkblue"></span>
+														<span class="teryt_V color" style="color: #dddddd;"></span>
+														
+													</span>
+												</span>
+												<span class="menu-label szybki_dostep_kolor">
+													<span>Przeglądanie</span>
+												</span>
+											</a>
+										</li>
+
+										<li class="menu-poz-2  wyszukiwanie ">
+											<a href="../wyszukiwanie/wyszukiwanie.aspx" id="a_fastAccessSearch" title="Wyszukiwanie" style="background: #2c9cc4;">
+												<span class="icon">
+													<span class="icon-bg">
+														<span class="teryt_S white"></span>
+														<span class="teryt_S color" style="color: #CCCCCC;"></span>
+														
+													</span>
+												</span>
+												<span class="menu-label szybki_dostep_kolor">
+													<span>Wyszukiwanie</span>
+												</span>
+											</a>
+										</li>
+
+										<li class="menu-poz-3  pobieranie">
+											<a href="pliki_pelne.aspx" id="a_fastAccessFileFull" title="Pobieranie danych" style="background: #2e7aac;">
+												<span class="icon">
+													<span class="icon-bg">
+														<span class="teryt_D white"></span>
+														<span class="teryt_D color" style="color: #dddddd;"></span>
+														
+													</span>
+												</span>
+												<span class="menu-label szybki_dostep_kolor">
+													<span>Pobieranie</span>
+												</span>
+											</a>
+										</li>
+
+										<li class="menu-poz-4  usługa_sieciowa last">
+											<a href="https://api.stat.gov.pl/Home/TerytApi" title="Usługa sieciowa - interfejsy API" style="background: #4a6e84;">
+												<span class="icon">
+													<span class="icon-bg">
+														<span class="teryt_A white"></span>
+														<span class="teryt_A color" style="color: #CCCCCC;"></span>
+														
+													</span>
+												</span>
+												<span class="menu-label szybki_dostep_kolor">
+													<span>Usługa sieciowa</span>
+												</span>
+											</a>
+										</li>
+
+
+
+
+									</ul>
+									
+									<a href="/eTeryt/rejestr_teryt/aktualnosci/aktualnosc.aspx" id="A6" title="Strona startowa rejestru TERYT" style="background-color: transparent !important">
+										<img src="/eTeryt/images/tloRejestrTerytArial.png" id="imgLog" class="logo" alt="Logo Rejestru TERYT" style="margin-top: 0px; padding-top: 0px;" />
+
+
+									</a>
+
+
+								</td>
+							</tr>
+						</table>
+						
+					</div>
+
+
+
+				</div>
+
+
+			</div>
+			
+		</header>
+
+
+
+		<section class="row  hidden-zone-15 hidden-zone-16 hidden-zone-30 hidden-zone-31 hidden-zone-32 hidden-zone-33" id="content-href">
+			<div class="row collapse">
+				<div class="two columns right-padding aside">
+					<div class="columns welcome-aside-1 aside-box">
+						<div class="block js-tab active-menu">
+							<ul class="menu">
+								<li class="banki-i-bazy-danych first">
+									<a href="../../../../aktualnosci/aktualnosci.aspx" id="a_rejestr_teryt" title="Rejestr TERYT" style="">Rejestr TERYT</a>
+									<ul id="ul_rejestr_teryt">
+										<li class="bank-danych-lokalnych first">
+											<a href="../../../../aktualnosci/aktualnosci.aspx" id="a_aktualnosci" title="Aktualności" style="">Aktualności</a>
+										</li>
+										<li class="handel-zagraniczny">
+											<a href="../../../../informacje_podstawowe/informacje_podstawowe.aspx" id="a_informacje_podstawowe" title="Informacje podstawowe" style="">Informacje podstawowe</a>
+										</li>
+										<li class="platforma-analityczna-swaid-dziedzinowe-bazy-wiedzy">
+											<a href="../../../../ogolna_charakterystyka_systemow_rejestru/ogolna_charakterystyka_systemow_rejestru.aspx" id="a_ogolna_charakterystyka_systemow_rejestru" title="Ogólna charakterystyka systemów rejestru" style="">Ogólna charakterystyka systemów rejestru</a>
+										</li>
+										<li class="platforma-analityczna-swaid-dziedzinowe-bazy-wiedzy">
+											<a href="../../../udostepnianie_danych.aspx" id="a_udostepnianie_danych" title="Udostępnianie danych" style="">Udostępnianie danych</a>
+											<ul id="ul_rejestr_teryt_udostepnianie_danych" style="display: none;">
+												<li class="">
+													<a href="/eTeryt/rejestr_teryt/udostepnianie_danych/formy_i_zasady_udostepniania/formy_i_zasady_udostepniania.aspx" id="a_formy_i_zasady_udostepniania" title="Formy i zasady udostępniania" style="">Formy i zasady udostępniania</a>
+												</li>
+												<li class="">
+													<a href="/eTeryt/rejestr_teryt/udostepnianie_danych/zasady_implementacji_slownikow/zasady_implementacji_slownikow.aspx" id="a_zasady_implementacji_slownikow" title="Zasady implementacji słowników" style="">Zasady implementacji słowników</a>
+												</li>
+												<li class="">
+													<a href="/eTeryt/rejestr_teryt/udostepnianie_danych/baza_teryt/baza_teryt.aspx" id="a_baza_teryt" title="Baza TERYT" style="">Baza TERYT</a>
+													<ul id="ul_rejestr_teryt_udostepnianie_danych_baza_teryt" style="display: none;">
+														<li class="">
+															<a href="/eTeryt/rejestr_teryt/udostepnianie_danych/baza_teryt/uzytkownicy_indywidualni/uzytkownicy_indywidualni.aspx" id="a_uzytkownicy_indywidualni" title="Dla użytkowników indywidualnych" style="">Dla użytkowników indywidualnych</a>
+															<ul id="ul_rejestr_teryt_udostepnianie_danych_baza_teryt_uzytkownicy_indywidualnni" style="display: none;">
+																<li class="">
+																	<a href="../przegladanie/przegladanie.aspx" id="a_przegladanie" title="Przeglądanie" style="">Przeglądanie</a>
+																</li>
+																<li class="">
+																	<a href="../wyszukiwanie/wyszukiwanie.aspx" id="a_wyszukiwanie" title="Wyszukiwanie" style="">Wyszukiwanie</a>
+
+
+																</li>
+
+																<li class="">
+																	<a href="/eTeryt/rejestr_teryt/udostepnianie_danych/baza_teryt/uzytkownicy_indywidualni/pobieranie/pobieranie.aspx" id="a_pobieranie" title="Pobieranie" style="">Pobieranie</a>
+
+																	<ul id="ul_rejestr_teryt_udostepnianie_danych_baza_teryt_uzytkownicy_indywidulani_pobieranie" style="display: none;">
+																		<li class="">
+																			<a href="pliki_pelne.aspx" id="a_pliki_pelne" title="Pliki pełne" style="">Pliki pełne</a>
+																		</li>
+																		<li class="">
+																			<a href="pliki_aktualizacyjne.aspx" id="a_pliki_aktualizacyjne" title="Pliki aktualizacyjne" style="">Pliki aktualizacyjne</a>
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+
+
+
+														</li>
+														<li class="">
+															<a href="https://api.stat.gov.pl/Home/TerytApi" title="Usługa sieciowa - interfejsy API" style="display: block;">Usługa sieciowa - interfejsy API</a>
+															
+														</li>
+														<li class="">
+															<a href="/eTeryt/rejestr_teryt/udostepnianie_danych/baza_teryt/raporty/raporty.aspx" id="a_raporty" title="Raporty" style="">Raporty</a>
+														</li>
+													</ul>
+												</li>
+											</ul>
+
+										</li>
+									</ul>
+								</li>
+
+							</ul>
+						</div>
+						<div>
+							<a href="#" class="scrollToTop">Do góry
+								<span class="arrow-up-ico"></span>
+							</a>
+
+						</div>
+					</div>
+				</div>
+				<div class="eight columns right-padding aside">
+					
+    
+
+ 
+
+    <script type="text/javascript">
+
+        //Sys.WebForms.PageRequestManager.getInstance().add_endRequest(EndRequestHandler);
+
+        //function EndRequestHandler(sender, args) {
+        //    if (args.get_error() != undefined) {
+        //        args.set_errorHandled(true); location.reload(true);
+        //    }
+        //}
+        //var updateProgress = null;
+
+        //function postbackButtonClick() {
+        //    updateProgress = $find("body_UpdateProgress1");
+        //    window.setTimeout("updateProgress.set_visible(true)", updateProgress.get_displayAfter());
+        //    return true;
+        //}
+    </script>
+
+    <div class="module">
+        <div class="header-block">
+            <h2 class="title">Pliki pełne</h2>
+            <span class="header-button-box jq-auto-height" style="height: 51px; padding-top: 12.5px;">
+                <a id="a1" class="small-font" href="#">A</a>
+                <a id="a2" class="default-font" href="#">A</a>
+                <a id="a3" class="big-font" href="#">A</a>
+            </span>
+        </div>
+    </div>
+    <div class="gray-box block-content">
+        <div class="desc-module">
+            <div id="artykul">
+                
+                <div id="body_UpdatePanel1">
+	
+
+                        <div style="width: 100%; padding-left: 20px; padding-top: 20px;">
+
+                            <div style="float: left; padding-top: 5px; padding-right: 10px;">
+                                Stan danych:
+                            </div>
+                            <div style="float: left; text-align: center;">
+                                <input name="ctl00$body$TBData" type="text" id="body_TBData" style="text-align: center;" />
+                            </div>
+
+                            
+                            <div style="float: left; padding-top: 5px; padding-left: 10px;">
+                                <i id="Image1" class="fa fa-calendar icon-color-grey" aria-hidden="true" style="cursor: pointer; font-size: 20px;"></i>
+
+                                
+                                
+                            </div>
+                            <div style="float: left; padding-left: 20px; padding-top: 8px;">
+                                <span id="body_LErrorBlad" class="error_show"></span>
+
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div style="width: 95%; text-align: center; color: red;">
+
+                            <span id="body_LError"></span>
+
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="width: 100%; margin: auto; padding: 10px;">
+                                <a href="/eTeryt/rejestr_teryt/udostepnianie_danych/baza_teryt/uzytkownicy_indywidualni/pobieranie/pliki_pelne_struktury.aspx" id="body_aPliki_pelne_struktury" target="_blank"><strong>Struktury plików</strong></a>  
+                              
+                            </div>
+                        </div>
+                        <div style="width: 95%; clear: both;">
+                            <table id="tablica-pobran" style="border-collapse: collapse; width: 65%; margin: auto;">
+
+                                <tr style="font-weight: bold; font-size: 14px;">
+                                    <td colspan="2" class="tab_tyt">Wersje danych:</td>
+                                    <td class="tab_tyt" style="width: 100px">podstawowa</td>
+                                    <td class="tab_tyt" style="width: 100px">adresowa</td>
+                                    <td class="tab_tyt" style="width: 100px">statystyczna</td>
+
+                                </tr>
+
+                                
+                                <tr>
+                                    <td rowspan="5" colspan="1" class="tab_tyt" style="font-weight: bold; font-size: 14px;">Dane:</td>
+                                    <td title="Jednostki podziału terytorialnego" class="tab_tyt_right">TERC</td>
+                                    <td class="tab_element_pob">
+                                        <a id="body_BTERCUrzedowyGeneruj" title="Generuj" class="tab_element_pob_a_generuj" style="padding: 10px;" href="javascript:__doPostBack(&#39;ctl00$body$BTERCUrzedowyGeneruj&#39;,&#39;&#39;)">
+                                            <span class="pobieranie_ikony">
+                                                <span class="pobieranie_ikony_bg">
+                                                    <span class="teryt_Z"></span>
+                                                    
+                                                </span>
+                                            </span>
+
+                                            <span class="pobieranie_etykieta_generuj">Generuj</span>
+
+                                        </a>
+                                        <a id="body_BTERCUrzedowyPobierz" title="Pobierz" class="tab_element_pob_a_pobierz" style="padding: 10px;" href="javascript:__doPostBack(&#39;ctl00$body$BTERCUrzedowyPobierz&#39;,&#39;&#39;)">
+                                            <span class="pobieranie_ikony">
+                                                <span class="pobieranie_ikony_bg">
+                                                    <span class="teryt_P"></span>
+                                                </span>
+                                            </span>
+
+                                            <span class="pobieranie_etykieta_pobierz">Pobierz</span>
+
+                                        </a>
+                                        <img src="/eTeryt/images/brak.png" id="body_ITERCUrzedowyNieDotyczy" title="" />
+                                    </td>
+                                    <td class="tab_element_pob">
+
+                                        <a id="body_BTERCAdresowyGeneruj" title="Generuj" class="tab_element_pob_a_generuj" style="padding: 10px;" href="javascript:__doPostBack(&#39;ctl00$body$BTERCAdresowyGeneruj&#39;,&#39;&#39;)">
+                                            <span class="pobieranie_ikony">
+                                                <span class="pobieranie_ikony_bg">
+                                                    <span class="teryt_Z"></span>
+                                                </span>
+                                            </span>
+
+                                            <span class="pobieranie_etykieta_generuj">Generuj</span>
+
+                                        </a>
+                                        <a id="body_BTERCAdresowyPobierz" title="Pobierz" class="tab_element_pob_a_pobierz" style="padding: 10px;" href="javascript:__doPostBack(&#39;ctl00$body$BTERCAdresowyPobierz&#39;,&#39;&#39;)">
+                                            <span class="pobieranie_ikony">
+                                                <span class="pobieranie_ikony_bg">
+                                                    <span class="teryt_P"></span>
+                                                </span>
+                                            </span>
+
+                                            <span class="pobieranie_etykieta_pobierz">Pobierz</span>
+
+                                        </a>
+                                        <img src="/eTeryt/images/brak.png" id="body_ITERCAdresowyNieDotyczy" />
+                                    </td>
+
+                                    <td class="tab_element" style="background-color: #ffffff">
+                                        <img src="/eTeryt/images/brak.png" title="nie dotyczy" />
+                                    </td>
+
+
+                                    
+                                </tr>
+                                
+                                <tr>
+                                    <td title="Miejscowości" rowspan="1" colspan="1" class="tab_tyt_right">SIMC</td>
+                                    <td class="tab_element_pob">
+                                        <a id="body_BSIMCUrzedowyGeneruj" title="Generuj" class="tab_element_pob_a_generuj" style="padding: 10px;" href="javascript:__doPostBack(&#39;ctl00$body$BSIMCUrzedowyGeneruj&#39;,&#39;&#39;)">
+
+                                            <span class="pobieranie_ikony">
+                                                <span class="pobieranie_ikony_bg">
+                                                    <span class="teryt_Z"></span>
+                                                </span>
+                                            </span>
+
+                                            <span class="pobieranie_etykieta_generuj">Generuj</span>
+
+                                        </a>
+                                        <a id="body_BSIMCUrzedowyPobierz" title="Pobierz" class="tab_element_pob_a_pobierz" style="padding: 10px;" href="javascript:__doPostBack(&#39;ctl00$body$BSIMCUrzedowyPobierz&#39;,&#39;&#39;)">
+                                            <span class="pobieranie_ikony">
+                                                <span class="pobieranie_ikony_bg">
+                                                    <span class="teryt_P"></span>
+                                                </span>
+                                            </span>
+
+                                            <span class="pobieranie_etykieta_pobierz">Pobierz</span>
+
+                                        </a>
+                                        <img src="/eTeryt/images/brak.png" id="body_ISIMCUrzedowyNieDotyczy" title="" />
+                                    </td>
+                                    <td class="tab_element_pob">
+                                        <a id="body_BSIMCAdresowyGeneruj" title="Generuj" class="tab_element_pob_a_generuj" style="padding: 10px;" href="javascript:__doPostBack(&#39;ctl00$body$BSIMCAdresowyGeneruj&#39;,&#39;&#39;)">
+                                            <span class="pobieranie_ikony">
+                                                <span class="pobieranie_ikony_bg">
+                                                    <span class="teryt_Z"></span>
+                                                </span>
+                                            </span>
+                                            <span class="pobieranie_etykieta_generuj">Generuj</span>
+                                        </a>
+                                        <a id="body_BSIMCAdresowyPobierz" title="Pobierz" class="tab_element_pob_a_pobierz" style="padding: 10px;" href="javascript:__doPostBack(&#39;ctl00$body$BSIMCAdresowyPobierz&#39;,&#39;&#39;)">
+                                            <span class="pobieranie_ikony">
+                                                <span class="pobieranie_ikony_bg">
+                                                    <span class="teryt_P"></span>
+                                                </span>
+                                            </span>
+                                            <span class="pobieranie_etykieta_pobierz">Pobierz</span>
+                                        </a>
+                                        <img src="/eTeryt/images/brak.png" id="body_ISIMCAdresowyNieDotyczy" title="" />
+                                    </td>
+
+                                    <td class="tab_element_pob">
+                                        <a id="body_BSIMCStatystycznyGeneruj" title="Generuj" class="tab_element_pob_a_generuj" style="padding: 10px;" href="javascript:__doPostBack(&#39;ctl00$body$BSIMCStatystycznyGeneruj&#39;,&#39;&#39;)">
+                                            <span class="pobieranie_ikony">
+                                                <span class="pobieranie_ikony_bg">
+                                                    <span class="teryt_Z"></span>
+                                                </span>
+                                            </span>
+
+                                            <span class="pobieranie_etykieta_generuj">Generuj</span>
+
+                                        </a>
+                                        <a id="body_BSIMCStatystycznyPobierz" title="Pobierz" class="tab_element_pob_a_pobierz" style="padding: 10px;" href="javascript:__doPostBack(&#39;ctl00$body$BSIMCStatystycznyPobierz&#39;,&#39;&#39;)">
+                                            <span class="pobieranie_ikony">
+                                                <span class="pobieranie_ikony_bg">
+                                                    <span class="teryt_P"></span>
+                                                </span>
+                                            </span>
+
+                                            <span class="pobieranie_etykieta_pobierz">Pobierz</span>
+
+                                        </a>
+                                        <img src="/eTeryt/images/brak.png" id="body_ISIMCStatystycznyNieDotyczy" title="" style="padding: 10px;" />
+                                    </td>
+                                </tr>
+
+                                
+                                <tr>
+                                    <td title="Ulice" rowspan="1" colspan="1" class="tab_tyt_right">ULIC</td>
+                                    <td class="tab_element_pob">
+                                        <a id="body_BULICUrzedowyGeneruj" title="Generuj" class="tab_element_pob_a_generuj" style="padding: 10px;" href="javascript:__doPostBack(&#39;ctl00$body$BULICUrzedowyGeneruj&#39;,&#39;&#39;)">
+
+                                            <span class="pobieranie_ikony">
+                                                <span class="pobieranie_ikony_bg">
+                                                    <span class="teryt_Z"></span>
+                                                </span>
+                                            </span>
+
+                                            <span class="pobieranie_etykieta_generuj">Generuj</span>
+                                            </span>
+                                        </a>
+                                        <a id="body_BULICUrzedowyPobierz" title="Pobierz" class="tab_element_pob_a_pobierz" style="padding: 10px;" href="javascript:__doPostBack(&#39;ctl00$body$BULICUrzedowyPobierz&#39;,&#39;&#39;)">
+                                            <span class="pobieranie_ikony">
+                                                <span class="pobieranie_ikony_bg">
+                                                    <span class="teryt_P"></span>
+                                                </span>
+                                            </span>
+
+                                            <span class="pobieranie_etykieta_pobierz">Pobierz</span>
+
+                                        </a>
+                                        <img src="/eTeryt/images/brak.png" id="body_IULICUrzedowyNieDotyczy" title="" />
+                                    </td>
+                                    <td class="tab_element_pob">
+
+                                        <a id="body_BULICAdresowyGeneruj" title="Generuj" class="tab_element_pob_a_generuj" style="padding: 10px;" href="javascript:__doPostBack(&#39;ctl00$body$BULICAdresowyGeneruj&#39;,&#39;&#39;)">
+                                            <span class="pobieranie_ikony">
+                                                <span class="pobieranie_ikony_bg">
+                                                    <span class="teryt_Z"></span>
+                                                </span>
+                                            </span>
+
+                                            <span class="pobieranie_etykieta_generuj">Generuj</span>
+
+                                        </a>
+                                        <a id="body_BULICAdresowyPobierz" title="Pobierz" class="tab_element_pob_a_pobierz" style="padding: 10px;" href="javascript:__doPostBack(&#39;ctl00$body$BULICAdresowyPobierz&#39;,&#39;&#39;)">
+                                            <span class="pobieranie_ikony">
+                                                <span class="pobieranie_ikony_bg">
+                                                    <span class="teryt_P"></span>
+                                                </span>
+                                            </span>
+
+                                            <span class="pobieranie_etykieta_pobierz">Pobierz</span>
+
+                                        </a>
+                                        <img src="/eTeryt/images/brak.png" id="body_IULICAdresowyNieDotyczy" title="" />
+                                    </td>
+
+                                    <td class="tab_element" style="background-color: #ffffff">
+                                        <img src="/eTeryt/images/brak.png" title="nie dotyczy" />
+                                    </td>
+
+                                </tr>
+                                
+                                <tr>
+                                    <td title="Nomenklatura Jednostek Terytorialnych do Celów Statystycznych" rowspan="1" colspan="1" class="tab_tyt_right">NTS</td>
+                                    <td class="tab_element_pob">
+
+                                        <a id="body_BNTSGeneruj" title="Generuj" class="tab_element_pob_a_generuj" style="padding: 10px;" href="javascript:__doPostBack(&#39;ctl00$body$BNTSGeneruj&#39;,&#39;&#39;)">
+                                            <span class="pobieranie_ikony">
+                                                <span class="pobieranie_ikony_bg">
+                                                    <span class="teryt_Z"></span>
+                                                </span>
+                                            </span>
+
+                                            <span class="pobieranie_etykieta_generuj">Generuj</span>
+
+                                        </a>
+                                        <a id="body_BNTSPobierz" title="Pobierz" class="tab_element_pob_a_pobierz" style="padding: 10px;" href="javascript:__doPostBack(&#39;ctl00$body$BNTSPobierz&#39;,&#39;&#39;)">
+                                            <span class="pobieranie_ikony">
+                                                <span class="pobieranie_ikony_bg">
+                                                    <span class="teryt_P"></span>
+                                                </span>
+                                            </span>
+
+                                            <span class="pobieranie_etykieta_pobierz">Pobierz</span>
+
+                                        </a>
+                                        <img src="/eTeryt/images/brak.png" id="body_INTSNieDotyczy" title="" />
+                                    </td>
+                                    <td class="tab_element" style="background-color: #ffffff">
+                                        <img src="/eTeryt/images/brak.png" title="nie dotyczy" />
+                                    </td>
+
+                                    <td class="tab_element" style="background-color: #ffffff">
+                                        <img src="/eTeryt/images/brak.png" title="nie dotyczy" />
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td title="Rodzaje miejscowości" rowspan="1" colspan="1" class="tab_tyt_right">WMRODZ</td>
+                                    <td class="tab_element_pob">
+
+                                        <a id="body_BRodzMiejGeneruj" title="Generuj" class="tab_element_pob_a_generuj" style="padding: 10px;" href="javascript:__doPostBack(&#39;ctl00$body$BRodzMiejGeneruj&#39;,&#39;&#39;)">
+                                            <span class="pobieranie_ikony">
+                                                <span class="pobieranie_ikony_bg">
+                                                    <span class="teryt_Z"></span>
+                                                </span>
+                                            </span>
+
+                                            <span class="pobieranie_etykieta_generuj">Generuj</span>
+
+                                        </a>
+                                        <a id="body_BRodzMiejPobierz" title="Pobierz" class="tab_element_pob_a_pobierz" style="padding: 10px;" href="javascript:__doPostBack(&#39;ctl00$body$BRodzMiejPobierz&#39;,&#39;&#39;)">
+                                            <span class="pobieranie_ikony">
+                                                <span class="pobieranie_ikony_bg">
+                                                    <span class="teryt_P"></span>
+                                                </span>
+                                            </span>
+
+                                            <span class="pobieranie_etykieta_pobierz">Pobierz</span>
+
+                                        </a>
+                                        <img src="/eTeryt/images/brak.png" id="body_IRodzMiejNieDotyczy" title="" />
+                                    </td>
+                                    <td class="tab_element" style="background-color: #ffffff">
+                                        <img src="/eTeryt/images/brak.png" title="nie dotyczy" />
+                                    </td>
+
+                                    <td class="tab_element" style="background-color: #ffffff">
+                                        <img src="/eTeryt/images/brak.png" title="nie dotyczy" />
+                                    </td>
+
+                                </tr>
+                            </table>
+                            <br />
+                            <span style="color: red;">Uwaga!</span> W związku z wejściem w życie 1 stycznia 2018 r. <i>rozporządzenia Rady Ministrów z dnia 7 kwietnia 2017 r. uchylającego rozporządzenie w sprawie wprowadzenia Nomenklatury Jednostek Terytorialnych do Celów Statystycznych <strong>NTS</strong></i> (Dz. U. 2017 poz. 825), od 1 stycznia 2018 r. podział na jednostki <strong>NTS</strong> został zniesiony.<br /> 
+Z tego też względu dostępne w witrynie internetowej rejestru TERYT oraz w usłudze sieciowej API TERYT dane obejmują jedynie dane historyczne tj. zbiory jednostek <b>NTS</b> dla okresu od 27.07.2000 r. do 01.01.2017 r. Aby pobrać historyczne dane NTS, należy w kalendarzu pobierania (pole „Stan danych”) ustawić datę z wskazanego wyżej zakresu – ostatni dostępny stan zbioru NTS to <u>01.01.2017 r.</u><br />
+Od 1 stycznia 2018 r. obowiązuje nowy System Kodowania Jednostek Terytorialnych i Statystycznych KTS. Więcej informacji na temat NTS i KTS znajduje się po adresem: 
+<a target="_blank" href="http://stat.gov.pl/statystyka-regionalna/jednostki-terytorialne/system-kts/">http://stat.gov.pl/statystyka-regionalna/jednostki-terytorialne/system-kts/</a>
+
+
+                        </div>
+                        
+
+
+
+                        
+
+                        <div id="body_UpdateProgress1" style="display:none;">
+		
+                                <div class="divWaiting">
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <span id="body_lblWait"> Proszę czekać ... </span>
+                                    <br />
+                                    <img id="body_imgWait" src="../../../../../images/loading.gif" align="middle" />
+                                </div>
+                            
+	</div>
+                    
+</div>
+
+                
+
+                
+
+                
+            </div>
+        </div>
+    </div>
+
+    
+
+				</div>
+			</div>
+		</section>
+		<div class="row color-line print-disable">
+			<div class="color-13"></div>
+			<div class="color-10"></div>
+			<div class="color-11"></div>
+			<div class="color-12"></div>
+			<div class="color-14"></div>
+			<div class="color-13"></div>
+			<div class="color-10"></div>
+			<div class="color-11"></div>
+			<div class="color-12"></div>
+			<div class="color-14"></div>
+			<div class="color-13"></div>
+			<div class="color-10"></div>
+		</div>
+		<footer class="row print-disable">
+			<div class="row gray-box no-margin footer-1">
+				<div class="col">
+					<div class="description-block">
+						<h3>Główny Urząd Statystyczny</h3>
+
+						<p>
+							al. Niepodległości 208<br />
+							00-925 Warszawa
+						</p>
+
+						<p>Godziny pracy Urzędu: 8:15 - 16:15</p>
+
+						<p>
+							Centrala: +48 22 608 30 00<br />
+							<script type="text/javascript">
+								//<![CDATA[
+								// SendTo(' ', '', 'kancelariaogolnaGUS', 'stat.gov.pl', 'kancelariaogolnaGUS // stat.gov.pl');
+								//]]>
+							</script>
+						</p>
+
+						<p>
+							<strong>REGON:</strong> 000331501<br />
+							<strong>NIP:</strong> 526-10-40-828
+						</p>
+
+						<p>
+							Infolinia Statystyczna: <strong>22 279 99 99</strong><br />
+							(opłata zgodna z taryfą operatora)<br />
+							Konsultanci są dostępni w dni robocze:<br />
+							<strong>pon.- pt.: godz. 8.00 - 15.00</strong>
+						</p>
+					</div>
+				</div>
+				<div class="col">
+					<div class="description-block">
+						<h3>Informacja</h3>
+
+						<p>Centralne Informatorium Statystyczne:</p>
+
+						<p>
+							telefoniczna obsługa klientów w godz.:<br />
+							9.00-11.30, 12.30-15.00<br />
+							tel.: +48 22 608 31 63/64
+						</p>
+
+						<p>
+							bezpośrednia obsługa interesantów (parter, blok A)<br />
+							poniedziałek 8.30 - 18.00<br />
+							wtorek - piątek 8.30 - 15.30
+						</p>
+
+						<p>
+							<a href="http://stat.gov.pl/pytania-i-zamowienia/jak-zamowic-dane/" target="_blank">zamówienia na dane statystyczne</a>
+							<br />
+
+
+							<script type="text/javascript">
+								//<![CDATA[
+								//     SendTo(' ', '', 'dane', 'stat.gov.pl', 'dane // stat.gov.pl');
+								//]]>
+							</script>
+						</p>
+					</div>
+				</div>
+				<div class="col">
+					<div class="description-block">
+						<h3>Zobacz także:</h3>
+
+						<ul class="dark-list">
+							<li><a href="http://statlibr.stat.gov.pl/" target="_blank">Centralna Biblioteka Statystyczna</a></li>
+							<li><a href="http://cis.stat.gov.pl" target="_blank">Centrum Informatyki Statystycznej</a></li>
+							<li><a href="http://cbies.stat.gov.pl/" target="_blank">Centrum Badań i Edukacji Statystycznej</a></li>
+							<li><a href="http://zws.stat.gov.pl" target="_blank">Zakład Wydawnictw Statystycznych</a></li>
+							<li><a href="http://bip.stat.gov.pl/organizacja-statystyki-publicznej/rada-statystyki/" target="_blank">Rada Statystyki</a></li>
+							<li><a href="http://bip.stat.gov.pl/organizacja-statystyki-publicznej/rzadowa-rada-ludnosciowa/" target="_blank">Rządowa Rada Ludnościowa</a></li>
+							<li><a href="http://pts.stat.gov.pl" target="_blank">Polskie Towarzystwo Statystyczne</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col">
+					<div class="description-block">
+						<ul class="dark-list" style="margin-top: 3.45em;">
+							<li>
+								<a href="/eTeryt/deklaracja_dostepnosci.aspx" id="a_deklaracja_dostepnosci" title="Deklaracja dostępności" style="">Deklaracja dostępności</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="row collapse footer-2 print-disable">
+				<div class="description-block">
+					<div class="four columns">
+						<p>
+							Projekt SISP współfinansowany przez Unię Europejską z Europejskiego Funduszu<br />
+							Rozwoju Regionalnego oraz ze środków budżetu państwa. 7. Oś Priorytetowa:<br />
+							Społeczeństwo informacyjne – budowa elektronicznej administracji.
+						</p>
+					</div>
+
+					<div class="six columns text-right eu-logos">
+						<span>
+							<img alt="Unia Europejska" src="/eTeryt/images/footer_logo4.png" />
+						</span>
+						<span>
+							<img alt="Innowacyjna Gospodarka" src="/eTeryt/szablony/portalinformacyjny/images/innowacyjna-gospodarka.jpg" /></span>
+						
+						<span>
+							<img alt="Unia Europejska" src="/eTeryt/szablony/portalinformacyjny/images/unia-europejska.jpg" /></span>
+
+					</div>
+				</div>
+			</div>
+			<div class="row collapse">
+				<div class="ten columns copyright">
+					Copyright © 1995-2016 Główny Urząd Statystyczny		
+				</div>
+			</div>
+		</footer>
+	
+
+<script type="text/javascript">
+//<![CDATA[
+Sys.Extended.UI.Localization.SetLocale("pl");Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.CalendarBehavior, {"button":$get("Image1"),"cssClass":"calendar","format":"dd MMMM yyyy","id":"body_ctl01"}, null, null, $get("body_TBData"));
+});
+//]]>
+</script>
+</form>
+</body>
+</html>

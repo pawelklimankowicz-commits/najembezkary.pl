@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { MUNICIPALITIES_FALLBACK } from "@/lib/municipalities-fallback";
+import { getPolandMunicipalitiesFallback } from "@/lib/poland-municipalities";
 import { getSupabaseServerClient } from "@/lib/supabase-server";
 import type { MunicipalityLite } from "@/lib/checkout-flow";
 
@@ -225,7 +226,8 @@ export async function GET(req: Request): Promise<Response> {
   try {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
       const qq = normalizeText(q);
-      const local = MUNICIPALITIES_FALLBACK.filter(
+      const source = getPolandMunicipalitiesFallback();
+      const local = (source.length > 0 ? source : MUNICIPALITIES_FALLBACK).filter(
         (m) =>
           normalizeText(m.name).includes(qq) ||
           normalizeText(m.full_name).includes(qq) ||
