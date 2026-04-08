@@ -817,7 +817,7 @@ body {
 }
 
 .hero {
-  margin-top: -1cm;
+  margin-top: 0;
   background: linear-gradient(135deg, #eff5ff 0%, #ffffff 52%, #eef4ff 100%);
   border: 1px solid #dce8f8;
   box-shadow: 0 24px 48px rgba(12, 39, 72, 0.12);
