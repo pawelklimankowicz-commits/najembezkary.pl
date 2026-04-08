@@ -28,6 +28,10 @@ function normalizeText(value: string): string {
     .trim();
 }
 
+function normalizeUppercase(value: string): string {
+  return value.toLocaleUpperCase("pl-PL");
+}
+
 const VOIVODESHIP_CITIES = new Set(
   [
     "Białystok",
@@ -146,8 +150,14 @@ export function QuizClient() {
   }
 
   async function searchMunicipalities(q: string) {
-    setForm((p) => ({ ...p, q2City: q, q2TerytCode: undefined, municipality: undefined }));
-    if (q.trim().length < 2) {
+    const normalizedQuery = normalizeUppercase(q);
+    setForm((p) => ({
+      ...p,
+      q2City: normalizedQuery,
+      q2TerytCode: undefined,
+      municipality: undefined,
+    }));
+    if (normalizedQuery.trim().length < 2) {
       return;
     }
     const hasFullMunicipalities = municipalities.length >= 2400;
@@ -157,7 +167,7 @@ export function QuizClient() {
     setSearching(true);
     setSearchError(null);
     try {
-      const rawQuery = q.trim();
+      const rawQuery = normalizedQuery.trim();
       const res = await fetch(`/api/municipalities/search?q=${encodeURIComponent(rawQuery)}`);
       const json = (await res.json()) as { results?: MunicipalityLite[]; error?: string };
       if (!res.ok) throw new Error(json.error || "Błąd wyszukiwania gmin");
@@ -193,7 +203,7 @@ export function QuizClient() {
   function chooseMunicipality(m: MunicipalityLite) {
     setForm((p) => ({
       ...p,
-      q2City: m.name,
+      q2City: normalizeUppercase(m.name),
       q2TerytCode: m.teryt_code,
       municipality: m,
     }));

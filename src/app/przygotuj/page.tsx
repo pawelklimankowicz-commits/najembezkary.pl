@@ -13,7 +13,7 @@ export default function PrzygotujPage() {
     <main className="page-shell">
       <h1 className="page-title">Przygotuj dokumenty do rejestru</h1>
       <p className="page-intro">
-        Uzupełnij kroki poniżej. Na końcu pobierzesz archiwum ZIP z sześcioma plikami PDF
+        Uzupełnij kroki poniżej. Na końcu pobierzesz paczkę z sześcioma plikami PDF
         dopasowanymi do Twoich danych.
       </p>
       <DocumentWizard />

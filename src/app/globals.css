@@ -281,6 +281,7 @@ a:hover {
   margin-left: 0.5rem;
   font-size: 0.875rem;
   color: #344a72;
+  font-weight: 700;
 }
 
 .wizard-error {
@@ -295,12 +296,14 @@ a:hover {
 .wizard-panel h2 {
   margin: 0 0 1rem;
   font-size: 1.15rem;
+  font-weight: 700;
 }
 
 .wizard-hint {
   margin: 0 0 1rem;
   font-size: 0.92rem;
   color: #4a5568;
+  font-weight: 700;
 }
 
 .field-grid {
@@ -360,6 +363,77 @@ a:hover {
   box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.25);
 }
 
+.phone-row {
+  display: grid;
+  grid-template-columns: minmax(130px, 180px) minmax(280px, 1fr);
+  gap: 0.6rem;
+}
+
+.phone-prefix,
+.phone-number {
+  width: 100%;
+}
+
+.phone-prefix-dropdown {
+  position: relative;
+}
+
+.phone-prefix-trigger {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-family: inherit;
+  background: #ffffff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.phone-prefix-trigger:focus {
+  outline: none;
+  border-color: #c0392b;
+  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.25);
+}
+
+.phone-prefix-list {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 0.25rem);
+  max-height: 260px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0.25rem 0;
+  list-style: none;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.12);
+  z-index: 20;
+}
+
+.phone-prefix-option {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  padding: 0.45rem 0.7rem;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.phone-prefix-option:hover {
+  background: #f8fafc;
+}
+
+@media (max-width: 640px) {
+  .phone-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 .option-list {
   display: flex;
   flex-direction: column;
@@ -375,6 +449,7 @@ a:hover {
   border-radius: 0.7rem;
   background: #ffffff;
   cursor: pointer;
+  font-weight: 700;
 }
 
 .option-item input {
@@ -392,6 +467,7 @@ a:hover {
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
+  font-weight: 700;
 }
 
 .radio-list {
@@ -405,6 +481,7 @@ a:hover {
   align-items: flex-start;
   gap: 0.5rem;
   cursor: pointer;
+  font-weight: 700;
 }
 
 .summary {
@@ -418,6 +495,7 @@ a:hover {
   padding: 0.45rem 0;
   border-bottom: 1px solid #e7edf7;
   font-size: 0.92rem;
+  font-weight: 700;
 }
 
 .summary-row dt {
