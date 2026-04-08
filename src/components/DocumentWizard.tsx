@@ -397,7 +397,7 @@ export function DocumentWizard() {
 
       {step === 4 ? (
         <section className="wizard-panel">
-          <h2>Krótki quiz</h2>
+          <h2>Krótka ankieta</h2>
           <p className="wizard-hint">
             Przewidywana liczba osób jednocześnie przebywających w obiekcie (orientacyjnie):
           </p>

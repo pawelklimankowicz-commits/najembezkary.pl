@@ -466,6 +466,11 @@ a:hover {
   color: #2d3748;
 }
 
+.steps-list {
+  list-style: none;
+  padding-left: 0;
+}
+
 .check-list li,
 .steps-list li {
   margin-bottom: 0.45rem;
@@ -849,6 +854,7 @@ body {
   text-align: center;
   color: #5b6f87;
   font-size: 0.88rem;
+  font-weight: 700;
 }
 
 .client-logos-grid {

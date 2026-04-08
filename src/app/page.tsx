@@ -3,10 +3,26 @@ import Link from "next/link";
 import CountdownTimer from "@/components/CountdownTimer";
 
 const TOP_OPERATORS: Array<{ name: string; logo?: string }> = [
-  { name: "OLX", logo: "/logos/olx.svg" },
-  { name: "Booking", logo: "/logos/booking.svg" },
-  { name: "Airbnb", logo: "/logos/airbnb.svg" },
-  ...Array.from({ length: 17 }, (_, i) => ({ name: `Operator najmu ${String(i + 4).padStart(2, "0")}` })),
+  { name: "OLX.pl", logo: "/logos/olx-pl.png" },
+  { name: "Booking.com", logo: "/logos/booking-com.png" },
+  { name: "Airbnb", logo: "/logos/airbnb.png" },
+  { name: "Nieruchomosci-online.pl", logo: "/logos/nieruchomosci-online.png" },
+  { name: "Morizon.pl", logo: "/logos/morizon.png" },
+  { name: "Adresowo.pl", logo: "/logos/adresowo.png" },
+  { name: "Domiporta.pl", logo: "/logos/domiporta.png" },
+  { name: "Nocowanie.pl", logo: "/logos/nocowanie.png" },
+  { name: "Gratka.pl", logo: "/logos/gratka.png" },
+  { name: "Allegro", logo: "/logos/allegro.png" },
+  { name: "Gumtree", logo: "/logos/gumtree.png" },
+  { name: "Facebook", logo: "/logos/facebook.png" },
+  { name: "Instagram", logo: "/logos/instagram.png" },
+  { name: "Szybko.pl", logo: "/logos/szybko.png" },
+  { name: "Mapawynajmu.pl", logo: "/logos/mapawynajmu.png" },
+  { name: "Renters.pl", logo: "/logos/renters.png" },
+  { name: "RentPlanet", logo: "/logos/rentplanet.png" },
+  { name: "Rentujemy", logo: "/logos/rentujemy.png" },
+  { name: "BookingHost", logo: "/logos/bookinghost.png" },
+  { name: "M2Rent", logo: "/logos/m2rent.png" },
 ];
 
 export default function HomePage() {
@@ -45,14 +61,61 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="landing-section">
+        <h2>Jak to działa</h2>
+        <ul className="steps-list">
+          <li>
+            <strong>Krok 1:</strong> Odpowiadasz na serię pytań i sprawdzasz, czy obowiązek
+            rejestracji dotyczy Twojego lokalu.
+          </li>
+          <li>
+            <strong>Krok 2:</strong> Uzupełniasz dane właściciela i lokalu.
+          </li>
+          <li>
+            <strong>Krok 3:</strong> Otrzymujesz komplet dokumentów, które składasz we
+            właściwym urzędzie.
+          </li>
+        </ul>
+      </section>
+
+      <section className="landing-section">
+        <h2>Co zawiera pakiet dokumentów</h2>
+        <ul className="check-list">
+          <li>Wniosek o wpis do rejestru obiektów krótkotrwałego zakwaterowania.</li>
+          <li>Oświadczenie właściciela lokalu.</li>
+          <li>Regulamin lokalu dla gości.</li>
+          <li>Wzór umowy najmu krótkoterminowego.</li>
+          <li>Checklista dokumentów wymaganych przez urząd.</li>
+          <li>Instrukcja postępowania.</li>
+        </ul>
+      </section>
+
+      <section className="landing-section">
+        <h2>Poznaj funkcje, które usprawnią Twoją pracę</h2>
+        <div className="info-grid">
+          <article className="info-card">
+            <h3>Weryfikacja obowiązku rejestracji</h3>
+            <p>Ankieta prowadzi przez kluczowe pytania i pokazuje rekomendowany dalszy krok.</p>
+          </article>
+          <article className="info-card">
+            <h3>Wyszukiwarka gmin i urzędów</h3>
+            <p>Po wyborze lokalizacji otrzymujesz dane urzędu, BIP i rekomendowany sposób złożenia.</p>
+          </article>
+          <article className="info-card">
+            <h3>Generator pakietu dokumentów</h3>
+            <p>Automatycznie tworzysz komplet dokumentów dla urzędu i dla potrzeb archiwizacji.</p>
+          </article>
+        </div>
+      </section>
+
       <section className="trust-strip">
         <div className="trust-item">Dokumenty gotowe do edycji i wydruku</div>
         <div className="trust-item">Wersje zgod i historii dla RODO</div>
-        <div className="trust-item">Integracja procesu od quizu po pobranie</div>
+        <div className="trust-item">Integracja procesu od ankiety po pobranie</div>
       </section>
 
       <section className="client-logos">
-        <p>Ikony 30 największych operatorów najmu w Polsce</p>
+        <p>20 największych operatorów najmu w Polsce</p>
         <div className="client-logos-grid">
           {TOP_OPERATORS.map((operator) => (
             <article key={operator.name} className="client-logo-item">
@@ -73,69 +136,6 @@ export default function HomePage() {
             </article>
           ))}
         </div>
-      </section>
-
-      <section className="landing-section">
-        <h2>Poznaj funkcje, które usprawnią Twoją pracę</h2>
-        <div className="info-grid">
-          <article className="info-card">
-            <h3>Weryfikacja obowiązku rejestracji</h3>
-            <p>Quiz prowadzi przez kluczowe pytania i pokazuje rekomendowany dalszy krok.</p>
-          </article>
-          <article className="info-card">
-            <h3>Generator pakietu dokumentów</h3>
-            <p>Automatycznie tworzysz komplet dokumentów dla urzędu i dla potrzeb archiwizacji.</p>
-          </article>
-          <article className="info-card">
-            <h3>Wyszukiwarka gmin i urzędów</h3>
-            <p>Po wyborze lokalizacji otrzymujesz dane urzędu, BIP i rekomendowany sposób złożenia.</p>
-          </article>
-          <article className="info-card">
-            <h3>Raporty zgod RODO</h3>
-            <p>Masz gotowy eksport zgod i historii operacji na potrzeby klienta lub UODO.</p>
-          </article>
-          <article className="info-card">
-            <h3>Proces usuwania danych</h3>
-            <p>Endpoint prawa do bycia zapomnianym anonimizuje dane i zapisuje ślady audytowe.</p>
-          </article>
-          <article className="info-card">
-            <h3>Szybkie wdrożenie</h3>
-            <p>Aplikacja działa od razu lokalnie i jest gotowa do dalszego rozwoju na Vercel.</p>
-          </article>
-        </div>
-      </section>
-
-      <section className="landing-section">
-        <h2>Co zawiera pakiet</h2>
-        <ul className="check-list">
-          <li>Wniosek o wpis do rejestru obiektów krótkotrwałego zakwaterowania</li>
-          <li>Oświadczenie właściciela lokalu</li>
-          <li>Regulamin lokalu dla gości</li>
-          <li>Wzór umowy najmu krótkoterminowego</li>
-          <li>Checklista dokumentów wymaganych przez urząd</li>
-          <li>Instrukcja krok po kroku: co złożyć, gdzie i w jakiej kolejności</li>
-        </ul>
-        <p className="section-note">
-          Pakiet jest generowany na podstawie Twoich odpowiedzi i gotowy do pobrania jako plik ZIP.
-        </p>
-      </section>
-
-      <section className="landing-section">
-        <h2>Jak to działa</h2>
-        <ol className="steps-list">
-          <li>
-            <strong>Krok 1:</strong> Odpowiadasz na 5 pytań i sprawdzasz, czy obowiązek
-            rejestracji dotyczy Twojego przypadku.
-          </li>
-          <li>
-            <strong>Krok 2:</strong> Uzupełniasz dane właściciela i lokalu, potrzebne do
-            przygotowania dokumentów.
-          </li>
-          <li>
-            <strong>Krok 3:</strong> Pobierasz paczkę ZIP i składasz dokumenty we właściwym
-            urzędzie.
-          </li>
-        </ol>
       </section>
 
       <section className="landing-section dark-pricing">
@@ -170,7 +170,7 @@ export default function HomePage() {
         </article>
         <article>
           <p className="stats-value">1 proces</p>
-          <p className="stats-label">od quizu do pobrania dokumentów</p>
+          <p className="stats-label">od ankiety do pobrania dokumentów</p>
         </article>
       </section>
 
@@ -193,7 +193,7 @@ export default function HomePage() {
           <article>
             <h3>Czy to dotyczy mojego mieszkania?</h3>
             <p>
-              Od tego zaczyna się quiz. Po kilku pytaniach zobaczysz, czy prawdopodobnie podlegasz
+              Od tego zaczyna się ankieta. Po kilku pytaniach zobaczysz, czy prawdopodobnie podlegasz
               rejestracji i jaki wariant dokumentów wybrać.
             </p>
           </article>
@@ -217,7 +217,7 @@ export default function HomePage() {
       <section className="landing-section cta-final">
         <h2>Uprość formalności i działaj od razu</h2>
         <p>
-          Zacznij od quizu, aby sprawdzić obowiązek rejestracji i od razu przejść do
+          Zacznij od ankiety, aby sprawdzić obowiązek rejestracji i od razu przejść do
           przygotowania dokumentów.
         </p>
         <p>

@@ -24,7 +24,7 @@ export function PaymentSummary() {
         <li>Właściciel: {owner?.fullName ?? "-"}</li>
         <li>Lokal: {owner?.propertyAddress ?? "-"}</li>
         <li>Email: {owner?.email ?? "-"}</li>
-        <li>Status quizu: {quiz?.requiresRegistration ? "Wymaga rejestracji" : "Do weryfikacji"}</li>
+        <li>Status ankiety: {quiz?.requiresRegistration ? "Wymaga rejestracji" : "Do weryfikacji"}</li>
       </ul>
       <div className="wizard-nav">
         <button className="btn-secondary" onClick={() => router.push("/dane")}>

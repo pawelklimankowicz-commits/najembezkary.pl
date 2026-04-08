@@ -5,7 +5,7 @@ import { DocumentWizard } from "@/components/DocumentWizard";
 export const metadata: Metadata = {
   title: "Przygotuj dokumenty — najembezkary.pl",
   description:
-    "Kreator: dane właściciela, obiekt, platformy, krótki quiz — pobierz paczkę PDF.",
+    "Kreator: dane właściciela, obiekt, platformy, krótka ankieta — pobierz paczkę PDF.",
 };
 
 export default function PrzygotujPage() {
