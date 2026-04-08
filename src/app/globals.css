@@ -365,7 +365,7 @@ a:hover {
 
 .phone-row {
   display: grid;
-  grid-template-columns: minmax(130px, 180px) minmax(280px, 1fr);
+  grid-template-columns: minmax(110px, 136px) minmax(394px, 1fr);
   gap: 0.6rem;
 }
 

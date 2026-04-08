@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import countries from "world-countries";
+import { useRouter } from "next/navigation";
 
 import { RENTAL_PLATFORM_LABELS } from "@/lib/owner-form-schema";
 import OrderFormConsents, {
@@ -95,6 +96,7 @@ function emptyForm(): OrderDocumentFormInput {
 const STEPS = 5;
 
 export function DocumentWizard() {
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<OrderDocumentFormInput>(emptyForm);
   const [otherPlatformName, setOtherPlatformName] = useState("");
@@ -634,7 +636,9 @@ export function DocumentWizard() {
             Wstecz
           </button>
         ) : (
-          <span />
+          <button type="button" className="btn-secondary" onClick={() => router.push("/")}>
+            Powrót
+          </button>
         )}
         {step < STEPS ? (
           <button type="button" className="btn-primary" onClick={next}>

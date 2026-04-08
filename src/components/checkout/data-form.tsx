@@ -110,7 +110,9 @@ export function DataForm() {
         </label>
       </div>
       <div className="wizard-nav">
-        <span />
+        <button className="btn-secondary" onClick={() => router.push("/quiz")}>
+          Powrót
+        </button>
         <button className="btn-primary" onClick={saveAndGo}>
           Przejdź do podsumowania
         </button>

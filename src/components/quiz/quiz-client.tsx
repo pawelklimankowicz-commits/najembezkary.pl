@@ -545,7 +545,9 @@ export function QuizClient() {
             Wstecz
           </button>
         ) : (
-          <span />
+          <button className="btn-secondary" onClick={() => router.push("/")}>
+            Powrót
+          </button>
         )}
         {step < 6 ? (
           <button className="btn-primary" onClick={next} disabled={!canProceedFromCurrentStep}>

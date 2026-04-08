@@ -28,7 +28,7 @@ export function PaymentSummary() {
       </ul>
       <div className="wizard-nav">
         <button className="btn-secondary" onClick={() => router.push("/dane")}>
-          Wróć do danych
+          Wstecz
         </button>
         <button className="btn-primary" onClick={() => router.push("/sukces")}>
           Zapłać 99 zł i pobierz dokumenty
