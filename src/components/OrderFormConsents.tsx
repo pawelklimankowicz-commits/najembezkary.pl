@@ -28,25 +28,6 @@ export default function OrderFormConsents({
 
   return (
     <div className="legal-consents">
-      <div className="legal-consents-info">
-        <strong>Klauzula informacyjna RODO</strong>
-        <p>
-          Administratorem Pani/Pana danych osobowych jest właściciel serwisu najembezkary.pl
-          (kontakt:{" "}
-          <a href="mailto:kontakt@najembezkary.pl" className="underline">
-            kontakt@najembezkary.pl
-          </a>
-          ). Dane podane w formularzu będą przetwarzane w celu realizacji zamówienia i
-          dostarczenia Pakietu dokumentów (art. 6 ust. 1 lit. b RODO), wypełnienia obowiązków
-          prawnych (art. 6 ust. 1 lit. c RODO) oraz w celach wynikających z prawnie
-          uzasadnionych interesów Administratora (art. 6 ust. 1 lit. f RODO). Szczegółowe
-          informacje zawarte są w{" "}
-          <Link href="/polityka-prywatnosci" className="underline">
-            Polityce prywatności
-          </Link>
-          .
-        </p>
-      </div>
       <label className="consent-row">
         <input
           type="checkbox"
@@ -102,6 +83,25 @@ export default function OrderFormConsents({
           <span className="optional">(opcjonalne)</span>
         </span>
       </label>
+      <div className="legal-consents-info">
+        <strong>Klauzula informacyjna RODO</strong>
+        <p>
+          Administratorem Pani/Pana danych osobowych jest właściciel serwisu najembezkary.pl
+          (kontakt:{" "}
+          <a href="mailto:kontakt@najembezkary.pl" className="underline">
+            kontakt@najembezkary.pl
+          </a>
+          ). Dane podane w formularzu będą przetwarzane w celu realizacji zamówienia i
+          dostarczenia Pakietu dokumentów (art. 6 ust. 1 lit. b RODO), wypełnienia obowiązków
+          prawnych (art. 6 ust. 1 lit. c RODO) oraz w celach wynikających z prawnie
+          uzasadnionych interesów Administratora (art. 6 ust. 1 lit. f RODO). Szczegółowe
+          informacje zawarte są w{" "}
+          <Link href="/polityka-prywatnosci" className="underline">
+            Polityce prywatności
+          </Link>
+          .
+        </p>
+      </div>
     </div>
   );
 }

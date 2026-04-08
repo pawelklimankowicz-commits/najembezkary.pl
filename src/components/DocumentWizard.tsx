@@ -279,14 +279,6 @@ export function DocumentWizard() {
 
   function next() {
     if (!validateStep(step)) return;
-    if (step === STEPS - 1) {
-      if (!consents.termsAccepted || !consents.digitalContentConsent) {
-        setError(
-          "Zaakceptuj Regulamin, Polityke prywatnosci oraz zgode na natychmiastowe wykonanie umowy."
-        );
-        return;
-      }
-    }
     setStep((x) => Math.min(STEPS, x + 1));
   }
 
@@ -601,6 +593,10 @@ export function DocumentWizard() {
               </label>
             ))}
           </div>
+          <p className="wizard-hint">
+            Zaakceptuj klauzule wymagane do wygenerowania i pobrania dokumentów.
+          </p>
+          <OrderFormConsents onChange={setConsents} />
         </section>
       ) : null}
 
@@ -615,17 +611,13 @@ export function DocumentWizard() {
               </div>
             ))}
           </dl>
-          <p className="wizard-hint">
-            Uzupełnij kroki poniżej. Na końcu otrzymasz wypełnione dokumenty w formacie PDF.
-          </p>
-          <OrderFormConsents onChange={setConsents} />
           <button
             type="button"
             className="btn-primary"
             disabled={loading}
             onClick={() => void downloadZip()}
           >
-            {loading ? "Generowanie…" : "Pobierz paczkę ZIP"}
+            {loading ? "Generowanie…" : "Pobierz"}
           </button>
         </section>
       ) : null}
