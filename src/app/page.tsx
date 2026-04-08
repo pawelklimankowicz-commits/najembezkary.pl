@@ -63,7 +63,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="landing-section">
+      <section id="jak-to-dziala" className="landing-section">
         <h2>Jak to działa</h2>
         <ul className="steps-list">
           <li>
@@ -92,6 +92,19 @@ export default function HomePage() {
         </ul>
       </section>
 
+      <section className="landing-section cta-final">
+        <h2>Uprość formalności i działaj od razu</h2>
+        <p>
+          Zacznij od ankiety, aby sprawdzić obowiązek rejestracji i od razu przejść do
+          przygotowania dokumentów.
+        </p>
+        <p>
+          <Link href="/quiz" className="btn-primary">
+            Rozpocznij teraz
+          </Link>
+        </p>
+      </section>
+
       <section className="landing-section">
         <h2>Poznaj funkcje, które usprawnią Twoją pracę</h2>
         <div className="info-grid">
@@ -107,30 +120,6 @@ export default function HomePage() {
             <h3>Generator pakietu dokumentów</h3>
             <p>Automatycznie tworzysz komplet dokumentów dla urzędu i dla potrzeb archiwizacji.</p>
           </article>
-        </div>
-      </section>
-
-      <section className="client-logos">
-        <p>20 największych operatorów najmu w Polsce</p>
-        <div className="client-logos-grid">
-          {TOP_OPERATORS.map((operator) => (
-            <article key={operator.name} className="client-logo-item">
-              {operator.logo ? (
-                <Image
-                  src={operator.logo}
-                  alt={operator.name}
-                  width={120}
-                  height={34}
-                  className="client-logo-image"
-                />
-              ) : (
-                <div className="client-logo-icon" aria-hidden="true">
-                  ◉
-                </div>
-              )}
-              <span>{operator.name}</span>
-            </article>
-          ))}
         </div>
       </section>
 
@@ -170,6 +159,30 @@ export default function HomePage() {
         </article>
       </section>
 
+      <section className="client-logos">
+        <p>20 największych operatorów najmu w Polsce</p>
+        <div className="client-logos-grid">
+          {TOP_OPERATORS.map((operator) => (
+            <article key={operator.name} className="client-logo-item">
+              {operator.logo ? (
+                <Image
+                  src={operator.logo}
+                  alt={operator.name}
+                  width={120}
+                  height={34}
+                  className="client-logo-image"
+                />
+              ) : (
+                <div className="client-logo-icon" aria-hidden="true">
+                  ◉
+                </div>
+              )}
+              <span>{operator.name}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section className="landing-section dark-band">
         <h2>Przyspiesz formalności i ogranicz ryzyko błędów</h2>
         <p>
@@ -183,7 +196,7 @@ export default function HomePage() {
         </p>
       </section>
 
-      <section className="landing-section faq-section">
+      <section id="faq" className="landing-section faq-section">
         <h2>FAQ</h2>
         <div className="faq-accordion">
           <details>
@@ -293,18 +306,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="landing-section cta-final">
-        <h2>Uprość formalności i działaj od razu</h2>
-        <p>
-          Zacznij od ankiety, aby sprawdzić obowiązek rejestracji i od razu przejść do
-          przygotowania dokumentów.
-        </p>
-        <p>
-          <Link href="/quiz" className="btn-primary">
-            Rozpocznij teraz
-          </Link>
-        </p>
-      </section>
     </main>
   );
 }
