@@ -378,7 +378,7 @@ a:hover {
 
 .hero p {
   margin: 0;
-  color: #555555;
+  color: #0f2747;
 }
 
 .badge {
@@ -574,7 +574,7 @@ a:hover {
 
 .hero-warning-text {
   margin: 0;
-  color: #555555;
+  color: #0f2747;
   font-size: 0.92rem;
 }
 
@@ -633,7 +633,7 @@ a:hover {
 
 .hero-subline {
   margin-top: 0.9rem;
-  color: #6b7280;
+  color: #0f2747;
   font-size: 0.85rem;
 }
 
@@ -899,7 +899,7 @@ body {
   background: #ffffff;
   border-radius: 1.5rem;
   padding: 1.35rem 1.5rem;
-  color: #9f1239;
+  color: #0f2747;
   border: 1px solid #fecaca;
   box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1);
 }
@@ -912,8 +912,8 @@ body {
   font-size: 0.82rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #b91c1c;
-  margin: 0 0 1rem;
+  color: #0f2747;
+  margin: 0 0 1.5rem;
   text-align: center;
   font-weight: 700;
 }
@@ -943,7 +943,7 @@ body {
   font-weight: 800;
   letter-spacing: 0.01em;
   line-height: 1;
-  color: #b91c1c;
+  color: #0f2747;
 }
 
 .countdown-unit {
@@ -952,7 +952,7 @@ body {
   font-size: 0.76rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #991b1b;
+  color: #0f2747;
   font-weight: 700;
 }
 
@@ -960,7 +960,7 @@ body {
   margin-top: 1rem;
   font-size: 0.8rem;
   text-align: center;
-  color: #7f1d1d;
+  color: #0f2747;
   font-weight: 600;
 }
 
