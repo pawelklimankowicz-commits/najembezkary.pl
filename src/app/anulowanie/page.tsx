@@ -6,10 +6,10 @@ export default function AnulowaniePage() {
       <div className="cancel-icon">
         <span>✕</span>
       </div>
-      <h1 className="page-title">Platnosc zostala anulowana.</h1>
-      <p className="page-intro">Wroc do podsumowania i sprobuj ponownie.</p>
+      <h1 className="page-title">Płatność została anulowana.</h1>
+      <p className="page-intro">Wróć do podsumowania i spróbuj ponownie.</p>
       <Link href="/platnosc" className="btn-primary">
-        Wroc i sprobuj ponownie
+        Wróć i spróbuj ponownie
       </Link>
     </main>
   );

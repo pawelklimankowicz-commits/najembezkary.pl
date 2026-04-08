@@ -67,10 +67,10 @@ export function QuizClient() {
     try {
       const res = await fetch(`/api/municipalities/search?q=${encodeURIComponent(q.trim())}`);
       const json = (await res.json()) as { results?: MunicipalityLite[]; error?: string };
-      if (!res.ok) throw new Error(json.error || "Blad wyszukiwania gmin");
+      if (!res.ok) throw new Error(json.error || "Błąd wyszukiwania gmin");
       setMunicipalities(json.results ?? []);
     } catch (e) {
-      setSearchError(e instanceof Error ? e.message : "Blad wyszukiwania gmin");
+      setSearchError(e instanceof Error ? e.message : "Błąd wyszukiwania gmin");
       setMunicipalities([]);
     } finally {
       setSearching(false);
@@ -91,16 +91,16 @@ export function QuizClient() {
       <main className="page-shell">
         <h1 className="page-title">
           {result.requiresRegistration
-            ? "Twoj lokal wymaga rejestracji"
-            : "Prawdopodobnie nie musisz sie rejestrowac"}
+            ? "Twój lokal wymaga rejestracji"
+            : "Prawdopodobnie nie musisz się rejestrować"}
         </h1>
         <p className="page-intro">
           {result.requiresRegistration
-            ? "Przejdz dalej i uzupelnij formularz danych do dokumentow."
-            : "Mozesz mimo to pobrac pakiet dokumentow dla bezpieczenstwa."}
+            ? "Przejdź dalej i uzupełnij formularz danych do dokumentów."
+            : "Możesz mimo to pobrać pakiet dokumentów dla bezpieczeństwa."}
         </p>
         <button className="btn-primary" onClick={() => router.push("/dane")}>
-          Przejdz do formularza
+          Przejdź do formularza
         </button>
       </main>
     );
@@ -108,29 +108,29 @@ export function QuizClient() {
 
   return (
     <main className="page-shell">
-      <h1 className="page-title">Krok 1 z 3 - Sprawdz obowiazek</h1>
+      <h1 className="page-title">Krok 1 z 3 - Sprawdź obowiązek</h1>
 
       {step === 1 && (
         <label className="field">
-          <span>Czy wynajmujesz krotkoterminowo ponizej 30 dni?</span>
+          <span>Czy wynajmujesz krótkoterminowo poniżej 30 dni?</span>
           <select
             value={form.q1}
             onChange={(e) => setForm((p) => ({ ...p, q1: e.target.value as QuizState["q1"] }))}
           >
             <option value="platform">Tak, przez platformy</option>
-            <option value="direct">Tak, bezposrednio</option>
-            <option value="long_term">Nie, dlugoterminowo</option>
+            <option value="direct">Tak, bezpośrednio</option>
+            <option value="long_term">Nie, długoterminowo</option>
           </select>
         </label>
       )}
       {step === 2 && (
         <div>
           <label className="field">
-            <span>W jakim miescie jest Twoj lokal?</span>
+          <span>W jakim mieście jest Twój lokal?</span>
             <input
               value={form.q2City}
               onChange={(e) => void searchMunicipalities(e.target.value)}
-              placeholder="Wpisz nazwe gminy, np. Krakow"
+              placeholder="Wpisz nazwę gminy, np. Kraków"
             />
           </label>
           {searching ? <p className="wizard-hint">Szukam gmin...</p> : null}
@@ -151,46 +151,46 @@ export function QuizClient() {
             </ul>
           ) : null}
           {form.q2TerytCode ? (
-            <p className="wizard-hint">Wybrano gmine TERYT: {form.q2TerytCode}</p>
+            <p className="wizard-hint">Wybrano gminę TERYT: {form.q2TerytCode}</p>
           ) : null}
         </div>
       )}
       {step === 3 && (
         <label className="field">
-          <span>Ile osob moze przebywac jednoczesnie?</span>
+          <span>Ile osób może przebywać jednocześnie?</span>
           <select
             value={form.q3}
             onChange={(e) => setForm((p) => ({ ...p, q3: e.target.value as QuizState["q3"] }))}
           >
-            <option value="up_to_4">Do 4 osob</option>
-            <option value="5_to_10">5-10 osob</option>
-            <option value="above_10">Powyzej 10 osob</option>
+            <option value="up_to_4">Do 4 osób</option>
+            <option value="5_to_10">5-10 osób</option>
+            <option value="above_10">Powyżej 10 osób</option>
           </select>
         </label>
       )}
       {step === 4 && (
         <label className="field">
-          <span>Czy jestes wlascicielem lokalu?</span>
+          <span>Czy jesteś właścicielem lokalu?</span>
           <select
             value={form.q4}
             onChange={(e) => setForm((p) => ({ ...p, q4: e.target.value as QuizState["q4"] }))}
           >
-            <option value="owner">Tak, jestem wlascicielem</option>
-            <option value="subtenant">Podnajemca / zarzadca</option>
-            <option value="manager">Zarzadzam lokalami innych</option>
+            <option value="owner">Tak, jestem właścicielem</option>
+            <option value="subtenant">Podnajemca / zarządca</option>
+            <option value="manager">Zarządzam lokalami innych</option>
           </select>
         </label>
       )}
       {step === 5 && (
         <label className="field">
-          <span>Czy lokal ma juz numer rejestracyjny?</span>
+          <span>Czy lokal ma już numer rejestracyjny?</span>
           <select
             value={form.q5}
             onChange={(e) => setForm((p) => ({ ...p, q5: e.target.value as QuizState["q5"] }))}
           >
             <option value="no_number">Nie</option>
             <option value="unknown">Nie wiem</option>
-            <option value="has_number">Tak, juz mam</option>
+            <option value="has_number">Tak, już mam</option>
           </select>
         </label>
       )}

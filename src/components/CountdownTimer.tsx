@@ -46,10 +46,10 @@ export default function CountdownTimer() {
   if (timeLeft.expired) {
     return (
       <div className="countdown-card countdown-card--expired">
-        <p className="countdown-label">Status obowiazku</p>
-        <p className="countdown-expired-title">Obowiazek rejestracji juz aktywny</p>
+        <p className="countdown-label">Status obowiązku</p>
+        <p className="countdown-expired-title">Obowiązek rejestracji już aktywny</p>
         <p className="countdown-expired-subtitle">
-          Termin minąl: 20 maja 2026 — zadbaj o rejestracje jak najszybciej.
+          Termin minął: 20 maja 2026 — zadbaj o rejestrację jak najszybciej.
         </p>
       </div>
     );
@@ -59,7 +59,7 @@ export default function CountdownTimer() {
 
   return (
     <div className="countdown-card">
-      <p className="countdown-label">Czas do wejscia przepisow</p>
+      <p className="countdown-label">Czas do wejścia przepisów</p>
       <div className="countdown-grid">
         <div className="countdown-cell">
           <div className="countdown-value-wrap">

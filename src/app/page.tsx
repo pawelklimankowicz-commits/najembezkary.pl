@@ -5,30 +5,30 @@ export default function HomePage() {
   return (
     <main className="landing">
       <section className="hero">
-        <p className="badge">Generator dokumentów dla zgłoszenia najmu krotkoterminowego</p>
-        <h1>Nowoczesne narzedzie do przygotowania dokumentow rejestracyjnych</h1>
+        <p className="badge">Generator dokumentów dla zgłoszenia najmu krótkoterminowego</p>
+        <h1>Nowoczesne narzędzie do przygotowania dokumentów rejestracyjnych</h1>
         <div className="hero-content">
           <div className="hero-main-copy">
             <div className="hero-warning">
               <div className="hero-warning-bar" />
               <div>
-                <p className="hero-warning-title">Brak rejestracji = kara do 50 000 zl</p>
+                <p className="hero-warning-title">Brak rejestracji = kara do 50 000 zł</p>
                 <p className="hero-warning-text">
-                  Jednym procesem sprawdzisz obowiazek, uzupelnisz dane i pobierzesz gotowy pakiet
-                  dokumentow przygotowany do zlozenia w urzedzie.
+                  Jednym procesem sprawdzisz obowiązek, uzupełnisz dane i pobierzesz gotowy pakiet
+                  dokumentów przygotowany do złożenia w urzędzie.
                 </p>
               </div>
             </div>
             <div className="hero-actions">
               <Link href="/quiz" className="btn-primary hero-cta">
-                Sprawdz obowiazek i pobierz dokumenty →
+                Sprawdź obowiązek i pobierz dokumenty →
               </Link>
               <Link href="/przygotuj" className="btn-secondary hero-cta-secondary">
-                Przejdz bezposrednio do kreatora
+                Przejdź bezpośrednio do kreatora
               </Link>
             </div>
             <p className="hero-subline">
-              Ponad 3000 wlascicieli skorzystalo z generatora, aby uporzadkowac formalnosci bez
+              Ponad 3000 właścicieli skorzystało z generatora, aby uporządkować formalności bez
               oczekiwania na konsultacje.
             </p>
           </div>
@@ -45,29 +45,29 @@ export default function HomePage() {
       </section>
 
       <section className="client-logos">
-        <p>Z rozwiazania korzystaja wlasciciele mieszkan, operatorzy i zarzadcy najmu w calej Polsce</p>
+        <p>Z rozwiązania korzystają właściciele mieszkań, operatorzy i zarządcy najmu w całej Polsce</p>
         <div className="client-logos-grid">
           <span>Airbnb Host</span>
           <span>Booking Operator</span>
-          <span>Zarzadca najmu</span>
-          <span>Biuro obslugi</span>
+          <span>Zarządca najmu</span>
+          <span>Biuro obsługi</span>
         </div>
       </section>
 
       <section className="landing-section">
-        <h2>Poznaj funkcje, ktore usprawnia Twoja prace</h2>
+        <h2>Poznaj funkcje, które usprawnią Twoją pracę</h2>
         <div className="info-grid">
           <article className="info-card">
-            <h3>Weryfikacja obowiazku rejestracji</h3>
+            <h3>Weryfikacja obowiązku rejestracji</h3>
             <p>Quiz prowadzi przez kluczowe pytania i pokazuje rekomendowany dalszy krok.</p>
           </article>
           <article className="info-card">
-            <h3>Generator pakietu dokumentow</h3>
-            <p>Automatycznie tworzysz komplet dokumentow dla urzedu i dla potrzeb archiwizacji.</p>
+            <h3>Generator pakietu dokumentów</h3>
+            <p>Automatycznie tworzysz komplet dokumentów dla urzędu i dla potrzeb archiwizacji.</p>
           </article>
           <article className="info-card">
-            <h3>Wyszukiwarka gmin i urzedow</h3>
-            <p>Po wyborze lokalizacji otrzymujesz dane urzedu, BIP i rekomendowany sposob zlozenia.</p>
+            <h3>Wyszukiwarka gmin i urzędów</h3>
+            <p>Po wyborze lokalizacji otrzymujesz dane urzędu, BIP i rekomendowany sposób złożenia.</p>
           </article>
           <article className="info-card">
             <h3>Raporty zgod RODO</h3>
@@ -75,11 +75,11 @@ export default function HomePage() {
           </article>
           <article className="info-card">
             <h3>Proces usuwania danych</h3>
-            <p>Endpoint prawa do bycia zapomnianym anonimizuje dane i zapisuje slady audytowe.</p>
+            <p>Endpoint prawa do bycia zapomnianym anonimizuje dane i zapisuje ślady audytowe.</p>
           </article>
           <article className="info-card">
-            <h3>Szybkie wdrozenie</h3>
-            <p>Aplikacja dziala od razu lokalnie i jest gotowa do dalszego rozwoju na Vercel.</p>
+            <h3>Szybkie wdrożenie</h3>
+            <p>Aplikacja działa od razu lokalnie i jest gotowa do dalszego rozwoju na Vercel.</p>
           </article>
         </div>
       </section>
@@ -87,12 +87,12 @@ export default function HomePage() {
       <section className="landing-section">
         <h2>Co zawiera pakiet</h2>
         <ul className="check-list">
-          <li>Wniosek o wpis do rejestru obiektow krotkotrwalego zakwaterowania</li>
-          <li>Oswiadczenie wlasciciela lokalu</li>
-          <li>Regulamin lokalu dla gosci</li>
-          <li>Wzor umowy najmu krotkoterminowego</li>
-          <li>Checklista dokumentow wymaganych przez urzad</li>
-          <li>Instrukcja krok po kroku: co zlozyc, gdzie i w jakiej kolejnosci</li>
+          <li>Wniosek o wpis do rejestru obiektów krótkotrwałego zakwaterowania</li>
+          <li>Oświadczenie właściciela lokalu</li>
+          <li>Regulamin lokalu dla gości</li>
+          <li>Wzór umowy najmu krótkoterminowego</li>
+          <li>Checklista dokumentów wymaganych przez urząd</li>
+          <li>Instrukcja krok po kroku: co złożyć, gdzie i w jakiej kolejności</li>
         </ul>
         <p className="section-note">
           Pakiet jest generowany na podstawie Twoich odpowiedzi i gotowy do pobrania jako plik ZIP.
@@ -100,35 +100,35 @@ export default function HomePage() {
       </section>
 
       <section className="landing-section">
-        <h2>Jak to dziala</h2>
+        <h2>Jak to działa</h2>
         <ol className="steps-list">
           <li>
-            <strong>Krok 1:</strong> Odpowiadasz na 5 pytan i sprawdzasz, czy obowiazek
+            <strong>Krok 1:</strong> Odpowiadasz na 5 pytań i sprawdzasz, czy obowiązek
             rejestracji dotyczy Twojego przypadku.
           </li>
           <li>
-            <strong>Krok 2:</strong> Uzupelniasz dane wlasciciela i lokalu, potrzebne do
-            przygotowania dokumentow.
+            <strong>Krok 2:</strong> Uzupełniasz dane właściciela i lokalu, potrzebne do
+            przygotowania dokumentów.
           </li>
           <li>
-            <strong>Krok 3:</strong> Pobierasz paczke ZIP i skladasz dokumenty we wlasciwym
-            urzedzie.
+            <strong>Krok 3:</strong> Pobierasz paczkę ZIP i składasz dokumenty we właściwym
+            urzędzie.
           </li>
         </ol>
       </section>
 
       <section className="landing-section dark-pricing">
-        <h2>Dlaczego 399 zl</h2>
+        <h2>Dlaczego 399 zł</h2>
         <div className="pricing-compare">
           <article className="pricing-card pricing-card--muted">
             <h3>U prawnika</h3>
-            <p>Najczesciej 300-800 zl za sama konsultacje i dodatkowy czas oczekiwania.</p>
+            <p>Najczęściej 300-800 zł za samą konsultację i dodatkowy czas oczekiwania.</p>
           </article>
           <article className="pricing-card pricing-card--highlight">
             <h3>najembezkary.pl</h3>
             <p>
-              Jedna oplata, gotowy pakiet dokumentow i jasna sciezka dalszych krokow od razu po
-              wypelnieniu formularza.
+              Jedna opłata, gotowy pakiet dokumentów i jasna ścieżka dalszych kroków od razu po
+              wypełnieniu formularza.
             </p>
           </article>
         </div>
@@ -137,27 +137,27 @@ export default function HomePage() {
       <section className="stats-grid">
         <article>
           <p className="stats-value">15 min</p>
-          <p className="stats-label">sredni czas przygotowania pakietu</p>
+          <p className="stats-label">średni czas przygotowania pakietu</p>
         </article>
         <article>
-          <p className="stats-value">6 dokumentow</p>
+          <p className="stats-value">6 dokumentów</p>
           <p className="stats-label">w jednej paczce ZIP</p>
         </article>
         <article>
           <p className="stats-value">24/7</p>
-          <p className="stats-label">dostep do generatora online</p>
+          <p className="stats-label">dostęp do generatora online</p>
         </article>
         <article>
           <p className="stats-value">1 proces</p>
-          <p className="stats-label">od quizu do pobrania dokumentow</p>
+          <p className="stats-label">od quizu do pobrania dokumentów</p>
         </article>
       </section>
 
       <section className="landing-section dark-band">
-        <h2>Przyspiesz formalnosci i ogranicz ryzyko bledow</h2>
+        <h2>Przyspiesz formalności i ogranicz ryzyko błędów</h2>
         <p>
-          Otrzymujesz uporzadkowany proces: od sprawdzenia obowiazku, przez uzupelnienie danych,
-          po gotowe dokumenty i instrukcje zlozenia.
+          Otrzymujesz uporządkowany proces: od sprawdzenia obowiązku, przez uzupełnienie danych,
+          po gotowe dokumenty i instrukcje złożenia.
         </p>
         <p>
           <Link href="/quiz" className="btn-primary">
@@ -172,36 +172,36 @@ export default function HomePage() {
           <article>
             <h3>Czy to dotyczy mojego mieszkania?</h3>
             <p>
-              Od tego zaczyna sie quiz. Po kilku pytaniach zobaczysz, czy prawdopodobnie podlegasz
-              rejestracji i jaki wariant dokumentow wybrac.
+              Od tego zaczyna się quiz. Po kilku pytaniach zobaczysz, czy prawdopodobnie podlegasz
+              rejestracji i jaki wariant dokumentów wybrać.
             </p>
           </article>
           <article>
-            <h3>Czy dokumenty sa zgodne z przepisami?</h3>
+            <h3>Czy dokumenty są zgodne z przepisami?</h3>
             <p>
-              Szablony sa przygotowane pod aktualny model rejestracji, ale przed zlozeniem warto
-              sprawdzic wymagania Twojej gminy (BIP i komunikaty lokalne).
+              Szablony są przygotowane pod aktualny model rejestracji, ale przed złożeniem warto
+              sprawdzić wymagania Twojej gminy (BIP i komunikaty lokalne).
             </p>
           </article>
           <article>
-            <h3>Czy moge pobrac dokumenty wielokrotnie?</h3>
+            <h3>Czy mogę pobrać dokumenty wielokrotnie?</h3>
             <p>
-              Tak, w okresie waznosci linku mozesz pobierac paczke ponownie. Zalecamy zapisanie
-              plikow lokalnie po pierwszym pobraniu.
+              Tak, w okresie ważności linku możesz pobierać paczkę ponownie. Zalecamy zapisanie
+              plików lokalnie po pierwszym pobraniu.
             </p>
           </article>
         </div>
         <p className="disclaimer">
-          Serwis ma charakter informacyjny. Nie swiadczymy uslug prawnych, a dokumenty wymagaja
-          weryfikacji przez uzytkownika przed zlozeniem.
+          Serwis ma charakter informacyjny. Nie świadczymy usług prawnych, a dokumenty wymagają
+          weryfikacji przez użytkownika przed złożeniem.
         </p>
       </section>
 
       <section className="landing-section cta-final">
-        <h2>Uprosc formalnosci i dzialaj od razu</h2>
+        <h2>Uprość formalności i działaj od razu</h2>
         <p>
-          Zacznij od quizu, aby sprawdzic obowiazek rejestracji i od razu przejsc do
-          przygotowania dokumentow.
+          Zacznij od quizu, aby sprawdzić obowiązek rejestracji i od razu przejść do
+          przygotowania dokumentów.
         </p>
         <p>
           <Link href="/quiz" className="btn-primary">

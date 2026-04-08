@@ -21,32 +21,32 @@ export default function SukcesPage() {
       <div className="success-icon">
         <span>✓</span>
       </div>
-      <h1 className="page-title">Dziekujemy! Twoje dokumenty sa gotowe.</h1>
+      <h1 className="page-title">Dziękujemy! Twoje dokumenty są gotowe.</h1>
       <p className="page-intro">
-        Twoja paczka dokumentow zostala przygotowana. Pobierz plik ZIP i zloz dokumenty we wlasciwym
-        urzedzie gminy.
+        Twoja paczka dokumentów została przygotowana. Pobierz plik ZIP i złóż dokumenty we właściwym
+        urzędzie gminy.
       </p>
       <p>
         <Link href="/przygotuj" className="btn-success">
-          Pobierz pakiet dokumentow (ZIP)
+          Pobierz pakiet dokumentów (ZIP)
         </Link>
       </p>
       {office ? (
         <section className="landing-section">
-          <h2>Gdzie zlozyc dokumenty</h2>
+          <h2>Gdzie złożyć dokumenty</h2>
           <p>
             <strong>{office.office_name}</strong>
             <br />
-            {office.office_address || "Adres urzedu uzupelnimy po wzbogaceniu bazy."}
+            {office.office_address || "Adres urzędu uzupełnimy po wzbogaceniu bazy."}
           </p>
           <p>
-            Sposoby zlozenia:
+            Sposoby złożenia:
             <br />
-            {office.accepts_in_person ? "✓ Osobiscie" : "— Osobiscie niedostepne"}
+            {office.accepts_in_person ? "✓ Osobiście" : "— Osobiście niedostępne"}
             <br />
-            {office.accepts_epuap ? "✓ Przez ePUAP" : "— ePUAP niedostepny"}
+            {office.accepts_epuap ? "✓ Przez ePUAP" : "— ePUAP niedostępny"}
             <br />
-            {office.accepts_mail ? "✓ Poczta" : "— Poczta niedostepna"}
+            {office.accepts_mail ? "✓ Poczta" : "— Poczta niedostępna"}
           </p>
           <p>
             Strona BIP:{" "}

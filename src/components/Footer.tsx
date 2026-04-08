@@ -8,7 +8,7 @@ export default function Footer() {
           <div className="text-center md:text-left">
             <p className="font-bold text-[#C0392B]">najembezkary.pl</p>
             <p className="text-xs text-gray-400 mt-1">
-              © {new Date().getFullYear()} najembezkary.pl. Wszelkie prawa zastrzezone.
+              © {new Date().getFullYear()} najembezkary.pl. Wszelkie prawa zastrzeżone.
             </p>
           </div>
 
@@ -20,7 +20,7 @@ export default function Footer() {
               href="/polityka-prywatnosci"
               className="hover:text-[#C0392B] transition-colors"
             >
-              Polityka prywatnosci
+              Polityka prywatności
             </Link>
             <a
               href="mailto:kontakt@najembezkary.pl"
@@ -32,8 +32,8 @@ export default function Footer() {
         </div>
 
         <p className="text-xs text-gray-400 text-center mt-6 border-t border-gray-100 pt-4">
-          Serwis ma charakter informacyjny. Nie swiadczymy uslug prawnych. Dokumenty
-          generowane sa automatycznie i wymagaja weryfikacji przez uzytkownika.
+          Serwis ma charakter informacyjny. Nie świadczymy usług prawnych. Dokumenty
+          generowane są automatycznie i wymagają weryfikacji przez użytkownika.
         </p>
       </div>
     </footer>
