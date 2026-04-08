@@ -299,7 +299,7 @@ export default function HomePage() {
         </p>
         <p>
           <Link href="/quiz" className="btn-primary">
-            Rozpocznij teraz →
+            Rozpocznij teraz
           </Link>
         </p>
       </section>
