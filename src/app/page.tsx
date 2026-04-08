@@ -28,8 +28,7 @@ export default function HomePage() {
               </Link>
             </div>
             <p className="hero-subline">
-              Ponad 3000 właścicieli skorzystało z generatora, aby uporządkować formalności bez
-              oczekiwania na konsultacje.
+              Już ponad 1000 właścicieli skorzystało z generatora, aby wygenerować gotowy pakiet rejestracyjny.
             </p>
           </div>
           <div className="hero-countdown">
