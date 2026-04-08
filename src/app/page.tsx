@@ -21,7 +21,7 @@ export default function HomePage() {
             </div>
             <div className="hero-actions">
               <Link href="/quiz" className="btn-primary hero-cta">
-                Sprawdź obowiązek i pobierz dokumenty →
+                Sprawdź obowiązek i pobierz dokumenty
               </Link>
               <Link href="/przygotuj" className="btn-secondary hero-cta-secondary">
                 Przejdź bezpośrednio do kreatora
