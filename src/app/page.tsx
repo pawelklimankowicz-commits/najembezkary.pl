@@ -6,15 +6,15 @@ export default function HomePage() {
     <main className="landing">
       <section className="hero">
         <p className="badge">Generator dokumentów dla zgłoszenia najmu krótkoterminowego</p>
-        <h1>Nowoczesne narzędzie do przygotowania dokumentów rejestracyjnych</h1>
+        <h1>Nowoczesne narzędzie do przygotowania dokumentów rejestracyjnych najmu krótkoterminowego</h1>
         <div className="hero-content">
           <div className="hero-main-copy">
             <div className="hero-warning">
               <div className="hero-warning-bar" />
               <div>
-                <p className="hero-warning-title">Brak rejestracji = kara do 50 000 zł</p>
+                <p className="hero-warning-title">Brak rejestracji najmu = kara do 50 000 zł</p>
                 <p className="hero-warning-text">
-                  Jednym procesem sprawdzisz obowiązek, uzupełnisz dane i pobierzesz gotowy pakiet
+                  W jednym procesie sprawdzisz obowiązek zgłoszenia, uzupełnisz dane i pobierzesz gotowy pakiet
                   dokumentów przygotowany do złożenia w urzędzie.
                 </p>
               </div>

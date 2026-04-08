@@ -825,11 +825,11 @@ body {
 }
 
 .hero-warning-title {
-  color: #123d73;
+  color: #c0392b !important;
 }
 
 .hero-warning-bar {
-  background: #123d73;
+  background: #c0392b;
 }
 
 .client-logos {
