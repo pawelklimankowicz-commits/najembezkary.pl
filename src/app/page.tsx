@@ -190,10 +190,6 @@ export default function HomePage() {
             </p>
           </article>
         </div>
-        <p className="disclaimer">
-          Serwis ma charakter informacyjny. Nie świadczymy usług prawnych, a dokumenty wymagają
-          weryfikacji przez użytkownika przed złożeniem.
-        </p>
       </section>
 
       <section className="landing-section cta-final">

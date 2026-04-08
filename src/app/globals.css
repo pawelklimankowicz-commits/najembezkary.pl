@@ -425,7 +425,7 @@ a:hover {
   width: 4rem;
   height: 0.25rem;
   border-radius: 999px;
-  background: #e8b84b;
+  background: #c0392b;
   margin: 0.5rem auto 0;
 }
 
@@ -478,13 +478,13 @@ a:hover {
 }
 
 .dark-pricing {
-  background: #1a1a1a;
-  border-color: #1a1a1a;
-  color: #ffffff;
+  background: #ffffff;
+  border-color: #e5e7eb;
+  color: #0f2747;
 }
 
 .dark-pricing h2 {
-  color: #ffffff;
+  color: #0f2747;
 }
 
 .pricing-compare {
@@ -501,7 +501,7 @@ a:hover {
 .pricing-card {
   border-radius: 1rem;
   padding: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.24);
 }
 
 .pricing-card p {
@@ -509,14 +509,15 @@ a:hover {
 }
 
 .pricing-card--muted {
-  background: rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, #0f2747, #123d73);
+  border-color: #123d73;
   color: #f3f4f6;
 }
 
 .pricing-card--highlight {
-  background: #e8b84b;
-  border-color: #e8b84b;
-  color: #0f2747;
+  background: linear-gradient(135deg, #c0392b, #a93226);
+  border-color: #c0392b;
+  color: #ffffff;
 }
 
 .faq-list {
