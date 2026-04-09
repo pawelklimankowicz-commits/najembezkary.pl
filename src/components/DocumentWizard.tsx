@@ -173,6 +173,14 @@ export function DocumentWizard() {
     });
   }
 
+  function copyOwnerFromFirst(idx: number) {
+    if (idx === 0) return;
+    setOwners((prev) => {
+      if (!prev[0]) return prev;
+      return prev.map((owner, i) => (i === idx ? { ...prev[0] } : owner));
+    });
+  }
+
   function togglePlatform(id: "airbnb" | "booking" | "other" | "direct") {
     setForm((prev) => {
       const cur = prev.rental_platform ?? [];
@@ -387,7 +395,11 @@ export function DocumentWizard() {
       ) : null}
 
       {step === 1 ? (
-        <OwnerDataStep owners={owners} patchOwner={patchOwner} />
+        <OwnerDataStep
+          owners={owners}
+          patchOwner={patchOwner}
+          copyOwnerFromFirst={copyOwnerFromFirst}
+        />
       ) : null}
 
       {step === 2 ? (

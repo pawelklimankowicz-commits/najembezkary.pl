@@ -51,9 +51,6 @@ export default function HomePage() {
             <Link href="/quiz" className="btn-primary hero-cta">
               Sprawdź obowiązek i pobierz dokumenty
             </Link>
-            <Link href="/przygotuj" className="btn-secondary hero-cta-secondary">
-              Przejdź bezpośrednio do kreatora
-            </Link>
           </div>
           <p className="hero-subline">
             Już ponad 1000 właścicieli skorzystało z generatora, aby wygenerować gotowy pakiet rejestracyjny.

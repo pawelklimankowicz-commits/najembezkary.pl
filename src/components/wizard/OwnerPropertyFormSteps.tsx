@@ -23,16 +23,29 @@ type PatchProperty = <K extends keyof PropertyDraft>(
 export function OwnerDataStep({
   owners,
   patchOwner,
+  copyOwnerFromFirst,
 }: {
   owners: OwnerDraft[];
   patchOwner: PatchOwner;
+  copyOwnerFromFirst: (idx: number) => void;
 }) {
   return (
     <section className="wizard-panel">
       <h2>Dane właściciela</h2>
       {owners.map((owner, idx) => (
         <div key={`owner-${idx}`} className="wizard-multi-block">
-          <h3>Właściciel nr {idx + 1}</h3>
+          <div className="wizard-multi-head">
+            <h3>Właściciel nr {idx + 1}</h3>
+            {idx > 0 ? (
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => copyOwnerFromFirst(idx)}
+              >
+                Skopiuj dane właściciela nr 1
+              </button>
+            ) : null}
+          </div>
           <div className="field-grid">
             <label className="field">
               <span>Imię i nazwisko</span>

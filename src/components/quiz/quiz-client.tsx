@@ -9,11 +9,11 @@ import {
   type MunicipalityLite,
   type QuizState,
 } from "@/lib/checkout-flow";
+import OrderFormConsents, { type ConsentState } from "@/components/OrderFormConsents";
 import {
   emptyOwnerDraft,
   emptyPropertyDraft,
   normalizeLowercase,
-  normalizeUppercase,
   savePrepareDraft,
   type OwnerDraft,
   type PropertyDraft,
@@ -21,6 +21,7 @@ import {
   validatePropertiesStep,
 } from "@/lib/wizard-draft";
 import { OwnerDataStep, PropertyDataStep } from "@/components/wizard/OwnerPropertyFormSteps";
+import type { OrderDocumentFormInput } from "@/lib/order-input-schema";
 
 const initial: Omit<QuizState, "requiresRegistration"> = {
   propertyCount: 1,
@@ -84,6 +85,15 @@ export function QuizClient() {
   const [owners, setOwners] = useState<OwnerDraft[]>([emptyOwnerDraft()]);
   const [properties, setProperties] = useState<PropertyDraft[]>([emptyPropertyDraft()]);
   const [stepError, setStepError] = useState<string | null>(null);
+  const [consents, setConsents] = useState<ConsentState>({
+    termsAccepted: false,
+    digitalContentConsent: false,
+    analyticsConsent: false,
+    marketingConsent: false,
+  });
+  const [consentId, setConsentId] = useState<string | null>(null);
+  const [downloadLoading, setDownloadLoading] = useState(false);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
 
   const fuse = useMemo(
     () =>
@@ -176,8 +186,23 @@ export function QuizClient() {
     });
   }
 
+  function copyOwnerFromFirst(idx: number) {
+    if (idx === 0) return;
+    setOwners((prev) => {
+      if (!prev[0]) return prev;
+      return prev.map((owner, i) => (i === idx ? { ...prev[0] } : owner));
+    });
+  }
+
   function next() {
     setStepError(null);
+    if (step === 2 && form.q1 === "long_term") {
+      const payload: QuizState = { ...form, requiresRegistration: false };
+      payload.propertyCount = form.propertyCount ?? 1;
+      setResult(payload);
+      sessionStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(payload));
+      return;
+    }
     if (step === 6) {
       const err = validateOwnersStep(owners);
       if (err) {
@@ -344,6 +369,114 @@ export function QuizClient() {
       setAuthorizationUploadError(
         e instanceof Error ? e.message : "Nie udało się wysłać pliku pełnomocnictwa."
       );
+    }
+  }
+
+  async function downloadZipFromQuiz() {
+    setDownloadError(null);
+    if (!consents.termsAccepted || !consents.digitalContentConsent) {
+      setDownloadError(
+        "Zaakceptuj Regulamin, Polityke prywatnosci oraz zgode na natychmiastowe wykonanie umowy."
+      );
+      return;
+    }
+    setDownloadLoading(true);
+    try {
+      if (!consentId) {
+        const sessionId =
+          typeof crypto !== "undefined" && "randomUUID" in crypto
+            ? crypto.randomUUID()
+            : String(Date.now());
+        try {
+          const consentRes = await fetch("/api/log-consent", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              termsAccepted: consents.termsAccepted,
+              digitalContentConsent: consents.digitalContentConsent,
+              analyticsConsent: consents.analyticsConsent,
+              marketingConsent: consents.marketingConsent,
+              email: owners[0]?.email ?? "",
+              sessionId,
+            }),
+          });
+          if (!consentRes.ok) {
+            setConsentId(`local-${Date.now()}`);
+          } else {
+            const j = (await consentRes.json()) as { consentId: string };
+            setConsentId(j.consentId);
+          }
+        } catch {
+          setConsentId(`local-${Date.now()}`);
+        }
+      }
+
+      const primaryOwner = owners[0] ?? emptyOwnerDraft();
+      const primaryProperty = properties[0] ?? emptyPropertyDraft();
+      const ownerUnitsJson = JSON.stringify(
+        properties.map((property, idx) => {
+          const owner = owners[idx] ?? emptyOwnerDraft();
+          return {
+            fullName: owner.owner_name,
+            city: owner.owner_city,
+            address: owner.owner_address,
+            zip: owner.owner_zip,
+            pesel: owner.owner_pesel,
+            identityDocument: owner.owner_identity_document,
+            propertyAddress: property.property_address,
+            propertyCity: property.property_city,
+            propertyZip: property.property_zip,
+            propertyType: property.property_type,
+            propertyArea: property.property_area,
+            propertyFloor: property.property_floor,
+            listingName: `${property.property_type} NR ${idx + 1}`,
+          };
+        })
+      );
+
+      const payload: OrderDocumentFormInput = {
+        owner_name: primaryOwner.owner_name,
+        owner_city: primaryOwner.owner_city,
+        owner_address: primaryOwner.owner_address,
+        owner_zip: primaryOwner.owner_zip,
+        owner_pesel: primaryOwner.owner_pesel,
+        owner_identity_document: primaryOwner.owner_identity_document,
+        email: primaryOwner.email,
+        owner_phone: primaryOwner.owner_phone,
+        property_address: primaryProperty.property_address,
+        property_city: primaryProperty.property_city,
+        property_zip: primaryProperty.property_zip,
+        property_type: primaryProperty.property_type,
+        property_area: primaryProperty.property_area,
+        property_floor: primaryProperty.property_floor,
+        rental_platform: [],
+        rental_since: "",
+        quiz_answers: {
+          q3: form.q3,
+          owner_units_json: ownerUnitsJson,
+        },
+      };
+
+      const res = await fetch("/api/documents", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const j = (await res.json().catch(() => ({}))) as { error?: string };
+        throw new Error(j.error || `Błąd ${res.status}`);
+      }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "najembezkary_dokumenty.zip";
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      setDownloadError(e instanceof Error ? e.message : "Nie udało się pobrać paczki.");
+    } finally {
+      setDownloadLoading(false);
     }
   }
 
@@ -625,7 +758,11 @@ export function QuizClient() {
         </div>
       )}
       {step === 6 ? (
-        <OwnerDataStep owners={owners} patchOwner={patchOwner} />
+        <OwnerDataStep
+          owners={owners}
+          patchOwner={patchOwner}
+          copyOwnerFromFirst={copyOwnerFromFirst}
+        />
       ) : null}
       {step === 7 ? (
         <PropertyDataStep
@@ -634,40 +771,38 @@ export function QuizClient() {
           copyPropertyFromFirst={copyPropertyFromFirst}
         />
       ) : null}
-      {step === 8 && (
-        <div className="field">
-          <span>Czy lokal ma już numer rejestracyjny?</span>
-          <div className="option-list">
-            <label className="option-item">
-              <input
-                type="radio"
-                name="has-number"
-                checked={form.q5 === "no_number"}
-                onChange={() => setForm((p) => ({ ...p, q5: "no_number" }))}
-              />
-              <span>Nie</span>
-            </label>
-            <label className="option-item">
-              <input
-                type="radio"
-                name="has-number"
-                checked={form.q5 === "unknown"}
-                onChange={() => setForm((p) => ({ ...p, q5: "unknown" }))}
-              />
-              <span>Nie wiem</span>
-            </label>
-            <label className="option-item">
-              <input
-                type="radio"
-                name="has-number"
-                checked={form.q5 === "has_number"}
-                onChange={() => setForm((p) => ({ ...p, q5: "has_number" }))}
-              />
-              <span>Tak, już mam</span>
-            </label>
-          </div>
-        </div>
-      )}
+      {step === 8 ? (
+        <section className="wizard-panel">
+          <h2>Podsumowanie i zgody</h2>
+          <dl className="summary">
+            <div className="summary-row">
+              <dt>Liczba lokali</dt>
+              <dd>{String(form.propertyCount ?? 1)}</dd>
+            </div>
+            <div className="summary-row">
+              <dt>Gmina</dt>
+              <dd>{form.q2City || "—"}</dd>
+            </div>
+            <div className="summary-row">
+              <dt>Właściciele</dt>
+              <dd>{owners.map((o, i) => `${i + 1}. ${o.owner_name}`).join(" | ") || "—"}</dd>
+            </div>
+            <div className="summary-row">
+              <dt>Lokale</dt>
+              <dd>
+                {properties
+                  .map((p, i) => `${i + 1}. ${p.property_address}, ${p.property_city}`)
+                  .join(" | ") || "—"}
+              </dd>
+            </div>
+          </dl>
+          <OrderFormConsents onChange={setConsents} />
+          {downloadError ? <p className="wizard-error">{downloadError}</p> : null}
+          <button type="button" className="btn-primary" onClick={() => void downloadZipFromQuiz()} disabled={downloadLoading}>
+            {downloadLoading ? "Generowanie…" : "Pobierz paczkę plików"}
+          </button>
+        </section>
+      ) : null}
 
       <div className="wizard-nav">
         {step > 1 ? (
@@ -684,9 +819,7 @@ export function QuizClient() {
             Dalej
           </button>
         ) : (
-          <button className="btn-primary" onClick={finish}>
-            Zobacz wynik
-          </button>
+          <span />
         )}
       </div>
       {requiresAuthorizationUpload && !canProceedFromCurrentStep ? (
