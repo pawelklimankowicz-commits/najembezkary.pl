@@ -58,17 +58,16 @@ function build1(doc: jsPDF, c: PdfContext): void {
   );
 
   y = L.writeRule(doc, y - 4.2);
-  const w1 = { gapBefore: 0.05, gapAfter: 0.05 } as const;
-  const w1next = { gapBefore: 0.05, gapAfter: 0.05 } as const;
   const w1p = [9.5, 1.15, "left" as const, 0] as const;
+  const w1h = [10.2, 1.08, "left" as const, 0.35, "bold" as const] as const;
 
-  y = L.writeSectionHeading(
+  y = L.writeParagraphFlow(
     doc,
     "I. Dane wnioskodawcy (właściciel / posiadacz prawa)",
     x(),
     y,
-    11,
-    w1
+    w(),
+    ...w1h
   );
   y = L.writeParagraphFlow(
     doc,
@@ -79,13 +78,13 @@ function build1(doc: jsPDF, c: PdfContext): void {
     ...w1p
   );
 
-  y = L.writeSectionHeading(
+  y = L.writeParagraphFlow(
     doc,
     "II. Dane obiektu (lokal świadczący usługi zakwaterowania)",
     x(),
     y,
-    11,
-    w1next
+    w(),
+    ...w1h
   );
   y = L.writeParagraphFlow(
     doc,
@@ -96,7 +95,7 @@ function build1(doc: jsPDF, c: PdfContext): void {
     ...w1p
   );
 
-  y = L.writeSectionHeading(doc, "III. Treść wniosku", x(), y, 11, w1next);
+  y = L.writeParagraphFlow(doc, "III. Treść wniosku", x(), y, w(), ...w1h);
   y = L.writeParagraphFlow(
     doc,
     "Wnoszę o dokonanie wpisu przedmiotowego obiektu do rejestru obiektów krótkotrwałego zakwaterowania prowadzonego przez właściwy organ gminy (miasta) oraz o wydanie decyzji potwierdzającej nadanie numeru rejestracyjnego obiektu, jeżeli przepisy przewidują taki tryb.",
@@ -106,7 +105,7 @@ function build1(doc: jsPDF, c: PdfContext): void {
     ...w1p
   );
 
-  y = L.writeSectionHeading(doc, "IV. Oświadczenia wnioskodawcy", x(), y, 11, w1next);
+  y = L.writeParagraphFlow(doc, "IV. Oświadczenia wnioskodawcy", x(), y, w(), ...w1h);
   y = L.writeParagraphFlow(
     doc,
     "1) Oświadczam, że dane zawarte we wniosku są zgodne z prawdą i zostały podane dobrowolnie.\n2) Oświadczam, że posiadam tytuł prawny do dysponowania lokalem w zakresie niezbędnym do świadczenia usług zakwaterowania (np. własność, współwłasność, umowa najmu, zarząd).\n3) Zobowiązuję się do przestrzegania przepisów prawa budowlanego, sanitarnego, przeciwpożarowego oraz przepisów o ochronie praw mieszkańców i porządku publicznego.\n4) Zobowiązuję się do aktualizacji danych w rejestrze w przypadku istotnych zmian dotyczących obiektu lub sposobu jego udostępniania.\n5) Przyjmuję do wiadomości, że podanie nieprawdy lub wprowadzenie w błąd organ może wiązać się z konsekwencjami prawnymi przewidzianymi w przepisach powszechnie obowiązujących.",
@@ -116,7 +115,7 @@ function build1(doc: jsPDF, c: PdfContext): void {
     ...w1p
   );
 
-  y = L.writeSectionHeading(doc, "V. Klauzula informacyjna (RODO) — skrót", x(), y, 11, w1next);
+  y = L.writeParagraphFlow(doc, "V. Klauzula informacyjna (RODO) — skrót", x(), y, w(), ...w1h);
   y = L.writeParagraphFlow(
     doc,
     "Administratorem danych osobowych jest organ gminy (miasta) przyjmujący wniosek. Dane przetwarzane są w celu prowadzenia rejestru i realizacji zadań publicznych. Posiada Pani/Pan prawo dostępu do danych, ich sprostowania, ograniczenia przetwarzania, wniesienia sprzeciwu w zakresie przewidzianym prawem oraz prawo wniesienia skargi do organu nadzorczego (PUODO). Szczegóły zawiera informacja udostępniana przez urząd przy przyjęciu dokumentów.",
@@ -126,10 +125,33 @@ function build1(doc: jsPDF, c: PdfContext): void {
     ...w1p
   );
 
-  y = L.ensureSpace(doc, y, 18);
   y = L.writeParagraphFlow(
     doc,
-    `Miejscowość i data: ${c.ownerCity}, ${c.today}\nPodpis wnioskodawcy\n..............................................................\n(czytelny podpis lub podpis elektroniczny, jeżeli składane elektronicznie)`,
+    `Miejscowość i data: ${c.ownerCity}, ${c.today}`,
+    x(),
+    y,
+    w(),
+    ...w1p
+  );
+  y = L.writeParagraphFlow(
+    doc,
+    "Podpis wnioskodawcy",
+    x(),
+    y,
+    w(),
+    ...w1p
+  );
+  y = L.writeParagraphFlow(
+    doc,
+    "..............................................................",
+    x(),
+    y,
+    w(),
+    ...w1p
+  );
+  y = L.writeParagraphFlow(
+    doc,
+    "(czytelny podpis lub podpis elektroniczny, jeżeli składane elektronicznie)",
     x(),
     y,
     w(),
