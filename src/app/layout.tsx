@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import CookieBanner from "@/components/CookieBanner";
 import { SITE_URL } from "@/lib/site";
 
 import "./globals.css";
@@ -24,6 +25,7 @@ export default function RootLayout({
         <Navbar />
         <main>{children}</main>
         <Footer />
+        <CookieBanner />
       </body>
     </html>
   );
