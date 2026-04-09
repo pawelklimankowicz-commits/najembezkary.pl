@@ -22,6 +22,14 @@ export function PaymentSummary() {
 
   const pricing = getPackagePricing(quiz?.propertyCount);
 
+  function humanizePaymentError(message: string): string {
+    const lower = message.toLowerCase();
+    if (lower.includes("p24 is invalid") || lower.includes("payment method type provided")) {
+      return "BLIK/Przelewy24 są chwilowo niedostępne dla tej transakcji. Spróbuj ponownie lub użyj płatności kartą.";
+    }
+    return message;
+  }
+
   async function goToStripeCheckout() {
     setPaymentError(null);
     setPaymentLoading(true);
@@ -41,7 +49,8 @@ export function PaymentSummary() {
       }
       window.location.href = payload.url;
     } catch (e) {
-      setPaymentError(e instanceof Error ? e.message : "Nie udało się rozpocząć płatności.");
+      const baseMessage = e instanceof Error ? e.message : "Nie udało się rozpocząć płatności.";
+      setPaymentError(humanizePaymentError(baseMessage));
     } finally {
       setPaymentLoading(false);
     }
