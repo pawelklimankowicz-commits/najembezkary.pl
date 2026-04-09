@@ -24,7 +24,7 @@ export default function SukcesPage() {
   const [paymentStatusError, setPaymentStatusError] = useState<string | null>(null);
 
   useEffect(() => {
-    const raw = sessionStorage.getItem(QUIZ_STORAGE_KEY);
+    const raw = sessionStorage.getItem(QUIZ_STORAGE_KEY) || localStorage.getItem(QUIZ_STORAGE_KEY);
     if (!raw) return;
     const parsed = JSON.parse(raw) as QuizState;
     setQuiz(parsed);
@@ -33,7 +33,9 @@ export default function SukcesPage() {
     }
   }, []);
   useEffect(() => {
-    const raw = sessionStorage.getItem(PREPARED_ORDER_STORAGE_KEY);
+    const raw =
+      sessionStorage.getItem(PREPARED_ORDER_STORAGE_KEY) ||
+      localStorage.getItem(PREPARED_ORDER_STORAGE_KEY);
     if (!raw) return;
     setOrderPayload(JSON.parse(raw) as OrderDocumentFormInput);
   }, []);

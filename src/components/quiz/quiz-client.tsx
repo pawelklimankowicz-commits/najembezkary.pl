@@ -522,7 +522,26 @@ export function QuizClient() {
       };
       sessionStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(pricingQuizPayload));
       sessionStorage.setItem(PREPARED_ORDER_STORAGE_KEY, JSON.stringify(payload));
+      localStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(pricingQuizPayload));
+      localStorage.setItem(PREPARED_ORDER_STORAGE_KEY, JSON.stringify(payload));
       sessionStorage.setItem(
+        DATA_STORAGE_KEY,
+        JSON.stringify({
+          fullName: payload.owner_name,
+          address: payload.owner_address,
+          city: payload.owner_city,
+          zip: payload.owner_zip,
+          phone: payload.owner_phone,
+          email: payload.email,
+          propertyAddress: payload.property_address,
+          propertyCity: payload.property_city,
+          propertyZip: payload.property_zip ?? "",
+          propertyType: payload.property_type,
+          platforms: payload.rental_platform ?? [],
+          rentalSince: payload.rental_since ?? "",
+        })
+      );
+      localStorage.setItem(
         DATA_STORAGE_KEY,
         JSON.stringify({
           fullName: payload.owner_name,
