@@ -328,6 +328,27 @@ a:hover {
   grid-column: 1 / -1;
 }
 
+.wizard-multi-block {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.9rem;
+  padding: 0.9rem;
+  margin-bottom: 1rem;
+  background: #ffffff;
+}
+
+.wizard-multi-block h3 {
+  margin: 0 0 0.8rem;
+  font-size: 1rem;
+}
+
+.wizard-multi-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-bottom: 0.6rem;
+}
+
 .field span {
   font-size: 0.875rem;
   font-weight: 600;

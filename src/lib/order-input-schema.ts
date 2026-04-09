@@ -43,6 +43,7 @@ export const orderDocumentInputSchema = z.object({
     q3: z.enum(["up_to_4", "5_to_10", "above_10"], {
       message: "Wybierz przewidywaną liczbę osób",
     }),
+    owner_units_json: z.string().optional().nullable(),
   }),
 });
 

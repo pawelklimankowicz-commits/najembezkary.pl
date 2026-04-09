@@ -1,21 +1,25 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import countries from "world-countries";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { RENTAL_PLATFORM_LABELS } from "@/lib/owner-form-schema";
+import { QUIZ_STORAGE_KEY, type QuizState } from "@/lib/checkout-flow";
 import OrderFormConsents, {
   type ConsentState,
 } from "@/components/OrderFormConsents";
 import type { OrderDocumentFormInput } from "@/lib/order-input-schema";
-
-const PROPERTY_TYPE_LABELS: Record<string, string> = {
-  mieszkanie: "Mieszkanie",
-  dom: "Dom",
-  apartament: "Apartament",
-  pokoj: "Pokój",
-};
+import {
+  emptyOwnerDraft,
+  emptyPropertyDraft,
+  loadPrepareDraft,
+  savePrepareDraft,
+  type OwnerDraft,
+  type PropertyDraft,
+  validateOwnersStep,
+  validatePropertiesStep,
+} from "@/lib/wizard-draft";
+import { OwnerDataStep, PropertyDataStep } from "@/components/wizard/OwnerPropertyFormSteps";
 
 const Q3_KEYS = ["up_to_4", "5_to_10", "above_10"] as const;
 
@@ -26,8 +30,6 @@ const Q3_LABELS: Record<(typeof Q3_KEYS)[number], string> = {
 };
 
 const PLATFORM_IDS = ["airbnb", "booking", "other", "direct"] as const;
-const PESEL_PATTERN = /^\d{11}$/;
-const ID_DOC_PATTERN = /^[A-Z]{3}\d{6}$/;
 const CURRENT_YEAR = new Date().getFullYear();
 const RENTAL_SINCE_YEARS = Array.from({ length: CURRENT_YEAR - 1990 + 1 }, (_, idx) =>
   String(CURRENT_YEAR - idx)
@@ -39,37 +41,6 @@ function normalizeUppercase(value: string) {
 function normalizeLowercase(value: string) {
   return value.toLocaleLowerCase("pl-PL");
 }
-
-function formatPolishPostalCode(value: string) {
-  const digits = value.replace(/\D/g, "").slice(0, 5);
-  if (digits.length <= 2) return digits;
-  return `${digits.slice(0, 2)}-${digits.slice(2)}`;
-}
-function flagFromCode(code: string) {
-  return code
-    .toUpperCase()
-    .replace(/./g, (char) => String.fromCodePoint(127397 + char.charCodeAt(0)));
-}
-
-const CALLING_CODES = countries
-  .flatMap((country) => {
-    const root = country.idd?.root;
-    const suffixes = country.idd?.suffixes ?? [];
-    if (!root || suffixes.length === 0) return [];
-    return suffixes.map((suffix) => ({
-      code: `${root}${suffix}`,
-      label: country.translations?.pol?.common ?? country.name.common,
-      flag: flagFromCode(country.cca2),
-      countryCode: country.cca2,
-    }));
-  })
-  .sort((a, b) => {
-    if (a.countryCode === "PL") return -1;
-    if (b.countryCode === "PL") return 1;
-    if (a.code !== b.code) return a.code.localeCompare(b.code, "pl");
-    return a.label.localeCompare(b.label, "pl");
-  });
-const CALLING_CODE_SET = new Set(CALLING_CODES.map((item) => item.code));
 
 function emptyForm(): OrderDocumentFormInput {
   return {
@@ -99,11 +70,10 @@ export function DocumentWizard() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<OrderDocumentFormInput>(emptyForm);
+  const [propertyCount, setPropertyCount] = useState(1);
+  const [owners, setOwners] = useState<OwnerDraft[]>([emptyOwnerDraft()]);
+  const [properties, setProperties] = useState<PropertyDraft[]>([emptyPropertyDraft()]);
   const [otherPlatformName, setOtherPlatformName] = useState("");
-  const [phonePrefix, setPhonePrefix] = useState("+48");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [isPhonePrefixOpen, setIsPhonePrefixOpen] = useState(false);
-  const phonePrefixRef = useRef<HTMLDivElement | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [consents, setConsents] = useState<ConsentState>({
@@ -113,39 +83,36 @@ export function DocumentWizard() {
     marketingConsent: false,
   });
   const [consentId, setConsentId] = useState<string | null>(null);
-  const selectedCallingCode = useMemo(
-    () => CALLING_CODES.find((item) => item.code === phonePrefix) ?? CALLING_CODES[0],
-    [phonePrefix]
-  );
-
   useEffect(() => {
-    const raw = form.owner_phone.trim();
-    if (!raw) {
-      if (phonePrefix !== "+48") setPhonePrefix("+48");
-      if (phoneNumber !== "") setPhoneNumber("");
+    const draft = loadPrepareDraft();
+    if (draft && draft.owners.length > 0 && draft.properties.length > 0) {
+      const n = Math.min(
+        20,
+        Math.max(draft.owners.length, draft.properties.length, 1)
+      );
+      setPropertyCount(n);
+      setOwners(
+        Array.from({ length: n }, (_, i) => draft.owners[i] ?? emptyOwnerDraft())
+      );
+      setProperties(
+        Array.from({ length: n }, (_, i) => draft.properties[i] ?? emptyPropertyDraft())
+      );
       return;
     }
-    const match = raw.match(/^(\+\d{1,4})\s*(.*)$/);
-    if (!match) {
-      if (phonePrefix !== "+48") setPhonePrefix("+48");
-      if (phoneNumber !== raw) setPhoneNumber(raw);
-      return;
+    const raw = sessionStorage.getItem(QUIZ_STORAGE_KEY);
+    if (!raw) return;
+    try {
+      const quiz = JSON.parse(raw) as QuizState;
+      const nextCount =
+        typeof quiz.propertyCount === "number" && quiz.propertyCount > 0
+          ? Math.min(quiz.propertyCount, 20)
+          : 1;
+      setPropertyCount(nextCount);
+      setOwners(Array.from({ length: nextCount }, () => emptyOwnerDraft()));
+      setProperties(Array.from({ length: nextCount }, () => emptyPropertyDraft()));
+    } catch {
+      // ignore invalid session payload
     }
-    const parsedPrefix = CALLING_CODE_SET.has(match[1]) ? match[1] : "+48";
-    const parsedNumber = match[2] ?? "";
-    if (phonePrefix !== parsedPrefix) setPhonePrefix(parsedPrefix);
-    if (phoneNumber !== parsedNumber) setPhoneNumber(parsedNumber);
-  }, [form.owner_phone, phoneNumber, phonePrefix]);
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (!phonePrefixRef.current) return;
-      if (!phonePrefixRef.current.contains(event.target as Node)) {
-        setIsPhonePrefixOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   function patch<K extends keyof OrderDocumentFormInput>(
@@ -159,6 +126,51 @@ export function DocumentWizard() {
       return normalizeUppercase(value) as OrderDocumentFormInput[K];
     })();
     setForm((prev) => ({ ...prev, [key]: nextValue }));
+  }
+
+  function patchOwner<K extends keyof OwnerDraft>(idx: number, key: K, value: OwnerDraft[K]) {
+    setOwners((prev) =>
+      prev.map((owner, i) => {
+        if (i !== idx) return owner;
+        const nextValue = (() => {
+          if (typeof value !== "string") return value;
+          if (key === "email") return normalizeLowercase(value) as OwnerDraft[K];
+          return normalizeUppercase(value) as OwnerDraft[K];
+        })();
+        return { ...owner, [key]: nextValue };
+      })
+    );
+  }
+
+  function patchProperty<K extends keyof PropertyDraft>(
+    idx: number,
+    key: K,
+    value: PropertyDraft[K]
+  ) {
+    setProperties((prev) =>
+      prev.map((property, i) => {
+        if (i !== idx) return property;
+        if (key === "property_type") {
+          const nextType = value as PropertyDraft["property_type"];
+          return {
+            ...property,
+            property_type: nextType,
+            property_floor: nextType === "dom" ? undefined : property.property_floor,
+          };
+        }
+        const nextValue =
+          typeof value === "string" ? (normalizeUppercase(value) as PropertyDraft[K]) : value;
+        return { ...property, [key]: nextValue };
+      })
+    );
+  }
+
+  function copyPropertyFromFirst(idx: number) {
+    if (idx === 0) return;
+    setProperties((prev) => {
+      if (!prev[0]) return prev;
+      return prev.map((property, i) => (i === idx ? { ...prev[0] } : property));
+    });
   }
 
   function togglePlatform(id: "airbnb" | "booking" | "other" | "direct") {
@@ -212,10 +224,54 @@ export function DocumentWizard() {
         }
       }
 
+      const primaryOwner = owners[0] ?? emptyOwnerDraft();
+      const primaryProperty = properties[0] ?? emptyPropertyDraft();
+      const ownerUnitsJson = JSON.stringify(
+        properties.map((property, idx) => {
+          const owner = owners[idx] ?? emptyOwnerDraft();
+          return {
+            fullName: owner.owner_name,
+            city: owner.owner_city,
+            address: owner.owner_address,
+            zip: owner.owner_zip,
+            pesel: owner.owner_pesel,
+            identityDocument: owner.owner_identity_document,
+            propertyAddress: property.property_address,
+            propertyCity: property.property_city,
+            propertyZip: property.property_zip,
+            propertyType: property.property_type,
+            propertyArea: property.property_area,
+            propertyFloor: property.property_floor,
+            listingName: `${property.property_type} NR ${idx + 1}`,
+          };
+        })
+      );
+      const payload: OrderDocumentFormInput = {
+        ...form,
+        owner_name: primaryOwner.owner_name,
+        owner_city: primaryOwner.owner_city,
+        owner_address: primaryOwner.owner_address,
+        owner_zip: primaryOwner.owner_zip,
+        owner_pesel: primaryOwner.owner_pesel,
+        owner_identity_document: primaryOwner.owner_identity_document,
+        email: primaryOwner.email,
+        owner_phone: primaryOwner.owner_phone,
+        property_address: primaryProperty.property_address,
+        property_city: primaryProperty.property_city,
+        property_zip: primaryProperty.property_zip,
+        property_type: primaryProperty.property_type,
+        property_area: primaryProperty.property_area,
+        property_floor: primaryProperty.property_floor,
+        quiz_answers: {
+          ...form.quiz_answers,
+          owner_units_json: ownerUnitsJson,
+        },
+      };
+
       const res = await fetch("/api/documents", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) {
         const j = (await res.json().catch(() => ({}))) as { error?: string };
@@ -238,42 +294,26 @@ export function DocumentWizard() {
   function validateStep(s: number): boolean {
     setError(null);
     if (s === 1) {
-      if (form.owner_name.trim().length < 2) {
-        setError("Podaj imię i nazwisko.");
+      const err = validateOwnersStep(owners);
+      if (err) {
+        setError(err);
         return false;
       }
-      if (!form.email.includes("@")) {
-        setError("Podaj prawidłowy e-mail.");
-        return false;
-      }
-      if (form.owner_phone.trim().length < 5) {
-        setError("Podaj numer telefonu.");
-        return false;
-      }
-      if (!form.owner_city.trim() || !form.owner_address.trim() || !form.owner_zip.trim()) {
-        setError("Uzupełnij adres korespondencyjny.");
-        return false;
-      }
-      const pesel = (form.owner_pesel ?? "").trim();
-      if (!PESEL_PATTERN.test(pesel)) {
-        setError("PESEL musi zawierać dokładnie 11 cyfr.");
-        return false;
-      }
-      const identityDoc = (form.owner_identity_document ?? "")
-        .trim()
-        .toUpperCase()
-        .replace(/\s+/g, "");
-      if (!ID_DOC_PATTERN.test(identityDoc)) {
-        setError("Dowód/paszport musi mieć format: 3 litery i 6 cyfr (np. ABC123456).");
-        return false;
-      }
-      patch("owner_identity_document", identityDoc);
+      owners.forEach((_, i) => {
+        const identityDoc = (owners[i]!.owner_identity_document ?? "")
+          .trim()
+          .toUpperCase()
+          .replace(/\s+/g, "");
+        patchOwner(i, "owner_identity_document", identityDoc);
+      });
     }
     if (s === 2) {
-      if (!form.property_address.trim() || !form.property_city.trim()) {
-        setError("Uzupełnij adres obiektu.");
+      const err = validatePropertiesStep(properties);
+      if (err) {
+        setError(err);
         return false;
       }
+      savePrepareDraft({ owners, properties });
     }
     if (s === 3) {
       if (form.rental_platform?.includes("other") && !otherPlatformName.trim()) {
@@ -303,8 +343,7 @@ export function DocumentWizard() {
   }
 
   const summaryLines = useMemo(() => {
-    const f = form;
-    const plats = (f.rental_platform ?? [])
+    const plats = (form.rental_platform ?? [])
       .map((id) => {
         if (id === "other" && otherPlatformName.trim()) {
           return `Inna platforma: ${otherPlatformName.trim()}`;
@@ -312,21 +351,20 @@ export function DocumentWizard() {
         return RENTAL_PLATFORM_LABELS[id] ?? id;
       })
       .join(", ");
+    const ownersSummary = owners
+      .map((owner, idx) => `${idx + 1}. ${owner.owner_name} (${owner.email})`)
+      .join(" | ");
+    const propertiesSummary = properties
+      .map((property, idx) => `${idx + 1}. ${property.property_address}, ${property.property_city}`)
+      .join(" | ");
     return [
-      ["Właściciel", `${f.owner_name}, ${f.owner_address}, ${f.owner_zip} ${f.owner_city}`],
-      ["Kontakt", `${f.email}, tel. ${f.owner_phone}`],
-      ["PESEL / dowód", `${f.owner_pesel || "—"} / ${f.owner_identity_document || "—"}`],
-      ["Obiekt", `${f.property_address}, ${f.property_zip || ""} ${f.property_city}`.trim()],
-      [
-        "Parametry",
-        `${PROPERTY_TYPE_LABELS[f.property_type] ?? f.property_type}, pow. ${f.property_area ?? "—"} m²${
-          f.property_type === "dom" ? "" : `, piętro ${f.property_floor ?? "—"}`
-        }`,
-      ],
-      ["Platformy / rok", `${plats || "—"} / rok: ${f.rental_since || "—"}`],
-      ["Osoby w obiekcie (quiz)", Q3_LABELS[f.quiz_answers.q3] ?? f.quiz_answers.q3],
+      ["Liczba lokali", String(propertyCount)],
+      ["Właściciele", ownersSummary || "—"],
+      ["Lokale", propertiesSummary || "—"],
+      ["Platformy / rok", `${plats || "—"} / rok: ${form.rental_since || "—"}`],
+      ["Osoby w obiekcie (quiz)", Q3_LABELS[form.quiz_answers.q3] ?? form.quiz_answers.q3],
     ];
-  }, [form, otherPlatformName]);
+  }, [form, otherPlatformName, owners, properties, propertyCount]);
 
   return (
     <div className="wizard">
@@ -349,194 +387,15 @@ export function DocumentWizard() {
       ) : null}
 
       {step === 1 ? (
-        <section className="wizard-panel">
-          <h2>Dane właściciela</h2>
-          <div className="field-grid">
-            <label className="field">
-              <span>Imię i nazwisko</span>
-              <input
-                value={form.owner_name}
-                onChange={(e) => patch("owner_name", e.target.value)}
-                autoComplete="name"
-              />
-            </label>
-            <label className="field">
-              <span>Ulica i numer</span>
-              <input
-                value={form.owner_address}
-                onChange={(e) => patch("owner_address", e.target.value)}
-              />
-            </label>
-            <label className="field">
-              <span>Miejscowość</span>
-              <input
-                value={form.owner_city}
-                onChange={(e) => patch("owner_city", e.target.value)}
-              />
-            </label>
-            <label className="field">
-              <span>Kod pocztowy</span>
-              <input
-                value={form.owner_zip}
-                onChange={(e) => patch("owner_zip", formatPolishPostalCode(e.target.value))}
-                inputMode="numeric"
-                maxLength={6}
-                placeholder="00-000"
-              />
-            </label>
-            <label className="field">
-              <span>Telefon</span>
-              <div className="phone-row">
-                <div className="phone-prefix-dropdown" ref={phonePrefixRef}>
-                  <button
-                    type="button"
-                    className="phone-prefix-trigger"
-                    aria-haspopup="listbox"
-                    aria-expanded={isPhonePrefixOpen}
-                    onClick={() => setIsPhonePrefixOpen((prev) => !prev)}
-                  >
-                    {selectedCallingCode.flag} {selectedCallingCode.code}
-                  </button>
-                  {isPhonePrefixOpen ? (
-                    <ul className="phone-prefix-list" role="listbox" aria-label="Kierunkowy kraju">
-                      {CALLING_CODES.map((item) => (
-                        <li key={`${item.countryCode}-${item.code}`}>
-                          <button
-                            type="button"
-                            className="phone-prefix-option"
-                            onClick={() => {
-                              setPhonePrefix(item.code);
-                              patch("owner_phone", `${item.code} ${phoneNumber}`.trim());
-                              setIsPhonePrefixOpen(false);
-                            }}
-                          >
-                            {item.flag} {item.code} - {item.label}
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </div>
-                <input
-                  className="phone-number"
-                  value={phoneNumber}
-                  onChange={(e) => {
-                    const nextNumber = e.target.value;
-                    setPhoneNumber(nextNumber);
-                    patch("owner_phone", `${phonePrefix} ${nextNumber}`.trim());
-                  }}
-                  autoComplete="tel-national"
-                  placeholder="np. 501234567"
-                />
-              </div>
-            </label>
-            <label className="field">
-              <span>Adres e-mail</span>
-              <input
-                type="email"
-                value={form.email}
-                onChange={(e) => patch("email", e.target.value)}
-                autoComplete="email"
-              />
-            </label>
-            <label className="field">
-              <span>PESEL</span>
-              <input
-                value={form.owner_pesel ?? ""}
-                onChange={(e) => patch("owner_pesel", e.target.value)}
-              />
-            </label>
-            <label className="field field--wide">
-              <span>Dowód osobisty (seria i numer)</span>
-              <input
-                value={form.owner_identity_document ?? ""}
-                onChange={(e) => patch("owner_identity_document", e.target.value)}
-              />
-            </label>
-          </div>
-        </section>
+        <OwnerDataStep owners={owners} patchOwner={patchOwner} />
       ) : null}
 
       {step === 2 ? (
-        <section className="wizard-panel">
-          <h2>Obiekt do rejestracji</h2>
-          <div className="field-grid">
-            <label className="field field--wide">
-              <span>Adres obiektu (ulica, numer)</span>
-              <input
-                value={form.property_address}
-                onChange={(e) => patch("property_address", e.target.value)}
-              />
-            </label>
-            <label className="field">
-              <span>Kod pocztowy</span>
-              <input
-                value={form.property_zip ?? ""}
-                onChange={(e) => patch("property_zip", formatPolishPostalCode(e.target.value))}
-                inputMode="numeric"
-                maxLength={6}
-                placeholder="00-000"
-              />
-            </label>
-            <label className="field">
-              <span>Miejscowość</span>
-              <input
-                value={form.property_city}
-                onChange={(e) => patch("property_city", e.target.value)}
-              />
-            </label>
-            <label className="field">
-              <span>Rodzaj lokalu</span>
-              <select
-                value={form.property_type}
-                onChange={(e) => {
-                  const nextType = e.target.value as OrderDocumentFormInput["property_type"];
-                  patch("property_type", nextType);
-                  if (nextType === "dom") {
-                    patch("property_floor", undefined);
-                  }
-                }}
-              >
-                {Object.entries(PROPERTY_TYPE_LABELS).map(([k, v]) => (
-                  <option key={k} value={k}>
-                    {v}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="field">
-              <span>Powierzchnia użytkowa (m²)</span>
-              <input
-                type="number"
-                min={1}
-                step={0.1}
-                value={form.property_area ?? ""}
-                onChange={(e) =>
-                  patch(
-                    "property_area",
-                    e.target.value === "" ? undefined : Number(e.target.value)
-                  )
-                }
-              />
-            </label>
-            {form.property_type !== "dom" ? (
-              <label className="field">
-                <span>Piętro (opcjonalnie)</span>
-                <input
-                  type="number"
-                  step={1}
-                  value={form.property_floor ?? ""}
-                  onChange={(e) =>
-                    patch(
-                      "property_floor",
-                      e.target.value === "" ? undefined : Number(e.target.value)
-                    )
-                  }
-                />
-              </label>
-            ) : null}
-          </div>
-        </section>
+        <PropertyDataStep
+          properties={properties}
+          patchProperty={patchProperty}
+          copyPropertyFromFirst={copyPropertyFromFirst}
+        />
       ) : null}
 
       {step === 3 ? (

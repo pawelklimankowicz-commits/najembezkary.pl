@@ -9,6 +9,18 @@ import {
   type MunicipalityLite,
   type QuizState,
 } from "@/lib/checkout-flow";
+import {
+  emptyOwnerDraft,
+  emptyPropertyDraft,
+  normalizeLowercase,
+  normalizeUppercase,
+  savePrepareDraft,
+  type OwnerDraft,
+  type PropertyDraft,
+  validateOwnersStep,
+  validatePropertiesStep,
+} from "@/lib/wizard-draft";
+import { OwnerDataStep, PropertyDataStep } from "@/components/wizard/OwnerPropertyFormSteps";
 
 const initial: Omit<QuizState, "requiresRegistration"> = {
   propertyCount: 1,
@@ -69,6 +81,9 @@ export function QuizClient() {
     "idle" | "uploading" | "uploaded" | "error"
   >("idle");
   const [authorizationUploadError, setAuthorizationUploadError] = useState<string | null>(null);
+  const [owners, setOwners] = useState<OwnerDraft[]>([emptyOwnerDraft()]);
+  const [properties, setProperties] = useState<PropertyDraft[]>([emptyPropertyDraft()]);
+  const [stepError, setStepError] = useState<string | null>(null);
 
   const fuse = useMemo(
     () =>
@@ -102,8 +117,92 @@ export function QuizClient() {
   const canProceedFromCurrentStep =
     !requiresAuthorizationUpload || authorizationUploadStatus === "uploaded";
 
+  useEffect(() => {
+    const n = Math.max(1, Math.min(20, form.propertyCount ?? 1));
+    setOwners((prev) => {
+      const next = [...prev];
+      while (next.length < n) next.push(emptyOwnerDraft());
+      return next.slice(0, n);
+    });
+    setProperties((prev) => {
+      const next = [...prev];
+      while (next.length < n) next.push(emptyPropertyDraft());
+      return next.slice(0, n);
+    });
+  }, [form.propertyCount]);
+
+  function patchOwner<K extends keyof OwnerDraft>(idx: number, key: K, value: OwnerDraft[K]) {
+    setOwners((prev) =>
+      prev.map((owner, i) => {
+        if (i !== idx) return owner;
+        const nextValue = (() => {
+          if (typeof value !== "string") return value;
+          if (key === "email") return normalizeLowercase(value) as OwnerDraft[K];
+          return normalizeUppercase(value) as OwnerDraft[K];
+        })();
+        return { ...owner, [key]: nextValue };
+      })
+    );
+  }
+
+  function patchProperty<K extends keyof PropertyDraft>(
+    idx: number,
+    key: K,
+    value: PropertyDraft[K]
+  ) {
+    setProperties((prev) =>
+      prev.map((property, i) => {
+        if (i !== idx) return property;
+        if (key === "property_type") {
+          const nextType = value as PropertyDraft["property_type"];
+          return {
+            ...property,
+            property_type: nextType,
+            property_floor: nextType === "dom" ? undefined : property.property_floor,
+          };
+        }
+        const nextValue =
+          typeof value === "string" ? (normalizeUppercase(value) as PropertyDraft[K]) : value;
+        return { ...property, [key]: nextValue };
+      })
+    );
+  }
+
+  function copyPropertyFromFirst(idx: number) {
+    if (idx === 0) return;
+    setProperties((prev) => {
+      if (!prev[0]) return prev;
+      return prev.map((property, i) => (i === idx ? { ...prev[0] } : property));
+    });
+  }
+
   function next() {
-    setStep((s) => Math.min(6, s + 1));
+    setStepError(null);
+    if (step === 6) {
+      const err = validateOwnersStep(owners);
+      if (err) {
+        setStepError(err);
+        return;
+      }
+      setOwners((prev) =>
+        prev.map((o) => ({
+          ...o,
+          owner_identity_document: (o.owner_identity_document ?? "")
+            .trim()
+            .toUpperCase()
+            .replace(/\s+/g, ""),
+        }))
+      );
+    }
+    if (step === 7) {
+      const err = validatePropertiesStep(properties);
+      if (err) {
+        setStepError(err);
+        return;
+      }
+      savePrepareDraft({ owners, properties });
+    }
+    setStep((s) => Math.min(8, s + 1));
   }
 
   useEffect(() => {
@@ -135,10 +234,12 @@ export function QuizClient() {
     };
   }, [step, municipalities.length]);
   function back() {
+    setStepError(null);
     setStep((s) => Math.max(1, s - 1));
   }
 
   function finish() {
+    savePrepareDraft({ owners, properties });
     const requiresRegistration = form.q1 !== "long_term" && form.q5 !== "has_number";
     const customCount = Number(propertyCountCustom);
     const selectedCount =
@@ -246,7 +347,17 @@ export function QuizClient() {
     }
   }
 
+  useEffect(() => {
+    if (!result) return;
+    if (result.q1 !== "long_term") return;
+    const timer = setTimeout(() => {
+      router.push("/");
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [result, router]);
+
   if (result) {
+    const shouldAutoReturnHome = !result.requiresRegistration && result.q1 === "long_term";
     return (
       <main className="page-shell">
         <h1 className="page-title">
@@ -257,11 +368,15 @@ export function QuizClient() {
         <p className="page-intro">
           {result.requiresRegistration
             ? "Przejdź dalej i uzupełnij formularz danych do dokumentów."
-            : "Możesz mimo to pobrać pakiet dokumentów dla bezpieczeństwa."}
+            : shouldAutoReturnHome
+              ? "Nie obowiązuje Cię rejestracja. Za 3 sekundy nastąpi powrót na stronę główną."
+              : "Możesz mimo to pobrać pakiet dokumentów dla bezpieczeństwa."}
         </p>
-        <button className="btn-primary" onClick={() => router.push("/dane")}>
-          Przejdź do formularza
-        </button>
+        {!shouldAutoReturnHome ? (
+          <button className="btn-primary" onClick={() => router.push("/dane")}>
+            Przejdź do formularza
+          </button>
+        ) : null}
       </main>
     );
   }
@@ -269,6 +384,11 @@ export function QuizClient() {
   return (
     <main className="page-shell">
       <h1 className="page-title">KROK {step}</h1>
+      {stepError ? (
+        <p className="wizard-error" role="alert">
+          {stepError}
+        </p>
+      ) : null}
 
       {step === 1 && (
         <div className="field">
@@ -504,7 +624,17 @@ export function QuizClient() {
           ) : null}
         </div>
       )}
-      {step === 6 && (
+      {step === 6 ? (
+        <OwnerDataStep owners={owners} patchOwner={patchOwner} />
+      ) : null}
+      {step === 7 ? (
+        <PropertyDataStep
+          properties={properties}
+          patchProperty={patchProperty}
+          copyPropertyFromFirst={copyPropertyFromFirst}
+        />
+      ) : null}
+      {step === 8 && (
         <div className="field">
           <span>Czy lokal ma już numer rejestracyjny?</span>
           <div className="option-list">
@@ -549,7 +679,7 @@ export function QuizClient() {
             Powrót
           </button>
         )}
-        {step < 6 ? (
+        {step < 8 ? (
           <button className="btn-primary" onClick={next} disabled={!canProceedFromCurrentStep}>
             Dalej
           </button>
