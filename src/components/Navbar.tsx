@@ -16,7 +16,7 @@ export default function Navbar() {
     <nav className="app-nav">
       <div className="app-nav-inner">
         <a href="/" className="app-brand">
-          <img src="/logo-corner-v2.svg" alt="najembezkary.pl" className="app-brand-logo" />
+          <img src="/logo-corner-v3.svg" alt="najembezkary.pl" className="app-brand-logo" />
         </a>
         <div className="app-nav-links">
           <a href="/">O nas</a>

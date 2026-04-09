@@ -8,7 +8,7 @@
       <stop offset="100%" stop-color="#0d274d" />
     </linearGradient>
     <path id="arcTop" d="M 52 150 A 98 98 0 0 1 248 150" />
-    <path id="arcBottom" d="M 46 170 A 104 104 0 0 0 254 170" />
+    <path id="arcBottom" d="M 48 164 A 102 102 0 0 0 252 164" />
   </defs>
 
   <circle cx="150" cy="150" r="138" fill="url(#navy)" />
