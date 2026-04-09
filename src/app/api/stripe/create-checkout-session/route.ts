@@ -53,17 +53,17 @@ export async function POST(req: Request): Promise<Response> {
     };
 
     let session: Stripe.Checkout.Session | null = null;
-    const methodVariants: Stripe.Checkout.SessionCreateParams.PaymentMethodType[][] = [
+    const methodVariants = [
       ["card", "blik", "p24"],
       ["card", "blik"],
       ["card"],
-    ];
+    ] as const;
 
     for (const methods of methodVariants) {
       try {
         session = await stripe.checkout.sessions.create({
           ...baseParams,
-          payment_method_types: methods,
+          payment_method_types: [...methods],
         });
         break;
       } catch (err) {
