@@ -1414,3 +1414,26 @@ body {
   color: #6b7280;
   font-size: 0.78rem;
 }
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.pricing-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+}
+
+.pricing-table th,
+.pricing-table td {
+  border: 1px solid #dbe5f1;
+  padding: 0.7rem 0.8rem;
+  text-align: left;
+}
+
+.pricing-table th {
+  background: #f8fafc;
+  color: #123d73;
+  font-weight: 700;
+}

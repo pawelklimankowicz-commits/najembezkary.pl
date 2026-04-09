@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { DATA_STORAGE_KEY, QUIZ_STORAGE_KEY, type OwnerDataState, type QuizState } from "@/lib/checkout-flow";
+import { formatPricePln, getPackagePricing } from "@/lib/pricing";
 
 export function PaymentSummary() {
   const router = useRouter();
@@ -17,10 +18,21 @@ export function PaymentSummary() {
     if (q) setQuiz(JSON.parse(q) as QuizState);
   }, []);
 
+  const pricing = getPackagePricing(quiz?.propertyCount);
+
   return (
     <div className="wizard">
-      <p className="page-intro">Pakiet dokumentów najembezkary.pl - 99,00 zł brutto</p>
+      <p className="page-intro">
+        {pricing.isCustomQuote
+          ? "Pakiet dokumentów najembezkary.pl — wycena indywidualna"
+          : `Pakiet dokumentów najembezkary.pl - ${formatPricePln(pricing.total ?? 0)} brutto`}
+      </p>
       <ul>
+        <li>Liczba lokali: {pricing.propertyCount}</li>
+        <li>Model cenowy: {pricing.label}</li>
+        {!pricing.isCustomQuote && pricing.perUnit ? (
+          <li>Cena za lokal: {formatPricePln(pricing.perUnit)}</li>
+        ) : null}
         <li>Właściciel: {owner?.fullName ?? "-"}</li>
         <li>Lokal: {owner?.propertyAddress ?? "-"}</li>
         <li>Email: {owner?.email ?? "-"}</li>
@@ -30,9 +42,15 @@ export function PaymentSummary() {
         <button className="btn-secondary" onClick={() => router.push("/dane")}>
           Wstecz
         </button>
-        <button className="btn-primary" onClick={() => router.push("/sukces")}>
-          Zapłać 99 zł i pobierz dokumenty
-        </button>
+        {pricing.isCustomQuote ? (
+          <a className="btn-primary" href="mailto:kontakt@najembezkary.pl?subject=Wycena%20indywidualna%20pakietu%20dokumentow">
+            Poproś o wycenę
+          </a>
+        ) : (
+          <button className="btn-primary" onClick={() => router.push("/sukces")}>
+            Zapłać {formatPricePln(pricing.total ?? 0)}
+          </button>
+        )}
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 export const QUIZ_STORAGE_KEY = "nbk.quiz.v1";
 export const DATA_STORAGE_KEY = "nbk.data.v1";
+export const PREPARED_ORDER_STORAGE_KEY = "nbk.preparedOrder.v1";
 
 export type MunicipalityLite = {
   teryt_code: string;

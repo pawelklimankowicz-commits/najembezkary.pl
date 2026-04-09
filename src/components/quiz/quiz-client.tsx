@@ -6,6 +6,8 @@ import { useEffect, useMemo, useState } from "react";
 
 import {
   QUIZ_STORAGE_KEY,
+  DATA_STORAGE_KEY,
+  PREPARED_ORDER_STORAGE_KEY,
   type MunicipalityLite,
   type QuizState,
 } from "@/lib/checkout-flow";
@@ -92,8 +94,8 @@ export function QuizClient() {
     marketingConsent: false,
   });
   const [consentId, setConsentId] = useState<string | null>(null);
-  const [downloadLoading, setDownloadLoading] = useState(false);
-  const [downloadError, setDownloadError] = useState<string | null>(null);
+  const [paymentLoading, setPaymentLoading] = useState(false);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
   const fuse = useMemo(
     () =>
@@ -372,15 +374,63 @@ export function QuizClient() {
     }
   }
 
-  async function downloadZipFromQuiz() {
-    setDownloadError(null);
+  function buildOrderPayload(): OrderDocumentFormInput {
+    const primaryOwner = owners[0] ?? emptyOwnerDraft();
+    const primaryProperty = properties[0] ?? emptyPropertyDraft();
+    const ownerUnitsJson = JSON.stringify(
+      properties.map((property, idx) => {
+        const owner = owners[idx] ?? emptyOwnerDraft();
+        return {
+          fullName: owner.owner_name,
+          city: owner.owner_city,
+          address: owner.owner_address,
+          zip: owner.owner_zip,
+          pesel: owner.owner_pesel,
+          identityDocument: owner.owner_identity_document,
+          propertyAddress: property.property_address,
+          propertyCity: property.property_city,
+          propertyZip: property.property_zip,
+          propertyType: property.property_type,
+          propertyArea: property.property_area,
+          propertyFloor: property.property_floor,
+          listingName: `${property.property_type} NR ${idx + 1}`,
+        };
+      })
+    );
+
+    return {
+      owner_name: primaryOwner.owner_name,
+      owner_city: primaryOwner.owner_city,
+      owner_address: primaryOwner.owner_address,
+      owner_zip: primaryOwner.owner_zip,
+      owner_pesel: primaryOwner.owner_pesel,
+      owner_identity_document: primaryOwner.owner_identity_document,
+      email: primaryOwner.email,
+      owner_phone: primaryOwner.owner_phone,
+      property_address: primaryProperty.property_address,
+      property_city: primaryProperty.property_city,
+      property_zip: primaryProperty.property_zip,
+      property_type: primaryProperty.property_type,
+      property_area: primaryProperty.property_area,
+      property_floor: primaryProperty.property_floor,
+      rental_platform: [],
+      rental_since: "",
+      quiz_answers: {
+        q3: form.q3,
+        owner_units_json: ownerUnitsJson,
+      },
+    };
+  }
+
+  async function proceedToPayment() {
+    setPaymentError(null);
     if (!consents.termsAccepted || !consents.digitalContentConsent) {
-      setDownloadError(
+      setPaymentError(
         "Zaakceptuj Regulamin, Polityke prywatnosci oraz zgode na natychmiastowe wykonanie umowy."
       );
       return;
     }
-    setDownloadLoading(true);
+    setPaymentLoading(true);
     try {
       if (!consentId) {
         const sessionId =
@@ -411,72 +461,30 @@ export function QuizClient() {
         }
       }
 
-      const primaryOwner = owners[0] ?? emptyOwnerDraft();
-      const primaryProperty = properties[0] ?? emptyPropertyDraft();
-      const ownerUnitsJson = JSON.stringify(
-        properties.map((property, idx) => {
-          const owner = owners[idx] ?? emptyOwnerDraft();
-          return {
-            fullName: owner.owner_name,
-            city: owner.owner_city,
-            address: owner.owner_address,
-            zip: owner.owner_zip,
-            pesel: owner.owner_pesel,
-            identityDocument: owner.owner_identity_document,
-            propertyAddress: property.property_address,
-            propertyCity: property.property_city,
-            propertyZip: property.property_zip,
-            propertyType: property.property_type,
-            propertyArea: property.property_area,
-            propertyFloor: property.property_floor,
-            listingName: `${property.property_type} NR ${idx + 1}`,
-          };
+      const payload = buildOrderPayload();
+      sessionStorage.setItem(PREPARED_ORDER_STORAGE_KEY, JSON.stringify(payload));
+      sessionStorage.setItem(
+        DATA_STORAGE_KEY,
+        JSON.stringify({
+          fullName: payload.owner_name,
+          address: payload.owner_address,
+          city: payload.owner_city,
+          zip: payload.owner_zip,
+          phone: payload.owner_phone,
+          email: payload.email,
+          propertyAddress: payload.property_address,
+          propertyCity: payload.property_city,
+          propertyZip: payload.property_zip ?? "",
+          propertyType: payload.property_type,
+          platforms: payload.rental_platform ?? [],
+          rentalSince: payload.rental_since ?? "",
         })
       );
-
-      const payload: OrderDocumentFormInput = {
-        owner_name: primaryOwner.owner_name,
-        owner_city: primaryOwner.owner_city,
-        owner_address: primaryOwner.owner_address,
-        owner_zip: primaryOwner.owner_zip,
-        owner_pesel: primaryOwner.owner_pesel,
-        owner_identity_document: primaryOwner.owner_identity_document,
-        email: primaryOwner.email,
-        owner_phone: primaryOwner.owner_phone,
-        property_address: primaryProperty.property_address,
-        property_city: primaryProperty.property_city,
-        property_zip: primaryProperty.property_zip,
-        property_type: primaryProperty.property_type,
-        property_area: primaryProperty.property_area,
-        property_floor: primaryProperty.property_floor,
-        rental_platform: [],
-        rental_since: "",
-        quiz_answers: {
-          q3: form.q3,
-          owner_units_json: ownerUnitsJson,
-        },
-      };
-
-      const res = await fetch("/api/documents", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        const j = (await res.json().catch(() => ({}))) as { error?: string };
-        throw new Error(j.error || `Błąd ${res.status}`);
-      }
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "najembezkary_dokumenty.zip";
-      a.click();
-      URL.revokeObjectURL(url);
+      router.push("/platnosc");
     } catch (e) {
-      setDownloadError(e instanceof Error ? e.message : "Nie udało się pobrać paczki.");
+      setPaymentError(e instanceof Error ? e.message : "Nie udało się przejść do płatności.");
     } finally {
-      setDownloadLoading(false);
+      setPaymentLoading(false);
     }
   }
 
@@ -570,7 +578,7 @@ export function QuizClient() {
                 checked={propertyCountOption === "custom"}
                 onChange={() => setPropertyCountOption("custom")}
               />
-              <span>Podaj liczbę</span>
+              <span>Podaj ilość</span>
             </label>
           </div>
           {propertyCountOption === "custom" ? (
@@ -783,36 +791,60 @@ export function QuizClient() {
               <dt>Gmina</dt>
               <dd>{form.q2City || "—"}</dd>
             </div>
-            <div className="summary-row">
-              <dt>Właściciele</dt>
-              <dd>{owners.map((o, i) => `${i + 1}. ${o.owner_name}`).join(" | ") || "—"}</dd>
-            </div>
-            <div className="summary-row">
-              <dt>Lokale</dt>
-              <dd>
-                {properties
-                  .map((p, i) => `${i + 1}. ${p.property_address}, ${p.property_city}`)
-                  .join(" | ") || "—"}
-              </dd>
-            </div>
+            {properties.map((property, idx) => {
+              const owner = owners[idx];
+              return (
+                <div key={`summary-local-${idx}`} className="wizard-multi-block">
+                  <h3>Lokal nr {idx + 1}</h3>
+                  <dl className="summary">
+                    <div className="summary-row">
+                      <dt>Właściciel</dt>
+                      <dd>{owner?.owner_name || "—"}</dd>
+                    </div>
+                    <div className="summary-row">
+                      <dt>E-mail</dt>
+                      <dd>{owner?.email || "—"}</dd>
+                    </div>
+                    <div className="summary-row">
+                      <dt>Telefon</dt>
+                      <dd>{owner?.owner_phone || "—"}</dd>
+                    </div>
+                    <div className="summary-row">
+                      <dt>Adres lokalu</dt>
+                      <dd>{property.property_address || "—"}</dd>
+                    </div>
+                    <div className="summary-row">
+                      <dt>Kod i miasto</dt>
+                      <dd>{`${property.property_zip || "—"} ${property.property_city || ""}`.trim()}</dd>
+                    </div>
+                    <div className="summary-row">
+                      <dt>Rodzaj</dt>
+                      <dd>{property.property_type || "—"}</dd>
+                    </div>
+                  </dl>
+                </div>
+              );
+            })}
           </dl>
           <OrderFormConsents onChange={setConsents} />
-          {downloadError ? <p className="wizard-error">{downloadError}</p> : null}
-          <button type="button" className="btn-primary" onClick={() => void downloadZipFromQuiz()} disabled={downloadLoading}>
-            {downloadLoading ? "Generowanie…" : "Pobierz paczkę plików"}
+          {paymentError ? <p className="wizard-error">{paymentError}</p> : null}
+          <button type="button" className="btn-primary" onClick={() => void proceedToPayment()} disabled={paymentLoading}>
+            {paymentLoading ? "Przetwarzanie…" : "Przejdź do płatności"}
           </button>
         </section>
       ) : null}
 
       <div className="wizard-nav">
-        {step > 1 ? (
+        {step > 1 && step < 8 ? (
           <button className="btn-secondary" onClick={back}>
             Wstecz
           </button>
-        ) : (
+        ) : step === 1 ? (
           <button className="btn-secondary" onClick={() => router.push("/")}>
             Powrót
           </button>
+        ) : (
+          <span />
         )}
         {step < 8 ? (
           <button className="btn-primary" onClick={next} disabled={!canProceedFromCurrentStep}>
