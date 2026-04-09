@@ -29,6 +29,8 @@ export async function POST(req: Request): Promise<Response> {
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
+      locale: "pl",
+      payment_method_types: ["card", "blik", "p24"],
       success_url: `${appUrl}/sukces?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/anulowanie`,
       customer_email: body.customerEmail || undefined,
