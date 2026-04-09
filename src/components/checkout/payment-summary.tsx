@@ -10,6 +10,8 @@ export function PaymentSummary() {
   const router = useRouter();
   const [owner, setOwner] = useState<OwnerDataState | null>(null);
   const [quiz, setQuiz] = useState<QuizState | null>(null);
+  const [paymentLoading, setPaymentLoading] = useState(false);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
   useEffect(() => {
     const o = sessionStorage.getItem(DATA_STORAGE_KEY);
@@ -19,6 +21,31 @@ export function PaymentSummary() {
   }, []);
 
   const pricing = getPackagePricing(quiz?.propertyCount);
+
+  async function goToStripeCheckout() {
+    setPaymentError(null);
+    setPaymentLoading(true);
+    try {
+      const res = await fetch("/api/stripe/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          propertyCount: pricing.propertyCount,
+          customerEmail: owner?.email,
+          customerName: owner?.fullName,
+        }),
+      });
+      const payload = (await res.json().catch(() => ({}))) as { url?: string; error?: string };
+      if (!res.ok || !payload.url) {
+        throw new Error(payload.error || "Nie udało się rozpocząć płatności.");
+      }
+      window.location.href = payload.url;
+    } catch (e) {
+      setPaymentError(e instanceof Error ? e.message : "Nie udało się rozpocząć płatności.");
+    } finally {
+      setPaymentLoading(false);
+    }
+  }
 
   return (
     <div className="wizard" style={{ fontWeight: 700 }}>
@@ -41,11 +68,12 @@ export function PaymentSummary() {
             Poproś o wycenę
           </a>
         ) : (
-          <button className="btn-primary" onClick={() => router.push("/sukces")}>
-            Zapłać {formatPricePln(pricing.total ?? 0)}
+          <button className="btn-primary" onClick={() => void goToStripeCheckout()} disabled={paymentLoading}>
+            {paymentLoading ? "Przekierowanie..." : `Zapłać ${formatPricePln(pricing.total ?? 0)}`}
           </button>
         )}
       </div>
+      {paymentError ? <p className="wizard-error">{paymentError}</p> : null}
     </div>
   );
 }

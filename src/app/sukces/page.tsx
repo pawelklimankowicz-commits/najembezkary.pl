@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 import {
   PREPARED_ORDER_STORAGE_KEY,
@@ -12,6 +13,7 @@ import {
 import type { OrderDocumentFormInput } from "@/lib/order-input-schema";
 
 export default function SukcesPage() {
+  const searchParams = useSearchParams();
   const [quiz, setQuiz] = useState<QuizState | null>(null);
   const [orderPayload, setOrderPayload] = useState<OrderDocumentFormInput | null>(null);
   const [resolvedMunicipality, setResolvedMunicipality] = useState<MunicipalityLite | null>(null);
@@ -19,6 +21,9 @@ export default function SukcesPage() {
   const [error, setError] = useState<string | null>(null);
   const [resolvedOfficePhone, setResolvedOfficePhone] = useState<string | null>(null);
   const [resolvedOfficeAddress, setResolvedOfficeAddress] = useState<string | null>(null);
+  const [paymentChecked, setPaymentChecked] = useState(false);
+  const [paymentPaid, setPaymentPaid] = useState(false);
+  const [paymentStatusError, setPaymentStatusError] = useState<string | null>(null);
 
   useEffect(() => {
     const raw = sessionStorage.getItem(QUIZ_STORAGE_KEY);
@@ -34,6 +39,47 @@ export default function SukcesPage() {
     if (!raw) return;
     setOrderPayload(JSON.parse(raw) as OrderDocumentFormInput);
   }, []);
+
+  useEffect(() => {
+    const sessionId = searchParams.get("session_id");
+    if (!sessionId) {
+      setPaymentChecked(true);
+      setPaymentPaid(false);
+      setPaymentStatusError("Brak identyfikatora sesji płatności.");
+      return;
+    }
+
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`/api/stripe/verify-session?session_id=${encodeURIComponent(sessionId)}`);
+        const payload = (await res.json().catch(() => ({}))) as { paid?: boolean; error?: string };
+        if (cancelled) return;
+        if (!res.ok) {
+          setPaymentPaid(false);
+          setPaymentStatusError(payload.error || "Nie udało się zweryfikować płatności.");
+          return;
+        }
+        setPaymentPaid(Boolean(payload.paid));
+        if (!payload.paid) {
+          setPaymentStatusError("Płatność nie została potwierdzona.");
+        }
+      } catch {
+        if (!cancelled) {
+          setPaymentPaid(false);
+          setPaymentStatusError("Nie udało się zweryfikować płatności.");
+        }
+      } finally {
+        if (!cancelled) {
+          setPaymentChecked(true);
+        }
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [searchParams]);
 
   useEffect(() => {
     if (resolvedMunicipality) return;
@@ -147,11 +193,21 @@ export default function SukcesPage() {
       <p className="page-intro">
         <strong>Możesz teraz pobrać paczkę dokumentów ZIP i złożyć dokumenty we właściwym urzędzie gminy.</strong>
       </p>
-      <p>
-        <button type="button" className="btn-success" onClick={() => void downloadDocuments()} disabled={loading}>
-          {loading ? "Generowanie…" : "Pobierz dokumenty"}
-        </button>
-      </p>
+      {paymentChecked && paymentPaid ? (
+        <p>
+          <button type="button" className="btn-success" onClick={() => void downloadDocuments()} disabled={loading}>
+            {loading ? "Generowanie…" : "Pobierz dokumenty"}
+          </button>
+        </p>
+      ) : (
+        <p className="wizard-hint">Trwa weryfikacja płatności...</p>
+      )}
+      {paymentChecked && !paymentPaid ? (
+        <p className="wizard-error">
+          {paymentStatusError || "Płatność nie została potwierdzona."}{" "}
+          <Link href="/platnosc">Wróć do płatności</Link>
+        </p>
+      ) : null}
       {error ? <p className="wizard-error">{error}</p> : null}
       {!orderPayload ? (
         <p className="wizard-hint">
