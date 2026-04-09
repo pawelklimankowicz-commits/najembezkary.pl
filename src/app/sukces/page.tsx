@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 
 import {
   PREPARED_ORDER_STORAGE_KEY,
@@ -13,7 +12,6 @@ import {
 import type { OrderDocumentFormInput } from "@/lib/order-input-schema";
 
 export default function SukcesPage() {
-  const searchParams = useSearchParams();
   const [quiz, setQuiz] = useState<QuizState | null>(null);
   const [orderPayload, setOrderPayload] = useState<OrderDocumentFormInput | null>(null);
   const [resolvedMunicipality, setResolvedMunicipality] = useState<MunicipalityLite | null>(null);
@@ -41,7 +39,7 @@ export default function SukcesPage() {
   }, []);
 
   useEffect(() => {
-    const sessionId = searchParams.get("session_id");
+    const sessionId = new URLSearchParams(window.location.search).get("session_id");
     if (!sessionId) {
       setPaymentChecked(true);
       setPaymentPaid(false);
@@ -79,7 +77,7 @@ export default function SukcesPage() {
     return () => {
       cancelled = true;
     };
-  }, [searchParams]);
+  }, []);
 
   useEffect(() => {
     if (resolvedMunicipality) return;
