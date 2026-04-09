@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const COOKIE_CONSENT_KEY = "nbk.cookies.choice.v1";
+const COOKIE_BANNER_SESSION_KEY = "nbk.cookies.banner.hidden.session.v1";
 type CookieChoice = "all" | "necessary";
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
@@ -35,24 +37,34 @@ function enableAnalyticsIfConfigured() {
 }
 
 export default function CookieBanner() {
+  const pathname = usePathname();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    if (pathname !== "/") {
+      setVisible(false);
+      return;
+    }
     try {
+      const hiddenInSession = window.sessionStorage.getItem(COOKIE_BANNER_SESSION_KEY);
+      if (hiddenInSession) {
+        setVisible(false);
+        return;
+      }
       const choice = window.localStorage.getItem(COOKIE_CONSENT_KEY) as CookieChoice | null;
-      if (!choice) {
-        setVisible(true);
-      } else if (choice === "all") {
+      setVisible(true);
+      if (choice === "all") {
         enableAnalyticsIfConfigured();
       }
     } catch {
       setVisible(true);
     }
-  }, []);
+  }, [pathname]);
 
   function saveChoice(choice: CookieChoice) {
     try {
       window.localStorage.setItem(COOKIE_CONSENT_KEY, choice);
+      window.sessionStorage.setItem(COOKIE_BANNER_SESSION_KEY, "1");
     } catch {
       // ignore
     }
