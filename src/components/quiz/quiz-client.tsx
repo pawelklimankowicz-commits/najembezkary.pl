@@ -462,6 +462,13 @@ export function QuizClient() {
       }
 
       const payload = buildOrderPayload();
+      const currentCount = Math.max(1, Math.floor(form.propertyCount ?? 1));
+      const pricingQuizPayload: QuizState = {
+        ...form,
+        propertyCount: currentCount,
+        requiresRegistration: form.q1 !== "long_term" && form.q5 !== "has_number",
+      };
+      sessionStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(pricingQuizPayload));
       sessionStorage.setItem(PREPARED_ORDER_STORAGE_KEY, JSON.stringify(payload));
       sessionStorage.setItem(
         DATA_STORAGE_KEY,

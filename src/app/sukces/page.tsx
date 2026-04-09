@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import {
   PREPARED_ORDER_STORAGE_KEY,
   QUIZ_STORAGE_KEY,
+  type MunicipalityLite,
   type QuizState,
 } from "@/lib/checkout-flow";
 import type { OrderDocumentFormInput } from "@/lib/order-input-schema";
@@ -13,19 +14,96 @@ import type { OrderDocumentFormInput } from "@/lib/order-input-schema";
 export default function SukcesPage() {
   const [quiz, setQuiz] = useState<QuizState | null>(null);
   const [orderPayload, setOrderPayload] = useState<OrderDocumentFormInput | null>(null);
+  const [resolvedMunicipality, setResolvedMunicipality] = useState<MunicipalityLite | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [resolvedOfficePhone, setResolvedOfficePhone] = useState<string | null>(null);
+  const [resolvedOfficeAddress, setResolvedOfficeAddress] = useState<string | null>(null);
 
   useEffect(() => {
     const raw = sessionStorage.getItem(QUIZ_STORAGE_KEY);
     if (!raw) return;
-    setQuiz(JSON.parse(raw) as QuizState);
+    const parsed = JSON.parse(raw) as QuizState;
+    setQuiz(parsed);
+    if (parsed.municipality) {
+      setResolvedMunicipality(parsed.municipality);
+    }
   }, []);
   useEffect(() => {
     const raw = sessionStorage.getItem(PREPARED_ORDER_STORAGE_KEY);
     if (!raw) return;
     setOrderPayload(JSON.parse(raw) as OrderDocumentFormInput);
   }, []);
+
+  useEffect(() => {
+    if (resolvedMunicipality) return;
+    const cityQuery = (quiz?.q2City || orderPayload?.property_city || "").trim();
+    if (!cityQuery) return;
+
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`/api/municipalities/search?q=${encodeURIComponent(cityQuery)}`);
+        if (!res.ok) return;
+        const payload = (await res.json().catch(() => ({}))) as { results?: MunicipalityLite[] };
+        const best =
+          payload.results?.find((m) => m.name.toUpperCase() === cityQuery.toUpperCase()) ??
+          payload.results?.[0];
+        if (!cancelled && best) {
+          setResolvedMunicipality(best);
+        }
+      } catch {
+        // Keep UI fallback text if lookup fails.
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [quiz, orderPayload, resolvedMunicipality]);
+
+  useEffect(() => {
+    const office = resolvedMunicipality;
+    if (!office) return;
+    if (office.office_address?.trim()) {
+      setResolvedOfficeAddress(office.office_address);
+    }
+    if (office.office_phone?.trim()) {
+      setResolvedOfficePhone(office.office_phone);
+    }
+
+    let isCancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/office-phone", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            officeName: office.office_name,
+            officeAddress: office.office_address,
+            city: office.city,
+          }),
+        });
+        if (!res.ok) return;
+        const payload = (await res.json().catch(() => ({}))) as {
+          phone?: string | null;
+          address?: string | null;
+        };
+        if (!isCancelled && payload.phone) {
+          setResolvedOfficePhone(payload.phone);
+        }
+        if (!isCancelled && payload.address) {
+          setResolvedOfficeAddress(payload.address);
+        }
+      } catch {
+        // Fallback to "brak" in UI when lookup fails.
+      }
+    })();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [resolvedMunicipality]);
 
   async function downloadDocuments() {
     if (!orderPayload) {
@@ -58,7 +136,7 @@ export default function SukcesPage() {
     }
   }
 
-  const office = quiz?.municipality;
+  const office = resolvedMunicipality;
 
   return (
     <main className="page-shell">
@@ -67,7 +145,7 @@ export default function SukcesPage() {
       </div>
       <h1 className="page-title">Płatność zakończona pomyślnie.</h1>
       <p className="page-intro">
-        Możesz teraz pobrać paczkę dokumentów ZIP i złożyć dokumenty we właściwym urzędzie gminy.
+        <strong>Możesz teraz pobrać paczkę dokumentów ZIP i złożyć dokumenty we właściwym urzędzie gminy.</strong>
       </p>
       <p>
         <button type="button" className="btn-success" onClick={() => void downloadDocuments()} disabled={loading}>
@@ -88,7 +166,21 @@ export default function SukcesPage() {
           <p>
             <strong>{office.office_name}</strong>
             <br />
-            {office.office_address || "Adres urzędu uzupełnimy po wzbogaceniu bazy."}
+            {office.office_bip_url ? (
+              <>
+                Strona BIP:{" "}
+                <a href={office.office_bip_url} target="_blank" rel="noreferrer">
+                  {office.office_bip_url}
+                </a>
+                <br />
+              </>
+            ) : null}
+            {resolvedOfficeAddress ? (
+              <>
+                {resolvedOfficeAddress}
+                <br />
+              </>
+            ) : null}
           </p>
           <p>
             Sposoby złożenia:
@@ -99,20 +191,9 @@ export default function SukcesPage() {
             <br />
             {office.accepts_mail ? "✓ Poczta" : "— Poczta niedostępna"}
           </p>
+          {resolvedOfficePhone ? <p>Telefon: {resolvedOfficePhone}</p> : null}
           <p>
-            Strona BIP:{" "}
-            {office.office_bip_url ? (
-              <a href={office.office_bip_url} target="_blank" rel="noreferrer">
-                {office.office_bip_url}
-              </a>
-            ) : (
-              "brak"
-            )}
-            <br />
-            Telefon: {office.office_phone || "brak"}
-          </p>
-          <p>
-            <strong>Termin:</strong> do 20 maja 2026
+            <strong>Termin złożenia dokumentów:</strong> do 20 maja 2026
           </p>
         </section>
       ) : null}

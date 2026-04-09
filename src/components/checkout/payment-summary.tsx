@@ -21,22 +21,16 @@ export function PaymentSummary() {
   const pricing = getPackagePricing(quiz?.propertyCount);
 
   return (
-    <div className="wizard">
-      <p className="page-intro">
-        {pricing.isCustomQuote
-          ? "Pakiet dokumentów najembezkary.pl — wycena indywidualna"
-          : `Pakiet dokumentów najembezkary.pl - ${formatPricePln(pricing.total ?? 0)} brutto`}
-      </p>
+    <div className="wizard" style={{ fontWeight: 700 }}>
       <ul>
         <li>Liczba lokali: {pricing.propertyCount}</li>
-        <li>Model cenowy: {pricing.label}</li>
         {!pricing.isCustomQuote && pricing.perUnit ? (
-          <li>Cena za lokal: {formatPricePln(pricing.perUnit)}</li>
+          <li>Cena za lokal: {formatPricePln(pricing.perUnit).replace(" zł", " złotych")}</li>
         ) : null}
         <li>Właściciel: {owner?.fullName ?? "-"}</li>
         <li>Lokal: {owner?.propertyAddress ?? "-"}</li>
         <li>Email: {owner?.email ?? "-"}</li>
-        <li>Status ankiety: {quiz?.requiresRegistration ? "Wymaga rejestracji" : "Do weryfikacji"}</li>
+        <li>Telefon: {owner?.phone ?? "-"}</li>
       </ul>
       <div className="wizard-nav">
         <button className="btn-secondary" onClick={() => router.push("/dane")}>

@@ -229,10 +229,11 @@ export function writeSignatureBlockRight(
   y: number,
   lines: string[],
   fontSize = 9,
-  lineHeightFactor = 1.35
+  lineHeightFactor = 1.35,
+  fontWeight: FontWeight = "normal"
 ): number {
   const xRight = PDF.pageW - PDF.marginX;
-  setBodyFont(doc);
+  doc.setFont(PDF_TIMES_FONT, fontWeight);
   doc.setFontSize(fontSize);
   doc.setTextColor(...COLOR_BODY);
   const lineStep = fontSize * 0.52 * lineHeightFactor;

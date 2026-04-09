@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 
-const HIDE_NAV_ON_PATH_PREFIXES = ["/quiz", "/dane", "/przygotuj", "/platnosc"];
+const HIDE_NAV_ON_PATH_PREFIXES = ["/quiz", "/dane", "/przygotuj", "/platnosc", "/sukces"];
 
 export default function Navbar() {
   const pathname = usePathname();
