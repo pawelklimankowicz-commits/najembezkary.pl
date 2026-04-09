@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { Buffer } from "node:buffer";
 
 export const runtime = "nodejs";
 
@@ -42,7 +43,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     }
 
     const resend = new Resend(process.env.RESEND_API_KEY);
-    const bytes = new Uint8Array(await file.arrayBuffer());
+    const bytes = Buffer.from(await file.arrayBuffer());
 
     await resend.emails.send({
       from: "najembezkary.pl <kontakt@najembezkary.pl>",

@@ -81,7 +81,7 @@ export default function SukcesPage() {
           body: JSON.stringify({
             officeName: office.office_name,
             officeAddress: office.office_address,
-            city: office.city,
+            city: office.name,
           }),
         });
         if (!res.ok) return;
