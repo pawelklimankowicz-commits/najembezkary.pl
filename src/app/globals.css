@@ -972,6 +972,8 @@ body {
 }
 
 .app-nav-inner {
+  position: relative;
+  z-index: 2;
   max-width: 72rem;
   margin: 0 auto;
   padding: 0 0.75rem 0 0;
@@ -1024,6 +1026,8 @@ body {
   color: #123d73;
   cursor: pointer;
   flex-shrink: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition: background 0.2s ease, border-color 0.2s ease;
 }
 
@@ -1050,8 +1054,8 @@ body {
 .app-nav-mobile-backdrop {
   position: fixed;
   inset: 0;
-  top: 4rem;
-  z-index: 48;
+  top: calc(4.25rem + env(safe-area-inset-top, 0px));
+  z-index: 100;
   margin: 0;
   padding: 0;
   border: none;
@@ -1073,19 +1077,15 @@ body {
   position: fixed;
   left: 0;
   right: 0;
-  top: 4rem;
+  top: calc(4.25rem + env(safe-area-inset-top, 0px));
   bottom: 0;
-  z-index: 49;
+  z-index: 101;
   background: #f8fbff;
   border-top: 1px solid #dbe5f1;
   box-shadow: 0 -8px 32px rgba(15, 23, 42, 0.12);
   overflow-y: auto;
   padding: 1rem 1rem 1.5rem;
   animation: app-nav-panel-in 0.22s ease;
-}
-
-.app-nav-mobile-panel.is-open {
-  display: block;
 }
 
 @keyframes app-nav-panel-in {
