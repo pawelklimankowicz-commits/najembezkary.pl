@@ -33,176 +33,206 @@ function normalizeText(value: string): string {
     .trim();
 }
 
-const MAJOR_CITY_DISTRICT_HINTS: MunicipalityLite[] = [
+function slug(value: string): string {
+  return normalizeText(value).replace(/[^a-z0-9]+/g, "-");
+}
+
+function createHint(
+  city: string,
+  district: string,
+  voivodeship: string,
+  office: string
+): MunicipalityLite {
+  const display = district ? `${city} ${district}` : city;
+  return {
+    teryt_code: `hint-${slug(display)}`,
+    name: display,
+    full_name: district ? `gmina/dzielnica: ${display}` : `gmina miejska: ${city}`,
+    type: district ? "dzielnica" : "miasto_na_prawach_powiatu",
+    voivodeship,
+    office_name: office,
+    office_address: null,
+    office_phone: null,
+    office_bip_url: null,
+    accepts_epuap: true,
+    accepts_mail: true,
+    accepts_in_person: true,
+  };
+}
+
+const CITY_DISTRICT_CATALOG: Array<{
+  city: string;
+  voivodeship: string;
+  districts: string[];
+}> = [
   {
-    teryt_code: "hint-warszawa-ursynow",
-    name: "Warszawa Ursynow",
-    full_name: "gmina/dzielnica: Warszawa Ursynow",
-    type: "dzielnica",
+    city: "Warszawa",
     voivodeship: "mazowieckie",
-    office_name: "Urzad dzielnicy (wlasciwy dla adresu lokalu)",
-    office_address: null,
-    office_phone: null,
-    office_bip_url: null,
-    accepts_epuap: true,
-    accepts_mail: true,
-    accepts_in_person: true,
+    districts: [
+      "Bemowo",
+      "Bialoleka",
+      "Bielany",
+      "Mokotow",
+      "Ochota",
+      "Praga-Polnoc",
+      "Praga-Poludnie",
+      "Rembertow",
+      "Srodmiescie",
+      "Targowek",
+      "Ursus",
+      "Ursynow",
+      "Wawer",
+      "Wesola",
+      "Wilanow",
+      "Wlochy",
+      "Wola",
+      "Zoliborz",
+    ],
   },
   {
-    teryt_code: "hint-warszawa-wlochy",
-    name: "Warszawa Wlochy",
-    full_name: "gmina/dzielnica: Warszawa Wlochy",
-    type: "dzielnica",
-    voivodeship: "mazowieckie",
-    office_name: "Urzad dzielnicy (wlasciwy dla adresu lokalu)",
-    office_address: null,
-    office_phone: null,
-    office_bip_url: null,
-    accepts_epuap: true,
-    accepts_mail: true,
-    accepts_in_person: true,
-  },
-  {
-    teryt_code: "hint-warszawa-mokotow",
-    name: "Warszawa Mokotow",
-    full_name: "gmina/dzielnica: Warszawa Mokotow",
-    type: "dzielnica",
-    voivodeship: "mazowieckie",
-    office_name: "Urzad dzielnicy (wlasciwy dla adresu lokalu)",
-    office_address: null,
-    office_phone: null,
-    office_bip_url: null,
-    accepts_epuap: true,
-    accepts_mail: true,
-    accepts_in_person: true,
-  },
-  {
-    teryt_code: "hint-krakow",
-    name: "Krakow",
-    full_name: "gmina miejska: Krakow",
-    type: "miasto_na_prawach_powiatu",
+    city: "Krakow",
     voivodeship: "malopolskie",
-    office_name: "Urzad Miasta (wlasciwy dla adresu lokalu)",
-    office_address: null,
-    office_phone: null,
-    office_bip_url: null,
-    accepts_epuap: true,
-    accepts_mail: true,
-    accepts_in_person: true,
+    districts: [
+      "Stare Miasto",
+      "Grzegorzki",
+      "Pradnik Czerwony",
+      "Pradnik Bialy",
+      "Krowodrza",
+      "Bronowice",
+      "Zwierzyniec",
+      "Debniki",
+      "Lagiewniki-Borek Falecki",
+      "Swoszowice",
+      "Podgorze Duchackie",
+      "Biezanow-Prokocim",
+      "Podgorze",
+      "Czyzyny",
+      "Mistrzejowice",
+      "Bienczyce",
+      "Wzgorza Krzeslawickie",
+      "Nowa Huta",
+    ],
   },
   {
-    teryt_code: "hint-krakow-podgorze",
-    name: "Krakow Podgorze",
-    full_name: "dzielnica/gmina: Krakow Podgorze",
-    type: "dzielnica",
-    voivodeship: "malopolskie",
-    office_name: "Urzad Miasta (wlasciwy dla dzielnicy lokalu)",
-    office_address: null,
-    office_phone: null,
-    office_bip_url: null,
-    accepts_epuap: true,
-    accepts_mail: true,
-    accepts_in_person: true,
+    city: "Lodz",
+    voivodeship: "lodzkie",
+    districts: ["Baluty", "Gorna", "Polesie", "Srodmiescie", "Widzew"],
   },
   {
-    teryt_code: "hint-krakow-nowa-huta",
-    name: "Krakow Nowa Huta",
-    full_name: "dzielnica/gmina: Krakow Nowa Huta",
-    type: "dzielnica",
-    voivodeship: "malopolskie",
-    office_name: "Urzad Miasta (wlasciwy dla dzielnicy lokalu)",
-    office_address: null,
-    office_phone: null,
-    office_bip_url: null,
-    accepts_epuap: true,
-    accepts_mail: true,
-    accepts_in_person: true,
-  },
-  {
-    teryt_code: "hint-poznan",
-    name: "Poznan",
-    full_name: "gmina miejska: Poznan",
-    type: "miasto_na_prawach_powiatu",
+    city: "Poznan",
     voivodeship: "wielkopolskie",
-    office_name: "Urzad Miasta (wlasciwy dla adresu lokalu)",
-    office_address: null,
-    office_phone: null,
-    office_bip_url: null,
-    accepts_epuap: true,
-    accepts_mail: true,
-    accepts_in_person: true,
+    districts: ["Grunwald", "Jezyce", "Nowe Miasto", "Stare Miasto", "Wilda"],
   },
   {
-    teryt_code: "hint-poznan-grunwald",
-    name: "Poznan Grunwald",
-    full_name: "dzielnica/gmina: Poznan Grunwald",
-    type: "dzielnica",
-    voivodeship: "wielkopolskie",
-    office_name: "Urzad Miasta (wlasciwy dla dzielnicy lokalu)",
-    office_address: null,
-    office_phone: null,
-    office_bip_url: null,
-    accepts_epuap: true,
-    accepts_mail: true,
-    accepts_in_person: true,
-  },
-  {
-    teryt_code: "hint-poznan-jezyce",
-    name: "Poznan Jezyce",
-    full_name: "dzielnica/gmina: Poznan Jezyce",
-    type: "dzielnica",
-    voivodeship: "wielkopolskie",
-    office_name: "Urzad Miasta (wlasciwy dla dzielnicy lokalu)",
-    office_address: null,
-    office_phone: null,
-    office_bip_url: null,
-    accepts_epuap: true,
-    accepts_mail: true,
-    accepts_in_person: true,
-  },
-  {
-    teryt_code: "hint-wroclaw",
-    name: "Wroclaw",
-    full_name: "gmina miejska: Wroclaw",
-    type: "miasto_na_prawach_powiatu",
+    city: "Wroclaw",
     voivodeship: "dolnoslaskie",
-    office_name: "Urzad Miasta (wlasciwy dla adresu lokalu)",
-    office_address: null,
-    office_phone: null,
-    office_bip_url: null,
-    accepts_epuap: true,
-    accepts_mail: true,
-    accepts_in_person: true,
+    districts: ["Fabryczna", "Krzyki", "Psie Pole", "Srodmiescie", "Stare Miasto"],
   },
   {
-    teryt_code: "hint-wroclaw-psie-pole",
-    name: "Wroclaw Psie Pole",
-    full_name: "dzielnica/gmina: Wroclaw Psie Pole",
-    type: "dzielnica",
-    voivodeship: "dolnoslaskie",
-    office_name: "Urzad Miasta (wlasciwy dla dzielnicy lokalu)",
-    office_address: null,
-    office_phone: null,
-    office_bip_url: null,
-    accepts_epuap: true,
-    accepts_mail: true,
-    accepts_in_person: true,
+    city: "Gdansk",
+    voivodeship: "pomorskie",
+    districts: ["Srodmiescie", "Wrzeszcz", "Oliwa", "Przymorze", "Orunia", "Chehm"],
   },
   {
-    teryt_code: "hint-wroclaw-krzyki",
-    name: "Wroclaw Krzyki",
-    full_name: "dzielnica/gmina: Wroclaw Krzyki",
-    type: "dzielnica",
-    voivodeship: "dolnoslaskie",
-    office_name: "Urzad Miasta (wlasciwy dla dzielnicy lokalu)",
-    office_address: null,
-    office_phone: null,
-    office_bip_url: null,
-    accepts_epuap: true,
-    accepts_mail: true,
-    accepts_in_person: true,
+    city: "Szczecin",
+    voivodeship: "zachodniopomorskie",
+    districts: ["Prawobrzeze", "Srodmiescie", "Polnoc", "Zachod"],
+  },
+  { city: "Lublin", voivodeship: "lubelskie", districts: ["Srodmiescie", "Czechow", "Czuby"] },
+  {
+    city: "Katowice",
+    voivodeship: "slaskie",
+    districts: ["Srodmiescie", "Ligota-Panewniki", "Bogucice", "Dab"],
+  },
+  {
+    city: "Bialystok",
+    voivodeship: "podlaskie",
+    districts: ["Centrum", "Bojary", "Piaski", "Nowe Miasto"],
+  },
+  {
+    city: "Bydgoszcz",
+    voivodeship: "kujawsko-pomorskie",
+    districts: ["Srodmiescie", "Fordon", "Bartodzieje"],
+  },
+  {
+    city: "Torun",
+    voivodeship: "kujawsko-pomorskie",
+    districts: ["Stare Miasto", "Bydgoskie Przedmiescie", "Mokre"],
+  },
+  {
+    city: "Rzeszow",
+    voivodeship: "podkarpackie",
+    districts: ["Srodmiescie", "Nowe Miasto", "Drabinianka"],
+  },
+  {
+    city: "Kielce",
+    voivodeship: "swietokrzyskie",
+    districts: ["Srodmiescie", "KSM", "Czarnow"],
+  },
+  {
+    city: "Olsztyn",
+    voivodeship: "warminsko-mazurskie",
+    districts: ["Srodmiescie", "Jaroty", "Kortowo"],
+  },
+  { city: "Opole", voivodeship: "opolskie", districts: ["Srodmiescie", "Zaodrze", "Kolonia Goslawicka"] },
+  {
+    city: "Gorzow Wielkopolski",
+    voivodeship: "lubuskie",
+    districts: ["Srodmiescie", "Zawarcie", "Gorczyn"],
+  },
+  {
+    city: "Zielona Gora",
+    voivodeship: "lubuskie",
+    districts: ["Srodmiescie", "Racula", "Jedrzychow"],
   },
 ];
+
+const MAJOR_CITY_DISTRICT_HINTS: MunicipalityLite[] = CITY_DISTRICT_CATALOG.flatMap(
+  ({ city, voivodeship, districts }) => [
+    createHint(city, "", voivodeship, "Urzad Miasta (wlasciwy dla adresu lokalu)"),
+    ...districts.map((district) =>
+      createHint(
+        city,
+        district,
+        voivodeship,
+        "Urzad dzielnicy / punkt obslugi mieszkancow (wlasciwy dla adresu lokalu)"
+      )
+    ),
+  ]
+);
+
+const MAJOR_CITY_QUERY_KEYS = new Set(
+  CITY_DISTRICT_CATALOG.map((item) => normalizeText(item.city))
+);
+
+function rankMunicipalityForQuery(q: string, m: MunicipalityLite): number {
+  const nq = normalizeText(q);
+  const name = normalizeText(m.name);
+  const full = normalizeText(m.full_name);
+  if (name === nq) return 0;
+  if (name.startsWith(`${nq} `)) return 1;
+  if (name.startsWith(nq)) return 2;
+  if (full.includes(` ${nq} `)) return 3;
+  if (full.includes(nq)) return 4;
+  return 5;
+}
+
+function filterAndSortByQueryContext(query: string, base: MunicipalityLite[]): MunicipalityLite[] {
+  const nq = normalizeText(query);
+  let filtered = base;
+  if (MAJOR_CITY_QUERY_KEYS.has(nq)) {
+    filtered = base.filter((m) => {
+      const name = normalizeText(m.name);
+      return name === nq || name.startsWith(`${nq} `);
+    });
+  }
+  return [...filtered].sort((a, b) => {
+    const ra = rankMunicipalityForQuery(query, a);
+    const rb = rankMunicipalityForQuery(query, b);
+    if (ra !== rb) return ra - rb;
+    return a.name.localeCompare(b.name, "pl");
+  });
+}
 
 function withDistrictHints(query: string, base: MunicipalityLite[]): MunicipalityLite[] {
   const nq = normalizeText(query);
@@ -215,7 +245,7 @@ function withDistrictHints(query: string, base: MunicipalityLite[]): Municipalit
     const key = normalizeText(`${item.name}|${item.voivodeship}`);
     if (!byName.has(key)) byName.set(key, item);
   }
-  return Array.from(byName.values());
+  return filterAndSortByQueryContext(query, Array.from(byName.values()));
 }
 
 export async function GET(req: Request): Promise<Response> {
