@@ -554,6 +554,8 @@ a:hover {
   max-width: 72rem;
   margin: 0 auto;
   padding: 0 1.5rem 4.5rem;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 .hero {
@@ -1075,10 +1077,10 @@ body {
 }
 
 .hero {
-  margin-top: 0;
+  margin-top: 0 !important;
   background: linear-gradient(135deg, #eff5ff 0%, #ffffff 52%, #eef4ff 100%);
   border: 1px solid #dce8f8;
-  padding: 2rem 2rem;
+  padding: 0.35rem 2rem 2rem;
   box-shadow: 0 24px 48px rgba(12, 39, 72, 0.12);
   text-align: center;
   min-height: calc(130vh - 4rem);
