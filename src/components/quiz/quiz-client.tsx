@@ -71,6 +71,7 @@ const VOIVODESHIP_CITIES = new Set(
 );
 
 export function QuizClient() {
+  type ErrorTarget = { step: number; selector: string };
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [form, setForm] = useState(initial);
@@ -96,6 +97,7 @@ export function QuizClient() {
   const [consentId, setConsentId] = useState<string | null>(null);
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [paymentError, setPaymentError] = useState<string | null>(null);
+  const [errorTarget, setErrorTarget] = useState<ErrorTarget | null>(null);
 
   const fuse = useMemo(
     () =>
@@ -196,8 +198,53 @@ export function QuizClient() {
     });
   }
 
+  function inferValidationTarget(message: string, currentStep: number): ErrorTarget | null {
+    const match = message.match(/nr\s+(\d+)/i);
+    const idx = Math.max(0, Number(match?.[1] ?? "1") - 1);
+    const lower = message.toLowerCase();
+
+    if (currentStep === 6) {
+      if (lower.includes("imię i nazwisko")) return { step: 6, selector: `#owner-${idx}-owner_name` };
+      if (lower.includes("e-mail")) return { step: 6, selector: `#owner-${idx}-email` };
+      if (lower.includes("telefon")) return { step: 6, selector: `#owner-${idx}-owner_phone` };
+      if (lower.includes("adres korespondencyjny")) return { step: 6, selector: `#owner-${idx}-owner_address` };
+      if (lower.includes("pesel")) return { step: 6, selector: `#owner-${idx}-owner_pesel` };
+      if (lower.includes("dowód") || lower.includes("paszport")) {
+        return { step: 6, selector: `#owner-${idx}-owner_identity_document` };
+      }
+    }
+
+    if (currentStep === 7 && lower.includes("adres lokalu")) {
+      return { step: 7, selector: `#property-${idx}-property_address` };
+    }
+
+    return null;
+  }
+
+  function focusAndHighlightSelector(selector: string) {
+    setTimeout(() => {
+      const element = document.querySelector(selector) as HTMLElement | null;
+      if (!element) return;
+      element.scrollIntoView({ behavior: "smooth", block: "center" });
+      if ("focus" in element) {
+        (element as HTMLInputElement).focus();
+      }
+      element.classList.add("field-error-highlight");
+      window.setTimeout(() => element.classList.remove("field-error-highlight"), 1800);
+    }, 80);
+  }
+
+  function goToError() {
+    if (!errorTarget) return;
+    setStepError(null);
+    setPaymentError(null);
+    setStep(errorTarget.step);
+    focusAndHighlightSelector(errorTarget.selector);
+  }
+
   function next() {
     setStepError(null);
+    setErrorTarget(null);
     if (step === 2 && form.q1 === "long_term") {
       const payload: QuizState = { ...form, requiresRegistration: false };
       payload.propertyCount = form.propertyCount ?? 1;
@@ -209,6 +256,7 @@ export function QuizClient() {
       const err = validateOwnersStep(owners);
       if (err) {
         setStepError(err);
+        setErrorTarget(inferValidationTarget(err, 6));
         return;
       }
       setOwners((prev) =>
@@ -225,6 +273,7 @@ export function QuizClient() {
       const err = validatePropertiesStep(properties);
       if (err) {
         setStepError(err);
+        setErrorTarget(inferValidationTarget(err, 7));
         return;
       }
       savePrepareDraft({ owners, properties });
@@ -262,6 +311,7 @@ export function QuizClient() {
   }, [step, municipalities.length]);
   function back() {
     setStepError(null);
+    setErrorTarget(null);
     setStep((s) => Math.max(1, s - 1));
   }
 
@@ -424,10 +474,12 @@ export function QuizClient() {
 
   async function proceedToPayment() {
     setPaymentError(null);
+    setErrorTarget(null);
     if (!consents.termsAccepted || !consents.digitalContentConsent) {
       setPaymentError(
         "Zaakceptuj Regulamin, Polityke prywatnosci oraz zgode na natychmiastowe wykonanie umowy."
       );
+      setErrorTarget({ step: 8, selector: "#consent-terms" });
       return;
     }
     setPaymentLoading(true);
@@ -535,6 +587,14 @@ export function QuizClient() {
       {stepError ? (
         <p className="wizard-error" role="alert">
           {stepError}
+          {errorTarget ? (
+            <>
+              {" "}
+              <button type="button" className="btn-secondary" onClick={goToError}>
+                Powrót do błędu
+              </button>
+            </>
+          ) : null}
         </p>
       ) : null}
 
@@ -834,7 +894,16 @@ export function QuizClient() {
             })}
           </dl>
           <OrderFormConsents onChange={setConsents} />
-          {paymentError ? <p className="wizard-error">{paymentError}</p> : null}
+          {paymentError ? (
+            <p className="wizard-error">
+              {paymentError}{" "}
+              {errorTarget ? (
+                <button type="button" className="btn-secondary" onClick={goToError}>
+                  Powrót do błędu
+                </button>
+              ) : null}
+            </p>
+          ) : null}
           <button type="button" className="btn-primary" onClick={() => void proceedToPayment()} disabled={paymentLoading}>
             {paymentLoading ? "Przetwarzanie…" : "Przejdź do płatności"}
           </button>

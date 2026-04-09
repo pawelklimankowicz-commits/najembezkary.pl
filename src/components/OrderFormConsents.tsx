@@ -30,6 +30,7 @@ export default function OrderFormConsents({
     <div className="legal-consents">
       <label className="consent-row">
         <input
+          id="consent-terms"
           type="checkbox"
           onChange={(e) => update("termsAccepted", e.target.checked)}
         />

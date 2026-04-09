@@ -50,6 +50,7 @@ export function OwnerDataStep({
             <label className="field">
               <span>Imię i nazwisko</span>
               <input
+                id={`owner-${idx}-owner_name`}
                 value={owner.owner_name}
                 onChange={(e) => patchOwner(idx, "owner_name", e.target.value)}
                 autoComplete="name"
@@ -58,6 +59,7 @@ export function OwnerDataStep({
             <label className="field">
               <span>Ulica i numer</span>
               <input
+                id={`owner-${idx}-owner_address`}
                 value={owner.owner_address}
                 onChange={(e) => patchOwner(idx, "owner_address", e.target.value)}
               />
@@ -65,6 +67,7 @@ export function OwnerDataStep({
             <label className="field">
               <span>Miejscowość</span>
               <input
+                id={`owner-${idx}-owner_city`}
                 value={owner.owner_city}
                 onChange={(e) => patchOwner(idx, "owner_city", e.target.value)}
               />
@@ -72,6 +75,7 @@ export function OwnerDataStep({
             <label className="field">
               <span>Kod pocztowy</span>
               <input
+                id={`owner-${idx}-owner_zip`}
                 value={owner.owner_zip}
                 onChange={(e) =>
                   patchOwner(idx, "owner_zip", formatPolishPostalCode(e.target.value))
@@ -84,6 +88,7 @@ export function OwnerDataStep({
             <label className="field">
               <span>Telefon</span>
               <input
+                id={`owner-${idx}-owner_phone`}
                 value={owner.owner_phone}
                 onChange={(e) => patchOwner(idx, "owner_phone", e.target.value)}
                 placeholder="+48 501234567"
@@ -92,6 +97,7 @@ export function OwnerDataStep({
             <label className="field">
               <span>Adres e-mail</span>
               <input
+                id={`owner-${idx}-email`}
                 type="email"
                 value={owner.email}
                 onChange={(e) => patchOwner(idx, "email", e.target.value)}
@@ -101,6 +107,7 @@ export function OwnerDataStep({
             <label className="field">
               <span>PESEL</span>
               <input
+                id={`owner-${idx}-owner_pesel`}
                 value={owner.owner_pesel}
                 onChange={(e) => patchOwner(idx, "owner_pesel", e.target.value)}
               />
@@ -108,6 +115,7 @@ export function OwnerDataStep({
             <label className="field field--wide">
               <span>Dowód osobisty (seria i numer)</span>
               <input
+                id={`owner-${idx}-owner_identity_document`}
                 value={owner.owner_identity_document}
                 onChange={(e) =>
                   patchOwner(idx, "owner_identity_document", e.target.value)
@@ -151,6 +159,7 @@ export function PropertyDataStep({
             <label className="field field--wide">
               <span>Adres obiektu (ulica, numer)</span>
               <input
+                id={`property-${idx}-property_address`}
                 value={property.property_address}
                 onChange={(e) => patchProperty(idx, "property_address", e.target.value)}
               />
