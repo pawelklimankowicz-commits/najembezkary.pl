@@ -68,7 +68,7 @@ export default function CookieBanner() {
     <div
       role="dialog"
       aria-live="polite"
-      className="fixed bottom-4 left-1/2 z-50 w-[min(960px,calc(100%-1.5rem))] -translate-x-1/2 rounded-xl border border-slate-200 bg-white p-4 shadow-lg"
+      className="fixed bottom-0 left-1/2 z-50 w-[min(960px,calc(100%-1.5rem))] -translate-x-1/2 rounded-t-xl border border-slate-200 bg-white p-4 shadow-lg"
     >
       <p className="text-sm text-slate-700">
         Używamy plików cookies, aby zapewnić prawidłowe działanie serwisu i analizować ruch.
