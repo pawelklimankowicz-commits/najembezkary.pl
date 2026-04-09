@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const COOKIE_CONSENT_KEY = "nbk.cookies.choice.v1";
 type CookieChoice = "all" | "necessary";
@@ -35,19 +35,13 @@ function enableAnalyticsIfConfigured() {
 }
 
 export default function CookieBanner() {
-  const [visible, setVisible] = useState(false);
-
   useEffect(() => {
     try {
       const choice = window.localStorage.getItem(COOKIE_CONSENT_KEY) as CookieChoice | null;
-      if (!choice) {
-        setVisible(true);
-      } else if (choice === "all") {
+      if (choice === "all") {
         enableAnalyticsIfConfigured();
       }
-    } catch {
-      setVisible(true);
-    }
+    } catch {}
   }, []);
 
   function saveChoice(choice: CookieChoice) {
@@ -59,10 +53,7 @@ export default function CookieBanner() {
     if (choice === "all") {
       enableAnalyticsIfConfigured();
     }
-    setVisible(false);
   }
-
-  if (!visible) return null;
 
   return (
     <div

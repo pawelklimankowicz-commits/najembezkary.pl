@@ -53,13 +53,14 @@ function build1(doc: jsPDF, c: PdfContext): void {
       "OBIEKTÓW KRÓTKOTRWAŁEGO ZAKWATEROWANIA",
     ],
     y,
-    14
+    13,
+    1.2
   );
 
-  y = L.writeRule(doc, y);
+  y = L.writeRule(doc, y - 4.2);
   const w1 = { gapBefore: 0.05, gapAfter: 0.05 } as const;
   const w1next = { gapBefore: 0.05, gapAfter: 0.05 } as const;
-  const w1p = [10, 1.24, "left" as const, 0] as const;
+  const w1p = [9.5, 1.15, "left" as const, 0] as const;
 
   y = L.writeSectionHeading(
     doc,
@@ -125,7 +126,7 @@ function build1(doc: jsPDF, c: PdfContext): void {
     ...w1p
   );
 
-  y = L.ensureSpace(doc, y, 30);
+  y = L.ensureSpace(doc, y, 18);
   y = L.writeParagraphFlow(
     doc,
     `Miejscowość i data: ${c.ownerCity}, ${c.today}\nPodpis wnioskodawcy\n..............................................................\n(czytelny podpis lub podpis elektroniczny, jeżeli składane elektronicznie)`,
