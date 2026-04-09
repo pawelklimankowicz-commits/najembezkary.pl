@@ -20,8 +20,8 @@ export default function Navbar() {
         </a>
         <div className="app-nav-links">
           <a href="/">O nas</a>
-          <a href="/cennik">Cennik</a>
           <a href="/#jak-to-dziala">Jak to działa</a>
+          <a href="/cennik">Cennik</a>
           <a href="/#faq">FAQ</a>
           <a href="/regulamin">Regulamin</a>
           <a href="/polityka-prywatnosci">Polityka prywatności</a>

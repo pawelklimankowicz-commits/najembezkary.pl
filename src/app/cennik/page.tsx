@@ -3,9 +3,9 @@ import Link from "next/link";
 export default function CennikPage() {
   return (
     <main className="page-shell">
-      <h1 className="page-title">Cennik pakietu dokumentów</h1>
+      <h1 className="page-title">Cennik</h1>
       <p className="page-intro">
-        Cena bazowa dla 1 lokalu to 99 zł. Dla większej liczby lokali naliczamy automatyczne rabaty.
+        <strong>Cena bazowa to 99 złotych. Dla większej liczby lokali naliczamy automatyczne rabaty.</strong>
       </p>
 
       <section className="landing-section">
@@ -14,8 +14,8 @@ export default function CennikPage() {
             <thead>
               <tr>
                 <th>Liczba lokali</th>
-                <th>Cena całkowita</th>
                 <th>Cena za lokal</th>
+                <th>Cena całkowita</th>
               </tr>
             </thead>
             <tbody>
@@ -26,28 +26,28 @@ export default function CennikPage() {
               </tr>
               <tr>
                 <td>2 lokale</td>
-                <td>179,00 zł</td>
                 <td>89,50 zł</td>
+                <td>179,00 zł</td>
               </tr>
               <tr>
                 <td>3 lokale</td>
-                <td>249,00 zł</td>
                 <td>83,00 zł</td>
+                <td>249,00 zł</td>
               </tr>
               <tr>
                 <td>4-5 lokali</td>
-                <td>automatycznie wg liczby lokali</td>
                 <td>79,00 zł</td>
+                <td>automatycznie wg liczby lokali</td>
               </tr>
               <tr>
                 <td>6-10 lokali</td>
-                <td>automatycznie wg liczby lokali</td>
                 <td>69,00 zł</td>
+                <td>automatycznie wg liczby lokali</td>
               </tr>
               <tr>
                 <td>11+ lokali</td>
-                <td>wycena indywidualna</td>
                 <td>od 59,00 zł</td>
+                <td>wycena indywidualna</td>
               </tr>
             </tbody>
           </table>
