@@ -1,6 +1,6 @@
 create table if not exists public.consents_log (
   id uuid primary key default gen_random_uuid(),
-  order_id uuid references public.orders(id) on delete set null,
+  order_id uuid,
   session_id text,
   terms_accepted boolean not null default false,
   digital_content_consent boolean not null default false,

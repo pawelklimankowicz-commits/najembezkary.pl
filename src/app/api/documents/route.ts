@@ -1,12 +1,67 @@
 import { NextResponse } from "next/server";
+import { headers } from "next/headers";
 
 import { buildDocumentsZipBuffer } from "@/lib/build-documents-zip";
 import {
   orderDocumentInputSchema,
   toOrderDocumentBuildInput,
+  type OrderDocumentFormInput,
 } from "@/lib/order-input-schema";
+import { getSupabaseServerClient } from "@/lib/supabase-server";
 
 export const runtime = "nodejs";
+
+async function saveClientSubmission(input: OrderDocumentFormInput) {
+  try {
+    const headersList = await headers();
+    const forwarded = headersList.get("x-forwarded-for");
+    const ipAddress = forwarded ? forwarded.split(",")[0].trim() : null;
+    const userAgent = headersList.get("user-agent");
+    const referrer = headersList.get("referer");
+
+    const ownerUnitsJsonRaw = input.quiz_answers.owner_units_json ?? null;
+    let ownerUnitsJson: unknown = null;
+    if (ownerUnitsJsonRaw) {
+      try {
+        ownerUnitsJson = JSON.parse(ownerUnitsJsonRaw);
+      } catch {
+        ownerUnitsJson = ownerUnitsJsonRaw;
+      }
+    }
+
+    const supabase = getSupabaseServerClient();
+    const { error } = await supabase.from("client_submissions").insert({
+      owner_name: input.owner_name,
+      owner_city: input.owner_city,
+      owner_address: input.owner_address,
+      owner_zip: input.owner_zip,
+      owner_pesel: input.owner_pesel ?? null,
+      owner_identity_document: input.owner_identity_document ?? null,
+      email: input.email,
+      owner_phone: input.owner_phone,
+      property_address: input.property_address,
+      property_city: input.property_city,
+      property_zip: input.property_zip ?? null,
+      property_type: input.property_type,
+      property_area: input.property_area ?? null,
+      property_floor: input.property_floor ?? null,
+      rental_platform: input.rental_platform,
+      rental_since: input.rental_since ?? null,
+      quiz_q3: input.quiz_answers.q3,
+      owner_units_json: ownerUnitsJson,
+      ip_address: ipAddress,
+      user_agent: userAgent,
+      referrer,
+      submitted_at: new Date().toISOString(),
+    });
+
+    if (error) {
+      console.error("[client_submissions] Blad zapisu:", error.message);
+    }
+  } catch (error) {
+    console.error("[client_submissions] Nieoczekiwany blad zapisu:", error);
+  }
+}
 
 export async function POST(req: Request): Promise<Response> {
   let json: unknown;
@@ -25,6 +80,8 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   try {
+    await saveClientSubmission(parsed.data);
+
     const buf = await buildDocumentsZipBuffer(
       toOrderDocumentBuildInput(parsed.data)
     );

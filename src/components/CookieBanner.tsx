@@ -8,6 +8,7 @@ const COOKIE_CONSENT_KEY = "nbk.cookies.choice.v1";
 const COOKIE_BANNER_SESSION_KEY = "nbk.cookies.banner.hidden.session.v1";
 type CookieChoice = "all" | "necessary";
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+const REJECT_REDIRECT_URL = "https://www.google.com";
 
 declare global {
   interface Window {
@@ -46,13 +47,8 @@ export default function CookieBanner() {
       return;
     }
     try {
-      const hiddenInSession = window.sessionStorage.getItem(COOKIE_BANNER_SESSION_KEY);
-      if (hiddenInSession) {
-        setVisible(false);
-        return;
-      }
       const choice = window.localStorage.getItem(COOKIE_CONSENT_KEY) as CookieChoice | null;
-      setVisible(true);
+      setVisible(!choice);
       if (choice === "all") {
         enableAnalyticsIfConfigured();
       }
@@ -74,29 +70,51 @@ export default function CookieBanner() {
     setVisible(false);
   }
 
+  function rejectAndExit() {
+    try {
+      window.localStorage.setItem(COOKIE_CONSENT_KEY, "necessary");
+      window.sessionStorage.setItem(COOKIE_BANNER_SESSION_KEY, "1");
+    } catch {
+      // ignore
+    }
+    window.location.replace(REJECT_REDIRECT_URL);
+  }
+
+  useEffect(() => {
+    if (pathname !== "/" || !visible) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [pathname, visible]);
+
   if (!visible) return null;
 
   return (
-    <div
-      role="dialog"
-      aria-live="polite"
-      className="fixed bottom-0 left-1/2 z-50 w-[min(960px,calc(100%-1.5rem))] -translate-x-1/2 rounded-t-xl border border-slate-200 bg-white p-4 shadow-lg"
-    >
-      <p className="text-sm text-slate-700">
-        Używamy plików cookies, aby zapewnić prawidłowe działanie serwisu i analizować ruch.
-        Korzystając ze strony akceptujesz ich użycie. Szczegóły znajdziesz w{" "}
-        <Link href="/polityka-prywatnosci" className="underline">
-          Polityce prywatności
-        </Link>
-        .
-      </p>
-      <div className="mt-3 flex justify-end gap-2">
-        <button type="button" className="btn-secondary" onClick={() => saveChoice("necessary")}>
-          Tylko niezbędne
-        </button>
-        <button type="button" className="btn-primary" onClick={() => saveChoice("all")}>
-          Akceptuję wszystkie
-        </button>
+    <div className="fixed inset-0 z-[80] flex items-center justify-center bg-slate-900/55 px-4">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-live="polite"
+        className="w-[min(720px,100%)] rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl"
+      >
+        <p className="text-sm text-slate-700">
+          Używamy plików cookies, aby zapewnić prawidłowe działanie serwisu i analizować ruch.
+          Szczegóły znajdziesz w{" "}
+          <Link href="/polityka-prywatnosci" className="underline">
+            Polityce prywatności
+          </Link>
+          .
+        </p>
+        <div className="mt-4 flex flex-wrap justify-end gap-2">
+          <button type="button" className="btn-secondary" onClick={rejectAndExit}>
+            Nie zgadzam się
+          </button>
+          <button type="button" className="btn-primary" onClick={() => saveChoice("all")}>
+            Akceptuję i przechodzę dalej
+          </button>
+        </div>
       </div>
     </div>
   );
