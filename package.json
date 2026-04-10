@@ -16,6 +16,7 @@
   "dependencies": {
     "@janekolszak/poland": "^1.1.0",
     "@supabase/supabase-js": "^2.102.1",
+    "@vercel/analytics": "^2.0.1",
     "csv-parse": "^6.2.1",
     "fuse.js": "^7.3.0",
     "jspdf": "^4.2.1",
