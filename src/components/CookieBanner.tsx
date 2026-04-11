@@ -4,9 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const COOKIE_CONSENT_KEY = "nbk.cookies.choice.v1";
-const COOKIE_BANNER_SESSION_KEY = "nbk.cookies.banner.hidden.session.v1";
-type CookieChoice = "all" | "necessary";
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 const REJECT_REDIRECT_URL = "https://www.google.com";
 
@@ -46,72 +43,72 @@ export default function CookieBanner() {
       setVisible(false);
       return;
     }
-    try {
-      const choice = window.localStorage.getItem(COOKIE_CONSENT_KEY) as CookieChoice | null;
-      setVisible(!choice);
-      if (choice === "all") {
-        enableAnalyticsIfConfigured();
-      }
-    } catch {
-      setVisible(true);
-    }
+    setVisible(true);
   }, [pathname]);
 
-  function saveChoice(choice: CookieChoice) {
-    try {
-      window.localStorage.setItem(COOKIE_CONSENT_KEY, choice);
-      window.sessionStorage.setItem(COOKIE_BANNER_SESSION_KEY, "1");
-    } catch {
-      // ignore
-    }
-    if (choice === "all") {
-      enableAnalyticsIfConfigured();
-    }
+  function acceptAndContinue() {
+    enableAnalyticsIfConfigured();
     setVisible(false);
   }
 
   function rejectAndExit() {
-    try {
-      window.localStorage.setItem(COOKIE_CONSENT_KEY, "necessary");
-      window.sessionStorage.setItem(COOKIE_BANNER_SESSION_KEY, "1");
-    } catch {
-      // ignore
-    }
     window.location.replace(REJECT_REDIRECT_URL);
   }
 
   useEffect(() => {
-    if (pathname !== "/" || !visible) return;
-    const prevOverflow = document.body.style.overflow;
+    const shouldLock = pathname === "/" && visible;
+    if (!shouldLock) {
+      document.body.style.overflow = "";
+      return;
+    }
     document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = prevOverflow;
+      document.body.style.overflow = "";
     };
   }, [pathname, visible]);
 
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 z-[80] flex items-center justify-center bg-slate-900/55 px-4">
+    <div
+      role="presentation"
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 9999,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "rgba(15, 23, 42, 0.55)",
+        padding: "1rem",
+      }}
+    >
       <div
         role="dialog"
         aria-modal="true"
         aria-live="polite"
-        className="w-[min(720px,100%)] rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl"
+        style={{
+          width: "min(720px, 100%)",
+          borderRadius: "16px",
+          border: "1px solid #e2e8f0",
+          background: "#ffffff",
+          padding: "1.25rem",
+          boxShadow: "0 20px 48px rgba(15, 23, 42, 0.30)",
+        }}
       >
-        <p className="text-sm text-slate-700">
+        <p style={{ margin: 0, color: "#334155", fontSize: "14px", lineHeight: 1.5 }}>
           Używamy plików cookies, aby zapewnić prawidłowe działanie serwisu i analizować ruch.
           Szczegóły znajdziesz w{" "}
-          <Link href="/polityka-prywatnosci" className="underline">
+          <Link href="/polityka-prywatnosci" style={{ textDecoration: "underline" }}>
             Polityce prywatności
           </Link>
           .
         </p>
-        <div className="mt-4 flex flex-wrap justify-end gap-2">
+        <div style={{ marginTop: "1rem", display: "flex", justifyContent: "flex-end", gap: "0.5rem" }}>
           <button type="button" className="btn-secondary" onClick={rejectAndExit}>
             Nie zgadzam się
           </button>
-          <button type="button" className="btn-primary" onClick={() => saveChoice("all")}>
+          <button type="button" className="btn-primary" onClick={acceptAndContinue}>
             Akceptuję i przechodzę dalej
           </button>
         </div>
