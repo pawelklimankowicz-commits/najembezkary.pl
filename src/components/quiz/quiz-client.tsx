@@ -477,7 +477,7 @@ export function QuizClient() {
     setErrorTarget(null);
     if (!consents.termsAccepted || !consents.digitalContentConsent) {
       setPaymentError(
-        "Zaakceptuj Regulamin, Polityke prywatnosci oraz zgode na natychmiastowe wykonanie umowy."
+        "Zaakceptuj Regulamin, Politykę prywatności oraz zgodę na natychmiastowe wykonanie umowy."
       );
       setErrorTarget({ step: 8, selector: "#consent-terms" });
       return;

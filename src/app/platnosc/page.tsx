@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
 import { PaymentSummary } from "@/components/checkout/payment-summary";
+
+export const metadata: Metadata = {
+  title: "Płatność – Kup pakiet dokumentów | najembezkary.pl",
+  description:
+    "Sfinalizuj zamówienie i pobierz komplet dokumentów do rejestracji najmu krótkoterminowego. Bezpieczna płatność online.",
+  robots: { index: false, follow: false },
+};
 
 export default function PlatnoscPage() {
   return (

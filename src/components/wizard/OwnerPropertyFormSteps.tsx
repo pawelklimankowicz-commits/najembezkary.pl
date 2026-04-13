@@ -32,6 +32,10 @@ export function OwnerDataStep({
   return (
     <section className="wizard-panel">
       <h2>Dane właściciela</h2>
+      <p className="wizard-hint wizard-hint--privacy">
+        🔒 Podane dane (w tym PESEL i numer dokumentu) są wykorzystywane wyłącznie do wygenerowania
+        dokumentów PDF i nie są przechowywane na naszych serwerach po pobraniu pakietu.
+      </p>
       {owners.map((owner, idx) => (
         <div key={`owner-${idx}`} className="wizard-multi-block">
           <div className="wizard-multi-head">

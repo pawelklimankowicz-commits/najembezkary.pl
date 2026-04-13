@@ -30,7 +30,7 @@ export default function HomePage() {
     <main className="landing">
       <section className="hero">
         <p className="badge">Generator dokumentów dla zgłoszenia najmu krótkoterminowego</p>
-        <h1>Nowoczesne narzędzie do przygotowania dokumentów rejestracyjnych najmu krótkoterminowego</h1>
+        <h1>Rejestracja najmu krótkoterminowego — dokumenty w 3 minuty</h1>
         <div className="hero-content">
           <div className="hero-main-copy">
             <div className="hero-warning">
@@ -125,7 +125,7 @@ export default function HomePage() {
         <div className="pricing-compare">
           <article className="pricing-card pricing-card--muted">
             <h3>U prawnika</h3>
-            <p>Średnio 499 złotych zł za samą konsultację inie mówiąc o czasie oczekiwania na przygotowanie dokumentów.</p>
+            <p>Średnio 499 złotych za samą konsultację i nie mówiąc o czasie oczekiwania na przygotowanie dokumentów.</p>
           </article>
           <article className="pricing-card pricing-card--highlight">
             <h3>U nas</h3>
