@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
 import { getStripeServer } from "@/lib/stripe-server";
+import { getSupabaseServerClient } from "@/lib/supabase-server";
 
 export const runtime = "nodejs";
 
@@ -25,6 +26,32 @@ export async function POST(req: Request): Promise<Response> {
       // Miejsce na zapis statusu płatności do bazy.
       const session = event.data.object as Stripe.Checkout.Session;
       console.log("Stripe checkout.session.completed", session.id);
+    }
+
+    if (event.type === "customer.subscription.updated") {
+      const subscription = event.data.object as Stripe.Subscription;
+      const customerId =
+        typeof subscription.customer === "string"
+          ? subscription.customer
+          : subscription.customer.id;
+      const periodEnd =
+        subscription.items.data[0]?.current_period_end
+          ? new Date(subscription.items.data[0].current_period_end * 1000).toISOString()
+          : null;
+
+      const supabase = getSupabaseServerClient();
+      const { error } = await supabase
+        .from("ghg_billing_accounts")
+        .update({
+          stripe_subscription_id: subscription.id,
+          subscription_status: subscription.status,
+          current_period_end: periodEnd,
+        })
+        .eq("stripe_customer_id", customerId);
+
+      if (error) {
+        console.error("[ghg_billing_accounts] webhook update error:", error.message);
+      }
     }
 
     return NextResponse.json({ received: true });

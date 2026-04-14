@@ -12,6 +12,7 @@ const NAV_LINKS = [
   { href: "/cennik", label: "Cennik" },
   { href: "/#faq", label: "FAQ" },
   { href: "/regulamin", label: "Regulamin" },
+  { href: "/ghg", label: "Scopeo GHG" },
   { href: "/polityka-prywatnosci", label: "Polityka prywatności" },
   { href: "mailto:kontakt@najembezkary.pl", label: "Kontakt" },
 ] as const;
