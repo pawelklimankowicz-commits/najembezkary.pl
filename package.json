@@ -24,7 +24,7 @@
     "next": "^15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "resend": "^6.10.0",
+    "resend": "^6.11.0",
     "stripe": "^22.0.1",
     "world-countries": "^5.1.0",
     "xlsx": "^0.18.5",
